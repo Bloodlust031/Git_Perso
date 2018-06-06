@@ -25,6 +25,7 @@ if __name__ == "__main__":
         print("c'est bissextile")
     else:
         print("ce n'est pas bissextile")
+    
     # On met le programme en pause pour éviter qu'il ne se referme (Windows)
     os.system("pause")
 

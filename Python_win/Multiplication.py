@@ -1,7 +1,16 @@
 # -*-coding:Latin-1 -*
 
-import Boite_outils
+from Outils import Boite_outils
 import os
+
+def print_fibonacci(nb_val):
+    """
+    Fonction d'affichage de nb_val de la suite de Fibonacci.
+    """
+    a,b,c =1,1,0
+    while (c < nb_val):
+        print(b)
+        a,b,c = b,a+b,c+1
 
 def affich_table_Multiplication(nombre, max=10):
     """

@@ -35,7 +35,7 @@ def is_integer(texte):
 
 def recup_voyelles(texte):
     """
-        Cette extrait les voyelles d'un texte
+        Cette fonction extrait les voyelles d'un texte
     """
     texte_result = ""
     for lettre in texte:
