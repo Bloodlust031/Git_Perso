@@ -11,14 +11,13 @@ upload=re.findall('Upload:\s(.*?)\s',response, re.MULTILINE)
 ping[0]=ping[0].replace(',','.')
 download[0]=download[0].replace(',','.')
 upload[0]=upload[0].replace(',','.')
-
-#print('Date, Time, Ping, Download, Upload')
+response = subprocess.Popen('/opt/vc/bin/vcgencmd measure_temp', shell=True, stdout=subprocess.PIPE).stdout.read()
+temperature = re.findall("temp=(.*?)'C",response, re.MULTILINE)
+temperature[0]=temperature[0].replace(',','.')
 
 try:
-	if os.stat('C:\TEMP\\toto.csv').st_size == 0:
+	if os.stat('/home/pi/python_projects/speedtest/speedtest.csv').st_size == 0:
 		print('Date,Time,Ping (ms),Download (Mbit/s),Upload (Mbit/s)')
-#	if os.stat('/home/pi/python_projects/speedtest/speedtest.csv').st_size == 0:
-#		print('Date,Time,Ping (ms),Download (Mbit/s),Upload (Mbit/s)')
 except:
 	pass
-print ('{},{},{},{},{}'.format(time.strftime('%m/%d/%y'), time.strftime('%H:%M'), ping[0], download[0], upload[0]))
+print ('{},{},{},{},{},{}'.format(time.strftime('%m/%d/%y'), time.strftime('%H:%M'), ping[0], download[0], upload[0],temperature[0]))
