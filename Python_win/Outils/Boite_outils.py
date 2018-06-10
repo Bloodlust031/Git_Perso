@@ -6,7 +6,7 @@ import os # On importe le module os qui dispose de variables
 
 # Programme testant si une année, saisie par l'utilisateur, est bissextile ou non
 
-def demande_valeur_numerique(texte):
+def demande_valeur_numerique(texte, val_min=0, val_max=1000):
     """
         Cette fonction permet de demander à l'utilisateur de saisir une valuer numérique et vérifie que le résultat soit bien un entier
         Le texte en parametre sera affiché à l'utilisateur avant sa saisie.
@@ -18,7 +18,13 @@ def demande_valeur_numerique(texte):
         txt_input = input(txt_affich)
         try:
             ivaleur =  int(txt_input)
-            bvaleur_OK = True
+            if (ivaleur < val_min):
+                print("Valeur trop petite. Min = " + val_min)
+            else:
+                if (ivaleur > val_max):
+                    print("Valeur trop grande. Max = " + val_max)
+                else:
+                    bvaleur_OK = True
         except:
             print("Valeur non numérique. Veuillez ré-essayer.")
     return ivaleur
