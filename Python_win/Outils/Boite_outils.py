@@ -19,10 +19,10 @@ def demande_valeur_numerique(texte, val_min=0, val_max=1000):
         try:
             ivaleur =  int(txt_input)
             if (ivaleur < val_min):
-                print("Valeur trop petite. Min = " + val_min)
+                print("Valeur trop petite. Min = ", val_min)
             else:
                 if (ivaleur > val_max):
-                    print("Valeur trop grande. Max = " + val_max)
+                    print("Valeur trop grande. Max = ", val_max)
                 else:
                     bvaleur_OK = True
         except:

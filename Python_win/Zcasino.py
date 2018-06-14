@@ -15,26 +15,41 @@ case_choisie = 0
 case_tiree = 0
 
 def recup_mise():
+    global case_choisie
+    global mise_courrante
+    global cagnote
+    
     #demande de la case
     case_choisie = Outils.Boite_outils.demande_valeur_numerique("Sur quelle case voulez-vous miser?", 0, 49)
     #demande de la mise
-    mise_courrante = Outils.Boite_outils.demande_valeur_numerique("Combien voulez-vous miser?", 1, cagnotte)
+    mise_courrante = Outils.Boite_outils.demande_valeur_numerique("Combien voulez-vous miser?", 1, cagnote)
     
 def tirage_roulette():
-    case_tiree = randrange(50)
-    print ("La boule s'est arrétée sur le " + case_tiree)
+    global case_tiree
+    case_tiree = random.randrange(50)
+    print ("La boule s'est arrétée sur le ", case_tiree)
     
 def calcul_gain():
-    if (case_tiree == case_choisie):
-        print ("FélicitationssLa boule s'est arrétée sur le " + case_tiree)
+    global case_tiree
+    global case_choisie
+    global mise_courrante
+    global cagnote
     
+    if (case_tiree == case_choisie):
+        print ("Félicitations La boule s'est arrétée sur le ", case_tiree)
+        cagnote = cagnote + (mise_courrante*3)
+    elif((case_tiree%2) == (case_choisie%2)):
+        cagnote = cagnote + math.ceil(mise_courrante/2)
+    else:
+        cagnote = cagnote - mise_courrante
     
 if __name__ == "__main__":
     print ("Bienvenue au casino.")
-    print ("Votre cagnote de départ est de " + cagnote + "$")
+    print ("Votre cagnote de départ est de " , cagnote , "$")
     while (cagnote > 0):
         recup_mise()
         tirage_roulette()
         calcul_gain()
+        print ("Vous avez maintenant " , cagnote , "$")
     print ("perdu")
             
