@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #let nombre="99"
-sudo python /home/pi/python_projects/Gestled/LedGreenOn.py
+sudo python /home/pi/python_projects/Gestled/LedYellowOn.py
 
 until [ "$nombre" = "0" ]; do
 echo "Bonjour,"
@@ -62,5 +62,5 @@ fi
 #read -t 1 -n 10000 discard
 done
 
-sudo python /home/pi/python_projects/Gestled/LedGreenOff.py
+sudo python /home/pi/python_projects/Gestled/LedYellowOff.py
 

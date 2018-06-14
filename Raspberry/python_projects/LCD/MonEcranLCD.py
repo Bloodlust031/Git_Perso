@@ -8,8 +8,15 @@ from datetime import datetime
 import RPi.GPIO as GPIO
 import time
 import Freenove_DHT as DHT
+
+GPIO.setwarnings(False)                                               # Mettre sur OFF les alertes (qui sont inutiles)
+GPIO.setmode(GPIO.BOARD)                                                # BCM : Numero des GPIO (GPIO 18)
+GPIO.setup(22, GPIO.OUT)                                              # Definition du port en sortie
+GPIO.output(22, True)                                             # Mise a zero du GPIO 18 (GND)
+
 DHTPin = 11     #define the pin of DHT11
-buttonPin = 18	# define the buttonPin-GPIO24
+buttonPin = 15	# define the buttonPin-GPIO24
+buttonPinRed = 18	# define the buttonPin-GPIO24
 TempCPU = 0.0
 TempExt = 0.0
 HumExt = 0.0
@@ -40,13 +47,25 @@ def buttonEvent(channel):
     #print('buttonEvent GPIO %d' %(channel))
     state_LCD = not state_LCD 
     if state_LCD : 
-	print('Turn on LCD ... ')
+	print('Turn on LCD Green... ')
     else : 
-	print('Turn off LCD ... ') 
+	print('Turn off LCD Green... ') 
+    
+def buttonRedEvent(channel):
+    global state_LCD 
+    #print('buttonEvent GPIO %d' %(channel))
+    state_LCD = not state_LCD 
+    if state_LCD : 
+	print('Turn on LCD RED ... ')
+    else : 
+	print('Turn off LCD RED... ') 
     
 def init_btn():
     GPIO.setup(buttonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Set buttonPin's mode is input, and pull up to high
     GPIO.add_event_detect(buttonPin,GPIO.FALLING,callback = buttonEvent,bouncetime=300)
+    
+    GPIO.setup(buttonPinRed, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Set buttonPin's mode is input, and pull up to high
+    GPIO.add_event_detect(buttonPinRed,GPIO.FALLING,callback = buttonRedEvent,bouncetime=300)
 
 def init_DHT():
     dht = DHT.DHT(DHTPin)   #create a DHT class object
@@ -130,3 +149,4 @@ if __name__ == '__main__':
 	destroy_LCD()
 	GPIO.cleanup()
 	exit()  	
+	GPIO.output(25, False)
