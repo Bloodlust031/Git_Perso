@@ -8,6 +8,7 @@ from datetime import datetime
 import RPi.GPIO as GPIO
 import time
 import Freenove_DHT as DHT
+import os
 
 GPIO.setwarnings(False)                                               # Mettre sur OFF les alertes (qui sont inutiles)
 GPIO.setmode(GPIO.BOARD)                                                # BCM : Numero des GPIO (GPIO 18)
@@ -22,6 +23,8 @@ TempExt = 0.0
 HumExt = 0.0
 state_LCD = False
 old_state_LCD = False
+state_Red = 0
+state_Red_counter = 0
 mcp = 0
 lcd = 0
 LedOnCounter  = 0
@@ -44,23 +47,45 @@ def destroy_LCD():
 
 def buttonEvent(channel):
     global state_LCD 
+    global state_Red
+    global state_Red_counter
     #print('buttonEvent GPIO %d' %(channel))
-    state_LCD = not state_LCD 
-    if state_LCD : 
-	print('Turn on LCD Green... ')
-    else : 
-	print('Turn off LCD Green... ') 
+    
+    if (state_Red == 0):
+	state_LCD = not state_LCD 
+	if state_LCD : 
+	    print('Turn on LCD Green... ')
+	else : 
+	    print('Turn off LCD Green... ') 
+    elif(state_Red == 1):
+	state_Red = 2
+	state_Red_counter = 0
+    elif(state_Red == 2):
+	state_Red = 3
+	state_Red_counter = 0
     
 def buttonRedEvent(channel):
-    global state_LCD 
-    #print('buttonEvent GPIO %d' %(channel))
-    state_LCD = not state_LCD 
-    if state_LCD : 
-	print('Turn on LCD RED ... ')
-    else : 
-	print('Turn off LCD RED... ') 
+    global state_Red
+    global state_Red_counter 
+
+    if (state_Red == 0):
+	state_Red = 1
+	state_Red_counter = 0
+    elif(state_Red == 1):
+	#annulation
+	state_LCD = True
+	state_Red = 0
+	state_Red_counter = 0
+	LedOnCounter = 3540	#pour que l'écran ne reste allumé qu'une minute
+    elif(state_Red == 2):
+	state_Red = 4
+	state_Red_counter = 0
     
 def init_btn():
+    global state_Red
+    global state_Red_counter    
+    state_Red = 0
+    state_Red_counter = 0    
     GPIO.setup(buttonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Set buttonPin's mode is input, and pull up to high
     GPIO.add_event_detect(buttonPin,GPIO.FALLING,callback = buttonEvent,bouncetime=300)
     
@@ -122,21 +147,48 @@ def loop():
     global state_LCD
     global old_state_LCD
     global LedOnCounter
-    while(True):         
-	if (LedOnCounter > 3600):
-	    state_LCD = False
-	if (state_LCD == True) and (old_state_LCD == False):
-	    #Il faut initialiser
-	    allum_LCD()
-	if (state_LCD == True):
-	    loop_DHT()
-	    loop_LCD()
-	    LedOnCounter  = LedOnCounter  + 1
-	if ((state_LCD == False) and (old_state_LCD == True)):
-	    destroy_LCD()
-	if (state_LCD == False):
-	    LedOnCounter  = 0
-	old_state_LCD = state_LCD
+    global state_Red
+    global state_Red_counter        
+    global lcd
+
+    while(True):       
+	if (state_Red_counter > 5):
+	    state_Red = 0
+	    state_Red_counter = 0
+	    LedOnCounter = 3540	#pour que l'écran ne reste allumé qu'une minute
+	if (state_Red > 0):
+	    state_Red_counter = state_Red_counter + 1
+	    if state_Red ==1:
+		lcd.setCursor(0,0)  # set cursor position
+		lcd.message( "Confirm    Abort" + '\n' )# display CPU temperature
+		message = "%s" % (5-state_Red_counter)
+		lcd.message( message )		
+	    elif state_Red ==2:
+		lcd.setCursor(0,0)  # set cursor position
+		lcd.message( "Reboot  shutdown" + '\n' )# display CPU temperature
+		message = "%s" % (5-state_Red_counter)
+		lcd.message( message )
+	    elif state_Red ==3:
+		print('Reboot')
+		os.system('sudo reboot')
+	    elif state_Red ==4:
+		print('Shutdown')
+		os.system('sudo shutdown -h now')
+	else:
+	    if (LedOnCounter > 3600):
+		state_LCD = False
+	    if (state_LCD == True) and (old_state_LCD == False):
+		#Il faut initialiser
+		allum_LCD()
+	    if (state_LCD == True):
+		loop_DHT()
+		loop_LCD()
+		LedOnCounter  = LedOnCounter  + 1
+	    if ((state_LCD == False) and (old_state_LCD == True)):
+		destroy_LCD()
+	    if (state_LCD == False):
+		LedOnCounter  = 0
+	    old_state_LCD = state_LCD
 	time.sleep(1)	
 
 if __name__ == '__main__':
