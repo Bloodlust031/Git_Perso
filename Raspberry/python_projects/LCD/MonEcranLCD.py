@@ -16,8 +16,8 @@ GPIO.setup(22, GPIO.OUT)                                              # Definiti
 GPIO.output(22, True)                                             # Mise a zero du GPIO 18 (GND)
 
 DHTPin = 11     #define the pin of DHT11
-buttonPin = 15	# define the buttonPin-GPIO24
-buttonPinRed = 18	# define the buttonPin-GPIO24
+buttonPin = 18	# define the buttonPin-GPIO24
+buttonPinRed = 15	# define the buttonPin-GPIO24
 TempCPU = 0.0
 TempExt = 0.0
 HumExt = 0.0
@@ -67,16 +67,24 @@ def buttonEvent(channel):
 def buttonRedEvent(channel):
     global state_Red
     global state_Red_counter 
+    global state_LCD
 
     if (state_Red == 0):
 	state_Red = 1
 	state_Red_counter = 0
+	if state_LCD == False:
+		allum_LCD()
+        else:
+                lcd.clear()
     elif(state_Red == 1):
 	#annulation
 	state_LCD = True
 	state_Red = 0
 	state_Red_counter = 0
-	LedOnCounter = 3540	#pour que l'écran ne reste allumé qu'une minute
+        lcd.clear()
+        state_LCD = True
+        old_state_LCD = True
+	LedOnCounter = 3540	#pour que l'ecran ne reste allume qu'une minute
     elif(state_Red == 2):
 	state_Red = 4
 	state_Red_counter = 0
@@ -155,18 +163,21 @@ def loop():
 	if (state_Red_counter > 5):
 	    state_Red = 0
 	    state_Red_counter = 0
-	    LedOnCounter = 3540	#pour que l'écran ne reste allumé qu'une minute
+            lcd.clear()
+            state_LCD = True
+            old_state_LCD = True
+	    LedOnCounter = 3540	#pour que l'ecran ne reste allume qu'une minute
 	if (state_Red > 0):
 	    state_Red_counter = state_Red_counter + 1
 	    if state_Red ==1:
 		lcd.setCursor(0,0)  # set cursor position
 		lcd.message( "Confirm    Abort" + '\n' )# display CPU temperature
-		message = "%s" % (5-state_Red_counter)
+		message = "%s" % (6-state_Red_counter)
 		lcd.message( message )		
 	    elif state_Red ==2:
 		lcd.setCursor(0,0)  # set cursor position
 		lcd.message( "Reboot  shutdown" + '\n' )# display CPU temperature
-		message = "%s" % (5-state_Red_counter)
+		message = "%s" % (6-state_Red_counter)
 		lcd.message( message )
 	    elif state_Red ==3:
 		print('Reboot')
