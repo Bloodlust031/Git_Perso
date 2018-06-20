@@ -15,6 +15,7 @@ GPIO.setmode(GPIO.BOARD)                                                # BCM : 
 GPIO.setup(22, GPIO.OUT)                                              # Definition du port en sortie
 GPIO.output(22, True)                                             # Mise a zero du GPIO 18 (GND)
 
+state_LED_Green = True
 DHTPin = 11     #define the pin of DHT11
 buttonPin = 18	# define the buttonPin-GPIO24
 buttonPinRed = 15	# define the buttonPin-GPIO24
@@ -165,8 +166,12 @@ def loop():
     global state_Red
     global state_Red_counter        
     global lcd
+    global state_LED_Green
+    global GPIO
 
-    while(True):       
+    while(True):     
+        state_LED_Green = not state_LED_Green        
+        GPIO.output(22, state_LED_Green)                                             # Changement d etat de la LED Verte
         if (state_Red_counter > 5):
             RAZ_red_state()
         if (state_Red > 0):
