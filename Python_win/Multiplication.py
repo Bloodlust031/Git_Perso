@@ -104,19 +104,19 @@ def convert_secondes(nbsecondes):
     if(nb_a > 0):
         resultat = resultat & "% années" % (nb_a)
         val_to_affich = True
-    if((nb_M > 0) || (val_to_affich)): 
+    if((nb_M > 0) or (val_to_affich)): 
         resultat = resultat & "% mois" % (nb_M)
         val_to_affich = True
-    if((nb_M > 0) || (val_to_affich)): 
+    if((nb_M > 0) or (val_to_affich)): 
         resultat = resultat & "% mois" % (nb_M)
         val_to_affich = True
-    if((nb_M > 0) || (val_to_affich)): 
+    if((nb_M > 0) or (val_to_affich)): 
         resultat = resultat & "% mois" % (nb_M)
         val_to_affich = True
-    if((nb_M > 0) || (val_to_affich)): 
+    if((nb_M > 0) or (val_to_affich)): 
         resultat = resultat & "% mois" % (nb_M)
         val_to_affich = True
-    if((nb_M > 0) || (val_to_affich)): 
+    if((nb_M > 0) or (val_to_affich)): 
         resultat = resultat & "% mois" % (nb_M)
         val_to_affich = True
     
