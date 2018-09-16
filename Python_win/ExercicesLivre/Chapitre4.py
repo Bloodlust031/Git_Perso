@@ -56,11 +56,42 @@ def affich_etoiles(nb_etoiles):
             resultat = resultat + " *"
         print(resultat)
 
+def multipl7(nbval):
+    #affichage des nbval premiers termes de la table de multiplication par 7 
+    #avec insertion d'une étoile pour les multiples de 3
+    chresult = ""
+    result = 0
+    for i in range (1, nbval+1):
+        result = 7 * i
+        if (chresult != ""):
+            chresult = chresult + " "
+        chresult = chresult + str(result)
+        if (result%3 == 0):
+            chresult = chresult + "*"
+    print(chresult)
+
+def multipl13():
+    #calcul des 50 premiers termes de la table de multiplication de 13 avec affichage uniquement des multipes de 7
+    chresult = ""
+    result = 0
+    for i in range (1, 51):
+        result = 13 * i
+        if (result%7 ==0):
+            if (chresult != ""):
+                chresult = chresult + " "
+            chresult = chresult + str(result)
+    print(chresult)
+    
+
 if __name__ == "__main__":
     resultat = volume_parallelepipede(1,2,3)
     print(resultat)
     
     conversion_secondes(70)
     conversion_secondes(70000)
+    
+    multipl7(10)
+    
+    multipl13()
     
     affich_etoiles(5)
