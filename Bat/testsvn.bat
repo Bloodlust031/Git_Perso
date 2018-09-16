@@ -1,0 +1,1 @@
+svn log -r 14676:14685 -v "https://budiag4.actia.fr/4182/mesconv_norm/trunk" > resultsvn.txt

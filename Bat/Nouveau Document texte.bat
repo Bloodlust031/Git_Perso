@@ -1,0 +1,1 @@
+D:\Program Files\7-Zip\7z e "C:\Temp\Bat.7z"

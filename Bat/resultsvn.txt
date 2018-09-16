@@ -1,0 +1,98 @@
+------------------------------------------------------------------------
+r14676 | mregaya | 2013-06-27 20:03:55 +0200 (jeu. 27 juin 2013) | 4 lignes
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/ESPMK100_V6.xml
+   M /trunk/ecu_service/ESPMK100_V8.xml
+
+[DIAGBOX][Pack2013_07][ABS_MK100;ESP_MK100][A51;A55;A9;M_M4;A58][ DIAG-COM-11-027 Ind J(ABS_ESP MK100).xls ][PACK2013-07-014]:
+V8: Ajouter au paramŠtre "CFG_000_FREIN_UCPR_STT" la VD "Avec Stop and Start D" pour l'ESP_MK100 - A94 - BR2
+
+V6 Modifier l'‚cran de telecodage du ESP_MK100 du v‚hicule A9 "TELECODAGE_BR2" :utilisation des paramŠtres "CFG_000_FREIN_UCPR_STT","CFG_000_FREIN_UCPR_CITYPARK","CFG_000_FREIN_UCPR_EASYMOVE" et "CFG_000_FREIN_UCPR_DSG" eclatement+MAJ
+------------------------------------------------------------------------
+r14677 | mgharbi | 2013-06-28 08:43:56 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/AP_BVA_AT6_V1.xml
+
+[DIAGBOX][PACK2013_07][Boitvit][BVA_AT6]: correction fichier 
+------------------------------------------------------------------------
+r14678 | eabid | 2013-06-28 11:57:47 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/BSI_2010_966527219A_V1.xml
+
+[DIAGBOX][Pack2013-07][BSI2010][ind T2] : modif mn‚mo
+------------------------------------------------------------------------
+r14679 | eabid | 2013-06-28 12:27:38 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V1.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V2.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V3.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V4.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V5.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V6.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V7.xml
+   M /trunk/ecu_service/ESP8_BOSCH_9632756899_V8.xml
+
+[DIAGBOX][Pack2013-07][ABS/ESPBOSCH]: migration plan A'--> plan A
+------------------------------------------------------------------------
+r14680 | wmhamdi | 2013-06-28 12:51:31 +0200 (ven. 28 juin 2013) | 2 lignes
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/MEV17_4_EURO5_962593949A_V1.xml
+
+[DIAGBOX][PACK2013-07-910][MEV17_4_EURO5][TT][DIAG-COM-09-021 Ind L]
+Travaux TELEXX
+------------------------------------------------------------------------
+r14681 | mhwaneb | 2013-06-28 17:36:55 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_ident/SMEG_PLUS_B78.xml
+
+[DIAG_BOX][PACK2013-07][MRN/SMEG/SMEG+][TT] : correctif reco V13 (medhedi)
+------------------------------------------------------------------------
+r14682 | mbenjema | 2013-06-28 18:35:06 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/EMF_C_9665340399_V1.xml
+   M /trunk/ecu_service/EMF_C_9665340399_V2.xml
+
+[DIAGBOX][Pack2013-06][EMF_C_UDS][B73M][36838]:Correctif au niveau du messagerie de l'encodage du paramŠtre Nø s‚rie de la piŠce
+------------------------------------------------------------------------
+r14683 | mebenomr | 2013-06-28 18:58:33 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/COMBINE_9646788199_V1.xml
+   M /trunk/ecu_service/COMBINE_9656536899_V1.xml
+   M /trunk/ecu_service/COMBINE_9657006099_V1.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V10.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V11.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V12.xml
+   M /trunk/ecu_service/COMBINE_9657006099_V2.xml
+   M /trunk/ecu_service/COMBINE_9657006099_V3.xml
+   M /trunk/ecu_service/COMBINE_9657006099_V4.xml
+   M /trunk/ecu_service/COMBINE_9657006099_V5.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V6.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V7.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V8.xml
+   A /trunk/ecu_service/COMBINE_9657006099_V9.xml
+   M /trunk/ecu_service/COMBINE_9658869099_V1.xml
+   M /trunk/ecu_service/COMBINE_9658869099_V2.xml
+   M /trunk/ecu_service/COMBINE_9664319699_V1.xml
+   M /trunk/ecu_service/COMBINE_9664319699_V3.xml
+
+[DIAGBOX][PACK2013-07][COMBINE]: Correction EI 34714 (Correction du deuxieme ecran MPM)
+------------------------------------------------------------------------
+r14684 | mebenomr | 2013-06-28 19:01:51 +0200 (ven. 28 juin 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_ident/COMBINE_B9.xml
+   M /trunk/ecu_ident/COMBINE_D2.xml
+   M /trunk/ecu_ident/COMBINE_G9.xml
+   M /trunk/ecu_ident/COMBINE_LA.xml
+   M /trunk/ecu_ident/COMBINE_T84.xml
+   M /trunk/ecu_ident/COMBINE_VCAN.xml
+
+[DIAGBOX][PACK2013-07][COMBINE]: Correction EI 34714 (Correction du deuxieme ecran MPM)
+------------------------------------------------------------------------
+r14685 | msaid | 2013-07-01 10:52:58 +0200 (lun. 01 juil. 2013) | 1 ligne
+Chemins modifi‚sÿ:
+   M /trunk/ecu_service/DCM35_BR2_V1.xml
+   M /trunk/ecu_service/DCM35_BR2_V2.xml
+   M /trunk/ecu_service/DCM35_HY_V1.xml
+
+[DIAG-BOX][DCM35_BR2,DCM35HY][Migration TELE_XX]:Modif Trame lecture/ecriture TLCD + modif codage param TLCD (by Emna)
+------------------------------------------------------------------------
