@@ -1,0 +1,11 @@
+Il faut:
+1 gérer les distrib de TYPEID 2
+2 gérer les distrib de TYPEID 30
+3 faire l'intégration automatique des paramètres depuis l'extract de la BD Axces
+
+https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/awscli-install-windows.html
+
+User : AKIAIKYJRMTR6KJB3LAA
+Password : os0Fh2J8G/C48ZqEh2XC/eFV2oRvLqTg7yXuzIph
+
+
