@@ -17,7 +17,7 @@ def b_test_bissextile(ivalue):
 
 
 if __name__ == "__main__":
-    iannee = Boite_outils.demande_valeur_numerique("Entrez une année")
+    iannee = Boite_outils.demande_valeur_numerique("Entrez une année",-4000,100000)
 
     b_bissextile = b_test_bissextile(iannee)
 

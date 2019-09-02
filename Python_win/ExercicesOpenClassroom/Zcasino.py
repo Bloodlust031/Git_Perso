@@ -1,6 +1,7 @@
 # -*-coding:Latin-1 -*
 
-import Outils.Boite_outils
+#import Outils.Boite_outils.py
+import Boite_outils
 import os
 import math
 import random
@@ -20,9 +21,9 @@ def recup_mise():
     global cagnote
     
     #demande de la case
-    case_choisie = Outils.Boite_outils.demande_valeur_numerique("Sur quelle case voulez-vous miser?", 0, 49)
+    case_choisie = Boite_outils.demande_valeur_numerique("Sur quelle case voulez-vous miser?", 0, 49)
     #demande de la mise
-    mise_courrante = Outils.Boite_outils.demande_valeur_numerique("Combien voulez-vous miser?", 1, cagnote)
+    mise_courrante = Boite_outils.demande_valeur_numerique("Combien voulez-vous miser?", 1, cagnote)
     
 def tirage_roulette():
     global case_tiree
