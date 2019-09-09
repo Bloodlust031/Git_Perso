@@ -134,6 +134,56 @@ def tri_1_liste():
 
     print("apres tri sans doublons", liste_a_trier2)
 
+def affiche_float(val_float, nb_dec = 3):
+    if type(val_float) == float:
+        str_float = str(val_float)
+        partie_entiere, partie_decimale = str_float.split(".")
+        str_conv = ",".join([partie_entiere,partie_decimale[:nb_dec]])
+        print(str_conv)
+    else:
+        print("pas un flottant")
+
+def afficher(*parametres, sep=' ', fin='\n'):
+    """Fonction chargée de reproduire le comportement de print.
+    
+    Elle doit finir par faire appel à print pour afficher le résultat.
+    Mais les paramètres devront déjà avoir été formatés. 
+    On doit passer à print une unique chaîne, en lui spécifiant de ne rien mettre à la fin :
+
+    print(chaine, end='')"""
+    
+    # Les paramètres sont sous la forme d'un tuple
+    # Or on a besoin de les convertir
+    # Mais on ne peut pas modifier un tuple
+    # On a plusieurs possibilités, ici je choisis de convertir le tuple en liste
+    parametres = list(parametres)
+    # On va commencer par convertir toutes les valeurs en chaîne
+    # Sinon on va avoir quelques problèmes lors du join
+    for i, parametre in enumerate(parametres):
+        parametres[i] = str(parametre)
+    # La liste des paramètres ne contient plus que des chaînes de caractères
+    # À présent on va constituer la chaîne finale
+    chaine = sep.join(parametres)
+    # On ajoute le paramètre fin à la fin de la chaîne
+    chaine += fin
+    # On affiche l'ensemble
+    print(chaine, end='')
+        
+def tri_liste():
+    inventaire = [("pommes", 22),("melons", 4),("poires", 18),("fraises", 76),("prunes", 51),]
+    inventaire2 =  [(nb,nom) for nom,nb in inventaire]
+    inventaire2.sort(reverse = True)
+    inventaire3 =  [(nom,nb) for nb,nom in inventaire2]
+    print (inventaire3)
+
+def tri_liste2():
+    inventaire = [("pommes", 22),("melons", 4),("poires", 18),("fraises", 76),("prunes", 51),]
+    # On change le sens de l'inventaire, la quantité avant le nom
+    inventaire_inverse = [(qtt, nom_fruit) for nom_fruit,qtt in inventaire]
+    # On n'a plus qu'à trier dans l'ordre décroissant l'inventaire inversé
+    # On reconstitue l'inventaire trié
+    inventaire = [(nom_fruit, qtt) for qtt,nom_fruit in sorted(inventaire_inverse, reverse=True)]
+    print (inventaire)
 
 if __name__ == "__main__":
     print("---------tri a l'ancienne---------")
@@ -144,6 +194,17 @@ if __name__ == "__main__":
     
     print("---------tri avec 1 liste---------")
     tri_1_liste()
+
+    print("---------conversion 1.123456789---------")
+    affiche_float(1.123456789,6)
+
+    print("---------test print_like---------")
+    afficher("toto", "titi",1.25, "tata")
+    
+    print("---------tri_liste---------------")
+    tri_liste()
+    tri_liste2()
+    
     
     # On met le programme en pause pour éviter qu'il ne se referme (Windows)
     os.system("pause")
