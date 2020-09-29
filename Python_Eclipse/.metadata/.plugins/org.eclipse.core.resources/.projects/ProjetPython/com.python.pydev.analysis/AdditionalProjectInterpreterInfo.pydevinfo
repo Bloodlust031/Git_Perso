@@ -1,0 +1,25 @@
+-- VERSION_5
+-- START DISKCACHE_3
+D:\SVN\Git_Perso\Python_Eclipse\.metadata\.plugins\org.eclipse.core.resources\.projects\ProjetPython\com.python.pydev.analysis\v2_indexcache
+TestJson.__init__|1601373574168539000|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\__init__.py
+TestJson.Dwld_AWS|1601373927880689200|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Dwld_AWS.py
+TestJson.TestJson|1601373778896982700|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
+-- END DISKCACHE
+-- START DICTIONARY
+2
+1=D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
+2=TestJson.TestJson
+-- END DICTIONARY
+-- START TREE 1
+7
+che|1|chemin_base!1^14#1*19@
+f|1|f!1^45#5*19@
+fic|1|fichier_log!1^15#1*19@
+lis|2|listdirectory!1^17#5*18@liste_fichiers!1^42#5*19@
+nb_|1|nb_fic!1^43#5*19@
+tim|2|time2!1^57#5*19@time1!1^41#5*19@
+tra|1|traite_1_1fic!1^24#5*18@
+-- END TREE
+-- START TREE 2
+0
+-- END TREE
