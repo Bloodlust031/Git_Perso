@@ -1,11 +1,17 @@
 MODULES_MANAGER_V3
-ExercicesOpenClassroom.Boite_outils|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
-ExercicesOpenClassroom.Listes|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Listes.py
-ExercicesOpenClassroom.Multiplication|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Multiplication.py
-ExercicesOpenClassroom.TestBissextile|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\TestBissextile.py
-ExercicesOpenClassroom.Zcasino|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Zcasino.py
-ExercicesOpenClassroom.__init__|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\__init__.py
-ExercicesOpenClassroom.dictionnaire|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\dictionnaire.py
-TestJson.Dwld_AWS|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Dwld_AWS.py
-TestJson.TestJson|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
-TestJson.__init__|D:\SVN\Git_Perso\Python_Eclipse\ProjetPython\TestJson\__init__.py
+ExercicesOpenClassroom.Boite_outils|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
+ExercicesOpenClassroom.Fichiers|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers.py
+ExercicesOpenClassroom.Fichiers_Pickle|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers_Pickle.py
+ExercicesOpenClassroom.Listes|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Listes.py
+ExercicesOpenClassroom.Multiplication|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Multiplication.py
+ExercicesOpenClassroom.TestBissextile|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\TestBissextile.py
+ExercicesOpenClassroom.Zcasino|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Zcasino.py
+ExercicesOpenClassroom.__init__|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\__init__.py
+ExercicesOpenClassroom.dictionnaire|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\dictionnaire.py
+ExercicesOpenClassroom_Pendu.__init__|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\__init__.py
+ExercicesOpenClassroom_Pendu.donnees|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\donnees.py
+ExercicesOpenClassroom_Pendu.fonctions|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\fonctions.py
+ExercicesOpenClassroom_Pendu.pendu|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\pendu.py
+TestJson.Dwld_AWS|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Dwld_AWS.py
+TestJson.TestJson|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
+TestJson.__init__|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\__init__.py

@@ -9,9 +9,9 @@ import os
 import json
 import time
 
-#chemin_base = 'H:/Boulot/Boulot Jeje/Main/Ican/Extract_traces_FTP/TempDownAWSS3/'
+chemin_base = 'H:/Boulot/Boulot Jeje/Main/Ican/Extract_traces_FTP/TempDownAWSS3/'
 #chemin_base = 'D:/Boulot/Main/Ican/Extract_traces_FTP/TempDownAWSS3/'
-chemin_base = 'D:/temp/DWLD msg Bastides/'
+#chemin_base = 'D:/temp/DWLD msg Bastides/'
 fichier_log = 'D:/temp/log_tata.txt'
 
 def listdirectory(path): 

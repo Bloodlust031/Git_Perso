@@ -21,4 +21,4 @@ if __name__ == "__main__":
 
     
     # On met le programme en pause pour éviter qu'il ne se referme (Windows)
-    os.system("pause")
+    os.system("pause"),
