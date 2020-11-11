@@ -1,0 +1,13 @@
+# -*-coding:Latin-1 -*
+
+'''
+Created on 11 nov. 2020
+
+@author: blood
+'''
+
+import os
+
+
+if __name__ == '__main__':
+    pass

@@ -3,7 +3,7 @@
 H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\.metadata\.plugins\org.eclipse.core.resources\.projects\ProjetPython\com.python.pydev.analysis\v2_indexcache
 ExercicesOpenClassroom.Boite_outils|1567515686000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
 ExercicesLivres.Chapitre7|1604864227640934500|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\Chapitre7.py
-TestJson.Extract_VCI_files_json|1604668328405094200|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Extract_VCI_files_json.py
+TestJson.Extract_VCI_files_json|1604996114654695000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Extract_VCI_files_json.py
 ExercicesOpenClassroom.Listes|1601374608000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Listes.py
 TestJson.Dwld_AWS|1601373928000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Dwld_AWS.py
 ExercicesOpenClassroom.Multiplication|1567515686000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Multiplication.py
@@ -62,7 +62,7 @@ ExercicesOpenClassroom_Pendu.__init__|1602774599960015600|H:\Boulot\Boulot Jeje\
 1=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Listes.py
 -- END DICTIONARY
 -- START TREE 1
-56
+58
 aff|4|afficher!1^146#5*18@affich_table_Multiplication!3^15#5*34@affiche_float!1^137#5*18@affich_table_Multiplication2!3^25#5*34@
 ajo|1|ajouter_score_joueur!5^45#5*50@
 b_b|1|b_bissextile!7^22#5*67@
@@ -75,13 +75,14 @@ cha|2|Chances_restantes!13^13#1*115@changeCar!15^199#5*130@
 che|2|chemin_base!17^12#1*147@chemin_base!19^11#1*163@
 com|2|compteCar!15^151#5*130@compteMots!15^185#5*130@
 con|1|convert_secondes!3^86#5*34@
+cur|1|current_IMEI!19^19#1*163@
 deb|1|debut_partie!13^16#5*114@
 dem|1|demande_valeur_numerique!21^9#5*178@
 dic|1|dico!23^5#5*194@
-ecr|3|ecrire_scores!5^34#5*50@ecriture_variable_fichier!25^14#5*210@ecrire_score_joueur!5^40#5*50@
+ecr|4|ecrire_scores!5^34#5*50@ecriture_resultats!19^48#5*162@ecriture_variable_fichier!25^14#5*210@ecrire_score_joueur!5^40#5*50@
 ele|1|eleMax!15^216#5*130@
 eto|2|etoile5!11^29#5*98@etoile6!11^38#5*98@
-f|2|f!19^45#5*163@f!17^45#5*147@
+f|1|f!17^45#5*147@
 fic|3|fichier_log!27^13#1*227@fichier_log!17^15#1*147@fichier_log!19^14#1*163@
 fin|1|fini_mot_courrant!5^96#5*50@
 get|6|get_1_lettre!5^66#5*50@get_un_mot!29^13#5*242@get_nb_essais_max!29^20#5*242@get_score_joueur!5^24#5*50@get_nom_joueur!5^51#5*50@get_confirmation!5^56#5*50@
@@ -93,14 +94,15 @@ is_|2|is_integer!21^32#5*178@is_lettre_in_mot!5^79#5*50@
 lec|1|lecture_variable_fichier!25^27#5*210@
 lig|1|ligneCar!15^103#5*130@
 lir|1|lire_scores!5^15#5*50@
-lis|6|listdirectory!19^17#5*162@liste_mots!29^10#1*243@listdirectory!17^17#5*146@liste_scores!5^13#1*51@liste_fichiers!19^42#5*163@liste_fichiers!17^42#5*147@
+lis|6|liste_mots!29^10#1*243@listdirectory!17^17#5*146@listdirectory!19^22#5*162@liste_scores!5^13#1*51@liste_fichiers!17^42#5*147@liste_fichiers!19^18#1*163@
 max|1|maximum!15^141#5*130@
 met|3|methode1!31^11#5*258@methode2!31^24#5*258@metier!33^27#9*275@
 mil|1|milieu_partie!13^37#5*114@
 mis|1|mise_courrante!9^14#1*83@
 mot|3|mot_trouve!13^14#1*115@mot_courrant!13^11#1*115@mot_recherche!13^10#1*115@
-nb_|3|nb_essais!29^11#1*243@nb_fic!19^43#5*163@nb_fic!17^43#5*147@
+nb_|3|nb_essais!29^11#1*243@nb_fic!17^43#5*147@nb_fic!19^67#5*163@
 nom|4|nom!33^25#9*275@nombre!25^12#1*211@nom_joueur!13^12#1*115@nomMois!15^170#5*130@
+pat|1|path_sortie!19^16#1*163@
 per|1|person_dict!27^28#1*227@
 pgc|1|PGCD!3^39#5*34@
 phr|0|
@@ -112,10 +114,10 @@ ser|1|serie!15^295#5*131@
 sui|5|suite_etoiles!15^44#5*130@suite_carre_etoiles_triangles!15^78#5*130@suite_carre_etoile6!15^59#5*130@suite_carre!15^16#5*130@suite_carre_triangle!15^27#5*130@
 sur|1|surfCercle!15^112#5*130@
 tai|0|
-tim|4|time1!17^41#5*147@time1!19^41#5*163@time2!19^57#5*163@time2!17^57#5*147@
+tim|4|time1!17^41#5*147@time1!19^65#5*163@time2!17^57#5*147@time2!19^75#5*163@
 tir|1|tirage_roulette!9^28#5*82@
 tot|3|toto!21^54#5*179@toto!29^26#9*243@toto2!21^58#5*179@
-tra|2|traite_1_1fic!19^24#5*162@traite_1_1fic!17^24#5*146@
+tra|2|traite_1_1fic!17^24#5*146@traite_1_1fic!19^29#5*162@
 tri|6|triangle!11^20#5*98@tri_liste!1^172#5*18@tri_liste2!1^179#5*18@tri_ancienne!1^16#5*18@tri_2_listes!1^28#5*18@tri_1_liste!1^78#5*18@
 use|4|users!33^11#5*275@users_data!33^20#5*275@users_data!27^22#1*227@user!33^23#9*275@
 vol|3|volBoite!15^117#5*130@volBoite2!15^122#5*130@volBoite3!15^127#5*130@
