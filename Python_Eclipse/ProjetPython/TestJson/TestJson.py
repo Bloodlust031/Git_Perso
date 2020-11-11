@@ -25,8 +25,8 @@ def traite_1_1fic(path):
     ecart_reception = 0
     #print("fichier en cours: ", path)
     #print("fichier en cours: ", os.path.basename(path))
-    with open(nom_fic) as json_file:
-        data = json.load(json_file)
+    with open(nom_fic) as json_file2:
+        data = json.load(json_file2)
         #print(data['tim'], data['int'])
         ecart_reception = (data['int']-data['tim'])/1000
         #print("Ecart réception: ", ecart_reception)

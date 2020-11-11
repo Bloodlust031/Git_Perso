@@ -2,16 +2,22 @@
 -- START DISKCACHE_3
 H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\.metadata\.plugins\org.eclipse.core.resources\.projects\ProjetPython\com.python.pydev.analysis\v2_indexcache
 ExercicesOpenClassroom.Boite_outils|1567515686000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
+ExercicesLivres.Chapitre7|1604864227640934500|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\Chapitre7.py
+TestJson.Extract_VCI_files_json|1604668328405094200|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Extract_VCI_files_json.py
 ExercicesOpenClassroom.Listes|1601374608000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Listes.py
 TestJson.Dwld_AWS|1601373928000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Dwld_AWS.py
 ExercicesOpenClassroom.Multiplication|1567515686000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Multiplication.py
-TestJson.TestJson|1602348436489699800|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
+TestJson.TestJson|1604392873170054800|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
+ExercicesLivres.__init__|1604753175969376800|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\__init__.py
 ExercicesOpenClassroom.Fichiers|1602773788391564000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers.py
 ExercicesOpenClassroom_Pendu.donnees|1602776918922253400|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\donnees.py
-ExercicesOpenClassroom.Zcasino|1567515686000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Zcasino.py
 ExercicesOpenClassroom.Fichiers_Pickle|1602774083081953100|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers_Pickle.py
+ExercicesOpenClassroom.Zcasino|1567515686000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Zcasino.py
 ExercicesOpenClassroom.__init__|1601374742000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\__init__.py
+TestJson.TestEcritureJson|1604667584206673100|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestEcritureJson.py
 ExercicesOpenClassroom_Pendu.pendu|1602841758742559400|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\pendu.py
+TestJson.TestEcritureXml|1604667097290850400|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestEcritureXml.py
+ExercicesLivres.dessins_tortue|1604842177863091400|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\dessins_tortue.py
 TestJson.__init__|1601373576000000000|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\__init__.py
 ExercicesOpenClassroom_Pendu.fonctions|1602842789340125900|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\fonctions.py
 ExercicesOpenClassroom.TestBissextile|1602775432353617600|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\TestBissextile.py
@@ -19,76 +25,100 @@ ExercicesOpenClassroom.dictionnaire|1602608370658630000|H:\Boulot\Boulot Jeje\Gi
 ExercicesOpenClassroom_Pendu.__init__|1602774599960015600|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\__init__.py
 -- END DISKCACHE
 -- START DICTIONARY
-24
-5=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\fonctions.py
-16=ExercicesOpenClassroom.Boite_outils
-11=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\pendu.py
-2=ExercicesOpenClassroom.Listes
+34
+22=ExercicesOpenClassroom.Boite_outils
+19=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Extract_VCI_files_json.py
 4=ExercicesOpenClassroom.Multiplication
-14=TestJson.TestJson
-19=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers_Pickle.py
-24=ExercicesOpenClassroom.Fichiers
-22=ExercicesOpenClassroom_Pendu.donnees
+11=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\dessins_tortue.py
+32=ExercicesOpenClassroom.Fichiers
 10=ExercicesOpenClassroom.Zcasino
-20=ExercicesOpenClassroom.Fichiers_Pickle
-17=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\dictionnaire.py
-12=ExercicesOpenClassroom_Pendu.pendu
+26=ExercicesOpenClassroom.Fichiers_Pickle
+28=TestJson.TestEcritureJson
+14=ExercicesOpenClassroom_Pendu.pendu
 7=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\TestBissextile.py
-23=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers.py
-6=ExercicesOpenClassroom_Pendu.fonctions
 8=ExercicesOpenClassroom.TestBissextile
 3=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Multiplication.py
-18=ExercicesOpenClassroom.dictionnaire
-21=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\donnees.py
+29=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\donnees.py
 9=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Zcasino.py
-13=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
+21=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
+5=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\fonctions.py
+15=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\Chapitre7.py
+16=ExercicesLivres.Chapitre7
+13=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\pendu.py
+20=TestJson.Extract_VCI_files_json
+2=ExercicesOpenClassroom.Listes
+33=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestEcritureXml.py
+18=TestJson.TestJson
+25=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers_Pickle.py
+30=ExercicesOpenClassroom_Pendu.donnees
+23=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\dictionnaire.py
+27=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestEcritureJson.py
+34=TestJson.TestEcritureXml
+31=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers.py
+12=ExercicesLivres.dessins_tortue
+6=ExercicesOpenClassroom_Pendu.fonctions
+24=ExercicesOpenClassroom.dictionnaire
+17=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
 1=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Listes.py
-15=H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
 -- END DICTIONARY
 -- START TREE 1
-42
+56
 aff|4|afficher!1^146#5*18@affich_table_Multiplication!3^15#5*34@affiche_float!1^137#5*18@affich_table_Multiplication2!3^25#5*34@
 ajo|1|ajouter_score_joueur!5^45#5*50@
 b_b|1|b_bissextile!7^22#5*67@
 b_t|1|b_test_bissextile!7^6#5*66@
 cag|1|cagnote!9^13#1*83@
 cal|1|calcul_gain!9^33#5*82@
+car|1|carre!11^11#5*98@
 cas|2|case_tiree!9^16#1*83@case_choisie!9^15#1*83@
-cha|1|Chances_restantes!11^13#1*99@
-che|1|chemin_base!13^12#1*115@
+cha|2|Chances_restantes!13^13#1*115@changeCar!15^199#5*130@
+che|2|chemin_base!17^12#1*147@chemin_base!19^11#1*163@
+com|2|compteCar!15^151#5*130@compteMots!15^185#5*130@
 con|1|convert_secondes!3^86#5*34@
-deb|1|debut_partie!11^16#5*98@
-dem|1|demande_valeur_numerique!15^9#5*130@
-dic|1|dico!17^5#5*146@
-ecr|3|ecrire_scores!5^34#5*50@ecriture_variable_fichier!19^14#5*162@ecrire_score_joueur!5^40#5*50@
-f|1|f!13^45#5*115@
-fic|1|fichier_log!13^15#1*115@
+deb|1|debut_partie!13^16#5*114@
+dem|1|demande_valeur_numerique!21^9#5*178@
+dic|1|dico!23^5#5*194@
+ecr|3|ecrire_scores!5^34#5*50@ecriture_variable_fichier!25^14#5*210@ecrire_score_joueur!5^40#5*50@
+ele|1|eleMax!15^216#5*130@
+eto|2|etoile5!11^29#5*98@etoile6!11^38#5*98@
+f|2|f!19^45#5*163@f!17^45#5*147@
+fic|3|fichier_log!27^13#1*227@fichier_log!17^15#1*147@fichier_log!19^14#1*163@
 fin|1|fini_mot_courrant!5^96#5*50@
-get|6|get_1_lettre!5^66#5*50@get_un_mot!21^13#5*178@get_nb_essais_max!21^20#5*178@get_score_joueur!5^24#5*50@get_nom_joueur!5^51#5*50@get_confirmation!5^56#5*50@
+get|6|get_1_lettre!5^66#5*50@get_un_mot!29^13#5*242@get_nb_essais_max!29^20#5*242@get_score_joueur!5^24#5*50@get_nom_joueur!5^51#5*50@get_confirmation!5^56#5*50@
 i|1|i!5^118#5*51@
 ian|1|iannee!7^20#5*67@
-is_|2|is_integer!15^32#5*130@is_lettre_in_mot!5^79#5*50@
-lec|1|lecture_variable_fichier!19^27#5*162@
+ind|1|indexMax!15^161#5*130@
+inv|1|inverse!15^178#5*130@
+is_|2|is_integer!21^32#5*178@is_lettre_in_mot!5^79#5*50@
+lec|1|lecture_variable_fichier!25^27#5*210@
+lig|1|ligneCar!15^103#5*130@
 lir|1|lire_scores!5^15#5*50@
-lis|4|listdirectory!13^17#5*114@liste_mots!21^10#1*179@liste_scores!5^13#1*51@liste_fichiers!13^42#5*115@
-met|2|methode1!23^11#5*194@methode2!23^24#5*194@
-mil|1|milieu_partie!11^37#5*98@
+lis|6|listdirectory!19^17#5*162@liste_mots!29^10#1*243@listdirectory!17^17#5*146@liste_scores!5^13#1*51@liste_fichiers!19^42#5*163@liste_fichiers!17^42#5*147@
+max|1|maximum!15^141#5*130@
+met|3|methode1!31^11#5*258@methode2!31^24#5*258@metier!33^27#9*275@
+mil|1|milieu_partie!13^37#5*114@
 mis|1|mise_courrante!9^14#1*83@
-mon|0|
-mot|3|mot_trouve!11^14#1*99@mot_courrant!11^11#1*99@mot_recherche!11^10#1*99@
-nb_|2|nb_essais!21^11#1*179@nb_fic!13^43#5*115@
-nom|2|nombre!19^12#1*163@nom_joueur!11^12#1*99@
+mot|3|mot_trouve!13^14#1*115@mot_courrant!13^11#1*115@mot_recherche!13^10#1*115@
+nb_|3|nb_essais!29^11#1*243@nb_fic!19^43#5*163@nb_fic!17^43#5*147@
+nom|4|nom!33^25#9*275@nombre!25^12#1*211@nom_joueur!13^12#1*115@nomMois!15^170#5*130@
+per|1|person_dict!27^28#1*227@
 pgc|1|PGCD!3^39#5*34@
+phr|0|
 ppc|1|PPCM!3^67#5*34@
 pri|1|print_fibonacci!3^6#5*34@
-rec|3|recup_mise!9^18#5*82@recompose_mot_courrant!5^86#5*50@recup_voyelles!15^42#5*130@
+rec|3|recup_mise!9^18#5*82@recompose_mot_courrant!5^86#5*50@recup_voyelles!21^42#5*178@
 rem|1|rempli_liste!1^7#5*18@
-sco|0|
-tim|2|time1!13^41#5*115@time2!13^57#5*115@
+ser|1|serie!15^295#5*131@
+sui|5|suite_etoiles!15^44#5*130@suite_carre_etoiles_triangles!15^78#5*130@suite_carre_etoile6!15^59#5*130@suite_carre!15^16#5*130@suite_carre_triangle!15^27#5*130@
+sur|1|surfCercle!15^112#5*130@
+tai|0|
+tim|4|time1!17^41#5*147@time1!19^41#5*163@time2!19^57#5*163@time2!17^57#5*147@
 tir|1|tirage_roulette!9^28#5*82@
-tot|3|toto!15^54#5*131@toto!21^26#9*179@toto2!15^58#5*131@
-tra|1|traite_1_1fic!13^24#5*114@
-tri|5|tri_liste!1^172#5*18@tri_liste2!1^179#5*18@tri_ancienne!1^16#5*18@tri_2_listes!1^28#5*18@tri_1_liste!1^78#5*18@
+tot|3|toto!21^54#5*179@toto!29^26#9*243@toto2!21^58#5*179@
+tra|2|traite_1_1fic!19^24#5*162@traite_1_1fic!17^24#5*146@
+tri|6|triangle!11^20#5*98@tri_liste!1^172#5*18@tri_liste2!1^179#5*18@tri_ancienne!1^16#5*18@tri_2_listes!1^28#5*18@tri_1_liste!1^78#5*18@
+use|4|users!33^11#5*275@users_data!33^20#5*275@users_data!27^22#1*227@user!33^23#9*275@
+vol|3|volBoite!15^117#5*130@volBoite2!15^122#5*130@volBoite3!15^127#5*130@
 -- END TREE
 -- START TREE 2
 0

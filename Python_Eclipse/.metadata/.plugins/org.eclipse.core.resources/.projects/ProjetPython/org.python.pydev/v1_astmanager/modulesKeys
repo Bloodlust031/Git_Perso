@@ -1,4 +1,7 @@
 MODULES_MANAGER_V3
+ExercicesLivres.Chapitre7|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\Chapitre7.py
+ExercicesLivres.__init__|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\__init__.py
+ExercicesLivres.dessins_tortue|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesLivres\dessins_tortue.py
 ExercicesOpenClassroom.Boite_outils|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Boite_outils.py
 ExercicesOpenClassroom.Fichiers|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers.py
 ExercicesOpenClassroom.Fichiers_Pickle|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom\Fichiers_Pickle.py
@@ -13,5 +16,8 @@ ExercicesOpenClassroom_Pendu.donnees|H:\Boulot\Boulot Jeje\Git_Perso\Python_Ecli
 ExercicesOpenClassroom_Pendu.fonctions|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\fonctions.py
 ExercicesOpenClassroom_Pendu.pendu|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\ExercicesOpenClassroom_Pendu\pendu.py
 TestJson.Dwld_AWS|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Dwld_AWS.py
+TestJson.Extract_VCI_files_json|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\Extract_VCI_files_json.py
+TestJson.TestEcritureJson|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestEcritureJson.py
+TestJson.TestEcritureXml|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestEcritureXml.py
 TestJson.TestJson|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\TestJson.py
 TestJson.__init__|H:\Boulot\Boulot Jeje\Git_Perso\Python_Eclipse\ProjetPython\TestJson\__init__.py
