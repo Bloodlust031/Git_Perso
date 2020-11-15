@@ -15,9 +15,9 @@ fichier_log = 'D:/temp/log_tata.txt'
 fichier_log = 'D:/temp/JsonOut.json'
 path_sortie = 'D:/temp/Msg_'
 
-liste_fichiers = []
-current_IMEI = ''
 
+current_IMEI = str('rien')
+current_dict_messages = dict()
 
 def listdirectory(path): 
     liste_fichier=[] 
@@ -26,42 +26,82 @@ def listdirectory(path):
             liste_fichier.append(os.path.join(root, i)) 
     return liste_fichier
 
+
 def traite_1_1fic(path): 
     ecart_reception = 0
     #print("fichier en cours: ", path)
     #print("fichier en cours: ", os.path.basename(path))
-    current_msg = {}
+    current_msg = dict()
+    global current_IMEI
+    global current_dict_messages
+    
     with open(nom_fic) as json_file2:
         data = json.load(json_file2)
         #print(data['tim'], data['int'])
-        ecart_reception = (data['int']-data['tim'])/1000
-        #print("Ecart réception: ", ecart_reception)
         #print(data['evt'], data['eid'])
         #print(os.path.basename(path), data['ime'], data['tim'], data['int'], ecart_reception, data['evt'], data['eid'])
         #chaine = str(os.path.basename(path))+ " " + str(data['ime'])+ " " + str(data['tim'])+ " " + str(data['int'])+ " " + str(ecart_reception)+ " " + str(data['evt'])+ " " + str(data['eid'])+ '\n'
-        chaine = str(os.path.basename(path))+ "|" + str(data['ime'])+ "|" + str(ecart_reception)+ "|" + str(data['evt'])+ "|" + str(data['eid'])+ '\n'
+        fic_IMEI = str(data['ime']
+        str_toto = str('njk')
+        #if (fic_IMEI != current_IMEI):
+        if (fic_IMEI != toto):
+            #Changement d'IMEI, on sauvegarde les données courrantes avant d'ouvrir les données du nouvel IMEI
+            ecriture_resultats(path_sortie, current_IMEI)
+            current_IMEI = fic_IMEI
+            lire_dictionnaire_messages(path_sortie, current_IMEI)
+            
+        #incrémentation des compteurs
+        current_dict_messages["NB_Msg"] += 1
+        if (str(data['evt']) == '102')
+            current_dict_messages["NB_Journey"] += 1
+        else:
+            if (str(data['eid']) == '2A')
+                current_dict_messages["NB_Heartbeat"] += 1
         
+        #remplissage du dictionnaire du message courrant
+        current_msg['Typ_Msg'] = str(data['evt'])
+        current_msg['Typ_Evt'] = str(data['eid'])
+        current_msg['Timestamp_serveur'] = str(data['int'])
+        current_msg['Timestamp_msg'] = str(data['tim'])
+        current_msg['Delai_GSM'] = (data['int']-data['tim'])/1000
+        current_msg['VIN'] = str(data['vin'])
+        current_msg['Msg_brut'] = str(data['bin'])
+        current_msg['Msg_traduit_auto'] = dict()
+        current_msg['Msg_traduit_auto'] = data['cnt'].copy()
         
-        
-        f.write(chaine)
+        #ajout du message courrant dans la liste de messages du boitier
+        current_dict_messages["Msg_list"].append(current_msg)
+    current_msg.clear()
 
-def ecriture_resultats(path, current_IMEI):
-    global liste_fichiers
-    if(len(liste_fichiers)>0):
-        nom_fic = path + strIMEI + '.json'
-        list_msg = []
-        with open(nom_fic, 'r') as json_file_result:
-            list_msg = json.load(json_file_result)
-        pass
-        list_msg.extend(liste_fichiers)
-        with open(nom_fic, 'w') as json_file_result:
-            json.dump(list_msg, json_file_result)
-        pass
-    liste_fichiers.clear()
+def lire_dictionnaire_messages(path, strIMEI):
+    global current_dict_messages
+    nom_fic = path + strIMEI + '.json'
+    current_dict_messages.clear()
+    with open(nom_fic, 'r') as json_file_result:
+        current_dict_messages = json.load(json_file_result)
+    pass
+    if not "IMEI" in current_dict_messages:
+        current_dict_messages["IMEI"] = strIMEI
+        current_dict_messages["NB_Journey"] = 0
+        current_dict_messages["NB_Msg"] = 0
+        current_dict_messages["NB_Heartbeat"] = 0
+        current_dict_messages["Msg_list"] = list()
 
+def ecrire_dictionnaire_messages(path, strIMEI):
+    global current_dict_messages
+    nom_fic = path + strIMEI + '.json'
+    if "NB_Msg" in current_dict_messages:
+        if current_dict_messages["NB_Msg"] > 0:
+            #il y a des informations à sauvegarder
+            with open(nom_fic, 'w') as json_file_result:
+                json.dump(current_dict_messages, json_file_result)
+            pass
+            current_dict_messages.clear()
 
 if __name__ == "__main__":
     print("coucou")
+    liste_fichiers = list()
+
     time1 = time.process_time()
     liste_fichiers = listdirectory(chemin_base)
     nb_fic = 0
@@ -70,7 +110,8 @@ if __name__ == "__main__":
         traite_1_1fic(nom_fic)
         nb_fic = nb_fic+1
     
-    ecriture_resultats(path_sortie, current_IMEI)
+   
+    ecrire_dictionnaire_messages(path_sortie, current_IMEI)
 
     time2 = time.process_time()
     print( time2-time1, "secondes d'executions")
