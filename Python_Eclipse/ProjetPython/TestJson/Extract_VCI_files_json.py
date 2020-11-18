@@ -8,8 +8,16 @@ import os
 import json
 import time
 
+
+
+to_integrate_Msg_bin = False
+to_integrate_Msg_raw = False
+to_integrate_Msg_cnt = False
+
+
+
 chemin_base = 'H:/Boulot/Boulot Jeje/Main/Ican/Extract_traces_FTP/TempDownAWSS3/'
-chemin_base = 'D:/Boulot/Main/Ican/Extract_traces_FTP/TempDownAWSS3/'
+#chemin_base = 'D:/Boulot/Main/Ican/Extract_traces_FTP/TempDownAWSS3/'
 #chemin_base = 'D:/temp/DWLD msg Bastides/'
 fichier_log = 'D:/temp/log_tata.txt'
 fichier_log = 'D:/temp/JsonOut.json'
@@ -63,9 +71,14 @@ def traite_1_1fic(path):
         current_msg['Timestamp_msg'] = str(data['tim'])
         current_msg['Delai_GSM'] = (data['int']-data['tim'])/1000
         current_msg['VIN'] = str(data['vin'])
-        current_msg['Msg_brut'] = str(data['bin'])
-        current_msg['Msg_traduit_auto'] = dict()
-        current_msg['Msg_traduit_auto'] = data['cnt'].copy()
+        
+        if to_integrate_Msg_bin:
+            current_msg['Msg_brut'] = str(data['bin'])
+        if to_integrate_Msg_cnt:
+            current_msg['Msg_traduit_auto_cnt'] = dict()
+            current_msg['Msg_traduit_auto_cnt'] = data['cnt'].copy()
+        if to_integrate_Msg_raw:
+            current_msg['Msg_traduit_auto_raw'] = data['raw']
         
         #ajout du message courrant dans la liste de messages du boitier
         current_dict_messages["Msg_list"].append(dict(current_msg))
@@ -85,6 +98,11 @@ def lire_dictionnaire_messages(path, strIMEI):
         current_dict_messages["NB_Msg"] = 0
         current_dict_messages["NB_Heartbeat"] = 0
         current_dict_messages["Msg_list"] = list()
+        current_dict_messages["VIN_list"] = list()
+        current_dict_messages["FW_list"] = list()
+        current_dict_messages["Mapping_OBD_list"] = list()
+        current_dict_messages["Mapping_Diag_list"] = list()
+        current_dict_messages["Account_Number"] = ''
 
 def ecrire_dictionnaire_messages(path, strIMEI):
     global current_dict_messages
