@@ -289,6 +289,8 @@ if __name__ == "__main__":
     
     efface_dictionnaire_messages()
     
+    print(str(len(liste_fichiers)) + " fichiers a analyser")
+    
     for nom_fic in liste_fichiers:
         #print(nom_fic)
         traite_1_1fic(nom_fic)
