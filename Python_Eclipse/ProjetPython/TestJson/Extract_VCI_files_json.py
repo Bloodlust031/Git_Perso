@@ -269,12 +269,14 @@ def set_Dstrib_delais_GSM(delai):
     i = 0
     
     while i < taille:
-        if delai < Configuration.distribution_delais_GSM[i]:
+        if i == (taille-1):
+            #On est dans la derniere case
             current_dict_messages['Dist_delay_GSM'][i] += 1
-            i = taille
+        else:
+            if delai < Configuration.distribution_delais_GSM[i]:
+                current_dict_messages['Dist_delay_GSM'][i] += 1
+                i = taille
         i+=1
-        if i == taille:
-            current_dict_messages['Dist_delay_GSM'][i] += 1
         
     
     

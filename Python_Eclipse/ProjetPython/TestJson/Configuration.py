@@ -11,11 +11,11 @@ to_integrate_Msg_cnt = False
 to_integrate_Msg_decompose = False
 to_integrate_Msg_non_decompose_D2Hub = False
 
-#Chemin_json = 'H:/Boulot/TempDownAWSS3'
+Chemin_json = 'H:/Boulot/TempDownAWSS3'
 #Chemin_json = 'H:/Boulot/Boulot Jeje/Main/Ican/Extract_traces_FTP/TempDownAWSS3'
 #Chemin_json = 'H:/Boulot/Boulot Jeje/Main/Ican/Extract_traces_FTP/TempDownAWSS3_gros'
 #Chemin_json = 'C:\TempDownAWSS3'
-Chemin_json = 'D:\Boulot\Main\Ican\Extract_traces_FTP\TempDownAWSS3'
+#Chemin_json = 'D:\Boulot\Main\Ican\Extract_traces_FTP\TempDownAWSS3'
 #Chemin_json = 'D:\temp\DWLD msg Bastides'
 
 
