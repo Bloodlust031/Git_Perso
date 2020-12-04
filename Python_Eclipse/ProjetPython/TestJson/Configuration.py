@@ -5,11 +5,11 @@ Created on 26 nov. 2020
 '''
 
 
-to_integrate_Msg_bin = False
-to_integrate_Msg_raw = False
-to_integrate_Msg_cnt = False
-to_integrate_Msg_decompose = False
-to_integrate_Msg_non_decompose_D2Hub = False
+to_integrate_Msg_bin = True
+to_integrate_Msg_raw = True
+to_integrate_Msg_cnt = True
+to_integrate_Msg_decompose = True
+to_integrate_Msg_non_decompose_D2Hub = True
 
 #Chemin_json = 'H:/Boulot/TempDownAWSS3'
 #Chemin_json = 'H:/Boulot/Boulot Jeje/Main/Ican/Extract_traces_FTP/TempDownAWSS3'
@@ -17,7 +17,7 @@ to_integrate_Msg_non_decompose_D2Hub = False
 #Chemin_json = 'C:\TempDownAWSS3'
 Chemin_json = 'D:\Boulot\Main\Ican\Extract_traces_FTP\TempDownAWSS3'
 #Chemin_json = 'D:\temp\DWLD msg Bastides'
-
+Chemin_json = 'H:\Jeje\json_iCAN'
 
 lbl_msg_Dic_Params_D2Hub_cnt = 'Msg_Params_decompose_D2Hub_cnt'  #decomposition du message en paramètre réalisé par D2Hub - Sous forme de dictionnaire
 lbl_msg_Dic_Params_D2Hub_raw = 'Msg_Params_decompose_D2Hub_raw'             #decomposition du message en paramètre réalisé par D2Hub - Sous forme de texte
