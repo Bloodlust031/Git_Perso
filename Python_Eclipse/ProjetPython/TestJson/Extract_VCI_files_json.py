@@ -15,9 +15,7 @@ import Configuration
 
 
 path_sortie = 'D:/temp/'
-path_sortie = 'H:/Jeje/json_iCAN/'
 prefixe_nom_sortie = 'Msg_IMEI_'
-nom_fic_Global_sortie = '__Global_log.json'
 
 current_IMEI = str('rien')
 current_dict_messages = dict()
@@ -28,15 +26,9 @@ end_time = 0
 def listdirectory(path): 
     liste_fichier=[] 
     #for root, dirs, files in os.walk(path): 
-    format_fichier_sortie_msg = prefixe_nom_sortie + '*.json'
-    
     for root, dirs, files in os.walk(path): 
-        for i in files:
-            if not fnmatch.fnmatch(i, format_fichier_sortie_msg):
-                if not fnmatch.fnmatch(i, nom_fic_Global_sortie):
-                    #print (i + "    " + format_fichier_sortie_msg)
-                    liste_fichier.append(os.path.join(root, i))
-            
+        for i in files: 
+            liste_fichier.append(os.path.join(root, i))
     liste_fichier.sort()    #Les messages sont traités dans l'ordre chronologique.
     #liste_fichier.sort(reverse = True)    #Les messages sont traités dans l'ordre anti-chronologique.
     return liste_fichier
@@ -52,111 +44,110 @@ def traite_1_1fic(nom_fic_msg):
     
     with open(nom_fic_msg) as json_file2:
         data = json.load(json_file2)
-        if "ime" in data:
-            fic_IMEI = str(data['ime'])
-            if (fic_IMEI != current_IMEI):
-                #Changement d'IMEI, on sauvegarde les données courrantes avant d'ouvrir les données du nouvel IMEI
-                ecrire_dictionnaire_messages(current_IMEI)
-                current_IMEI = fic_IMEI
-                lire_dictionnaire_messages(current_IMEI)
-                
-            #traitement du nom du fichier
-            current_msg['NomFichier_Msg'] = os.path.basename(nom_fic_msg)
-            str_temp = str(os.path.dirname(nom_fic_msg))
-            str_temp = str_temp.replace("\\","/")
-            current_msg['AdresseFichier_Msg'] = str_temp
-                
-            #incrémentation des compteurs
-            current_dict_messages["NB_Msg"] += 1
-            global_log_dict['NB_Msg']+=1
-            if (str(data['evt']) == '102'):
-                current_dict_messages["NB_Journey"] += 1
-                global_log_dict['NB_Journey']+=1
-            else:
-                if (str(data['eid']) == '2A'):
-                    current_dict_messages["NB_Heartbeat"] += 1
-            #remplissage du dictionnaire du message courrant
-            current_msg['Typ_Msg'] = str(data['evt'])
-            current_msg['Typ_Evt'] = str(data['eid'])
-            current_msg['Timestamp_serveur'] = str(data['int'])
-            current_msg['Timestamp_msg'] = str(data['tim'])
-            current_msg['Delai_GSM'] = (data['int']-data['tim'])/1000
-            set_Distrib_delais_GSM(current_msg['Delai_GSM'])
-            current_msg['VIN'] = str(data['vin'])
+        fic_IMEI = str(data['ime'])
+        if (fic_IMEI != current_IMEI):
+            #Changement d'IMEI, on sauvegarde les données courrantes avant d'ouvrir les données du nouvel IMEI
+            ecrire_dictionnaire_messages(current_IMEI)
+            current_IMEI = fic_IMEI
+            lire_dictionnaire_messages(current_IMEI)
             
-            if current_msg['VIN'] not in current_dict_messages["VIN_list"]:
-                current_dict_messages["VIN_list"].append(current_msg['VIN'])
+        #traitement du nom du fichier
+        current_msg['NomFichier_Msg'] = os.path.basename(nom_fic_msg)
+        str_temp = str(os.path.dirname(nom_fic_msg))
+        str_temp = str_temp.replace("\\","/")
+        current_msg['AdresseFichier_Msg'] = str_temp
             
-            if "20033" in data['cnt']:
-                str_temp =  data['cnt']['20033']
-                if str_temp not in current_dict_messages["FW_list"]:
-                    current_dict_messages["FW_list"].append(str_temp)
-    
-            if "160" in data['cnt']:
-                str_temp =  data['cnt']['160']
-                if (str_temp != "0"): 
-                    current_dict_messages["Account_Number"] = str_temp
-            
-            if Configuration.to_integrate_Msg_bin:
-                current_msg['Msg_brut'] = str(data['bin'])
-            if Configuration.to_integrate_Msg_cnt:
-                current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = dict()
-                current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = data['cnt'].copy()
-            if Configuration.to_integrate_Msg_raw:
-                current_msg['Msg_traduit_D2Hub_raw'] = data['raw']
-    
-            #décomposition du message brut
-            if Configuration.to_integrate_Msg_decompose:
-                current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
-                current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
-                if(len(current_msg_decompose)>0):
-                    current_msg[Configuration.lbl_msg_Dic_Params_Python] = dict()
-                    if Configuration.to_integrate_Msg_cnt: 
-                        #Si le paramètre est déjà présent dans le dictionnaire 'Msg_traduit_D2Hub_cnt', il est inutile de le remettre ici
-                        for cle,valeur in current_msg_decompose.items():
-                            if not cle in data['cnt']:
-                                current_msg[Configuration.lbl_msg_Dic_Params_Python][cle] = valeur
-                        if (len(current_msg[Configuration.lbl_msg_Dic_Params_Python])==0):
-                            del current_msg[Configuration.lbl_msg_Dic_Params_Python]
-                    else:
-                        current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
-    
-            #décomposition du message brut
-            if Configuration.to_integrate_Msg_non_decompose_D2Hub:
-                if not Configuration.to_integrate_Msg_decompose:
-                    current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
-                if(len(current_msg_decompose)>0):
-                    param_non_traduits = dict()
+        #incrémentation des compteurs
+        current_dict_messages["NB_Msg"] += 1
+        global_log_dict['NB_Msg']+=1
+        if (str(data['evt']) == '102'):
+            current_dict_messages["NB_Journey"] += 1
+            global_log_dict['NB_Journey']+=1
+        else:
+            if (str(data['eid']) == '2A'):
+                current_dict_messages["NB_Heartbeat"] += 1
+        #remplissage du dictionnaire du message courrant
+        current_msg['Typ_Msg'] = str(data['evt'])
+        current_msg['Typ_Evt'] = str(data['eid'])
+        current_msg['Timestamp_serveur'] = str(data['int'])
+        current_msg['Timestamp_msg'] = str(data['tim'])
+        current_msg['Delai_GSM'] = (data['int']-data['tim'])/1000
+        set_Dstrib_delais_GSM(current_msg['Delai_GSM'])
+        current_msg['VIN'] = str(data['vin'])
+        
+        if current_msg['VIN'] not in current_dict_messages["VIN_list"]:
+            current_dict_messages["VIN_list"].append(current_msg['VIN'])
+        
+        if "20033" in data['cnt']:
+            str_temp =  data['cnt']['20033']
+            if str_temp not in current_dict_messages["FW_list"]:
+                current_dict_messages["FW_list"].append(str_temp)
+
+        if "160" in data['cnt']:
+            str_temp =  data['cnt']['160']
+            if (str_temp != "0"): 
+                current_dict_messages["Account_Number"] = str_temp
+        
+        if Configuration.to_integrate_Msg_bin:
+            current_msg['Msg_brut'] = str(data['bin'])
+        if Configuration.to_integrate_Msg_cnt:
+            current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = dict()
+            current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = data['cnt'].copy()
+        if Configuration.to_integrate_Msg_raw:
+            current_msg['Msg_traduit_D2Hub_raw'] = data['raw']
+
+        #décomposition du message brut
+        if Configuration.to_integrate_Msg_decompose:
+            current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
+            current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
+            if(len(current_msg_decompose)>0):
+                current_msg[Configuration.lbl_msg_Dic_Params_Python] = dict()
+                if Configuration.to_integrate_Msg_cnt: 
+                    #Si le paramètre est déjà présent dans le dictionnaire 'Msg_traduit_D2Hub_cnt', il est inutile de le remettre ici
                     for cle,valeur in current_msg_decompose.items():
                         if not cle in data['cnt']:
-                            param_non_traduits[cle] = valeur
-                    if (len(param_non_traduits)>0):
-                        current_msg[Configuration.lbl_msg_Dic_Params_NonD2Hub] = param_non_traduits.copy()
-                    param_non_traduits.clear()
-            
-            #Comparaison des CRC
-            str_temp = ''
-            if '20250' in data['cnt']:
-                str_temp = data['cnt']['20250']
-            else:
-                if '20250' in current_msg_decompose:
-                    str_temp = Boite_Outils.convert_Hex_decimal(current_msg_decompose['20250'], True)
-            if (len(str_temp)>1):
-                current_msg['CRC_List'] = list()
-                current_msg['CRC_List'].append(str_temp)
-                str_temp = ''
-                if '20251' in data['cnt']:
-                    str_temp = data['cnt']['20251']
+                            current_msg[Configuration.lbl_msg_Dic_Params_Python][cle] = valeur
+                    if (len(current_msg[Configuration.lbl_msg_Dic_Params_Python])==0):
+                        del current_msg[Configuration.lbl_msg_Dic_Params_Python]
                 else:
-                    if '20251' in current_msg_decompose:
-                        str_temp = Boite_Outils.convert_Hex_decimal(current_msg_decompose['20251'], True)
-                current_msg['CRC_List'].append(str_temp)
-                #calcul du CRC
-                str_temp = str(Boite_Outils.calc_CRC(data['bin'][:-32]))
-                current_msg['CRC_List'].append(str_temp)
-    
-            #ajout du message courrant dans la liste de messages du boitier
-            current_dict_messages["Msg_list"].append(dict(current_msg))
+                    current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
+
+        #décomposition du message brut
+        if Configuration.to_integrate_Msg_non_decompose_D2Hub:
+            if not Configuration.to_integrate_Msg_decompose:
+                current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
+            if(len(current_msg_decompose)>0):
+                param_non_traduits = dict()
+                for cle,valeur in current_msg_decompose.items():
+                    if not cle in data['cnt']:
+                        param_non_traduits[cle] = valeur
+                if (len(param_non_traduits)>0):
+                    current_msg[Configuration.lbl_msg_Dic_Params_NonD2Hub] = param_non_traduits.copy()
+                param_non_traduits.clear()
+        
+        #Comparaison des CRC
+        str_temp = ''
+        if '20250' in data['cnt']:
+            str_temp = data['cnt']['20250']
+        else:
+            if '20250' in current_msg_decompose:
+                str_temp = Boite_Outils.convert_Hex_decimal(current_msg_decompose['20250'], True)
+        if (len(str_temp)>1):
+            current_msg['CRC_List'] = list()
+            current_msg['CRC_List'].append(str_temp)
+            str_temp = ''
+            if '20251' in data['cnt']:
+                str_temp = data['cnt']['20251']
+            else:
+                if '20251' in current_msg_decompose:
+                    str_temp = Boite_Outils.convert_Hex_decimal(current_msg_decompose['20251'], True)
+            current_msg['CRC_List'].append(str_temp)
+            #calcul du CRC
+            str_temp = str(Boite_Outils.calc_CRC(data['bin'][:-32]))
+            current_msg['CRC_List'].append(str_temp)
+
+        #ajout du message courrant dans la liste de messages du boitier
+        current_dict_messages["Msg_list"].append(dict(current_msg))
     current_msg.clear()
 
   
@@ -225,6 +216,7 @@ def ecrire_dictionnaire_messages(strIMEI):
             pass
             current_dict_messages.clear()
 
+
 def efface_dictionnaire_messages():
     liste_fic = os.listdir(path_sortie)
     
@@ -271,20 +263,20 @@ def init_Distrib_delais_GSM():
     for taille in range(0, taille):
         current_dict_messages['Dist_delay_GSM'].append(0)
     
-def set_Distrib_delais_GSM(delai):
+def set_Dstrib_delais_GSM(delai):
     global current_dict_messages
     taille = len(Configuration.distribution_delais_GSM) + 1
     i = 0
     
     while i < taille:
-        if delai < Configuration.distribution_delais_GSM[i]:
+        if i == (taille-1):
+            #On est dans la derniere case
             current_dict_messages['Dist_delay_GSM'][i] += 1
-            global_log_dict['Dist_delay_GSM'][i] += 1
-            i = taille
+        else:
+            if delai < Configuration.distribution_delais_GSM[i]:
+                current_dict_messages['Dist_delay_GSM'][i] += 1
+                i = taille
         i+=1
-        if i == taille:
-            current_dict_messages['Dist_delay_GSM'][i] += 1
-            global_log_dict['Dist_delay_GSM'][i] += 1
         
     
     
