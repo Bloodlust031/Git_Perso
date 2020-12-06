@@ -12,9 +12,6 @@ import Boite_Outils
 import Configuration
 
 
-
-
-path_sortie = 'D:/temp/'
 prefixe_nom_sortie = 'Msg_IMEI_'
 
 current_IMEI = str('rien')
@@ -121,6 +118,8 @@ def traite_1_1fic(nom_fic_msg):
                 for cle,valeur in current_msg_decompose.items():
                     if not cle in data['cnt']:
                         param_non_traduits[cle] = valeur
+                        if not cle in global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub]:
+                            global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub].append(cle)
                 if (len(param_non_traduits)>0):
                     current_msg[Configuration.lbl_msg_Dic_Params_NonD2Hub] = param_non_traduits.copy()
                 param_non_traduits.clear()
@@ -171,9 +170,9 @@ def decomposition_fichier_brut(raw_data):
 
 def get_nom_fic_sortie(strIMEI = ''):
     if (len(strIMEI)> 2):
-        nom = path_sortie + prefixe_nom_sortie + strIMEI + '.json'
+        nom = Configuration.path_sortie + prefixe_nom_sortie + strIMEI + '.json'
     else:
-        nom = path_sortie + '__Global_log.json'
+        nom = Configuration.path_sortie + '__Global_log.json'
     return nom
 
 def lire_dictionnaire_messages(strIMEI):
@@ -191,8 +190,8 @@ def lire_dictionnaire_messages(strIMEI):
         current_dict_messages["NB_Heartbeat"] = 0
         current_dict_messages["VIN_list"] = list()
         current_dict_messages["FW_list"] = list()
-        current_dict_messages["Mapping_OBD_list"] = list()
-        current_dict_messages["Mapping_Diag_list"] = list()
+        current_dict_messages["Mapping_OBD_list"] = list()  #TODO
+        current_dict_messages["Mapping_Diag_list"] = list() #TODO
         current_dict_messages["Account_Number"] = ''
         init_Distrib_delais_GSM()
         current_dict_messages["Msg_list"] = list()
@@ -218,11 +217,11 @@ def ecrire_dictionnaire_messages(strIMEI):
 
 
 def efface_dictionnaire_messages():
-    liste_fic = os.listdir(path_sortie)
+    liste_fic = os.listdir(Configuration.path_sortie)
     
     for file1 in liste_fic:
         if fnmatch.fnmatch(file1, prefixe_nom_sortie + '*.json'):
-            os.remove(path_sortie+file1)
+            os.remove(Configuration.path_sortie+file1)
 
 def init_global_log_dict():
     global global_log_dict
@@ -235,6 +234,7 @@ def init_global_log_dict():
     global_log_dict['NB_Journey'] = 0
     taille = len(Configuration.distribution_delais_GSM) + 1
     global_log_dict['Dist_delay_GSM'] = list()
+    global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub] = list()
     for taille in range(0, taille):
         global_log_dict['Dist_delay_GSM'].append(0)
     global_log_dict['NB_IMEI'] = 0
@@ -272,9 +272,11 @@ def set_Dstrib_delais_GSM(delai):
         if i == (taille-1):
             #On est dans la derniere case
             current_dict_messages['Dist_delay_GSM'][i] += 1
+            global_log_dict['Dist_delay_GSM'][i] += 1
         else:
             if delai < Configuration.distribution_delais_GSM[i]:
                 current_dict_messages['Dist_delay_GSM'][i] += 1
+                global_log_dict['Dist_delay_GSM'][i] += 1
                 i = taille
         i+=1
         
@@ -305,6 +307,6 @@ if __name__ == "__main__":
     print( end_time-start_time, "secondes d'executions")
     print(nb_fic, "fichiers analyses")
     
-    print(global_log_dict)
+    #print(global_log_dict)
     
     os.system("pause") # On met le programme en pause pour éviter qu'il ne se referme (Windows)
