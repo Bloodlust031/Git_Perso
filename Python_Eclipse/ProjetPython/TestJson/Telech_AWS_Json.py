@@ -23,8 +23,10 @@ liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
 def maj_configuration():
-    Configuration.set_Date_list('2020-11-22', '2020-12-14')
-    Configuration.set_IMEI_List(['867322034083212','867322034092015','867322034083212','867322034105809'])
+    Configuration.set_Date_list('2020-12-07', '2020-12-16')
+    Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])
+    #Configuration.set_Date_list('2020-12-15', '2020-12-16')
+    #Configuration.set_IMEI_List(['868996033820754'])
 
 def Supprim_Event_msg():
     print("Effacement des messages Event")
@@ -67,7 +69,7 @@ def gen_liste_cmd():
             str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + "/UNMATCHED/" + imei +  "/ " + Configuration.Chemin_json + "/UNMATCHED/" + imei + "/"
             liste_cmd_UNMATCHED.append(str_temp)
             #print(str_temp)
-            str_temp = "start aws s3 sync s3://ican.invalid.d2hub.fr/" + jour + "//" + imei +  "/ " + Configuration.Chemin_json + "/INVALID/" + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.invalid.d2hub.fr/" + jour + "/" + imei +  "/ " + Configuration.Chemin_json + "/INVALID/" + imei + "/"
             liste_cmd_invalid.append(str_temp)
             #print(str_temp)
 
