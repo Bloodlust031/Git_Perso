@@ -42,7 +42,7 @@ def get_item_dico(Ligne_txt):
         current_item["VEH_Label"] = ligne_split[7]
     if (len(ligne_split[8]) >= 1):
         current_item["VEH_VIN"] = ligne_split[8]
-    current_item["Item_Serial"] = ligne_split[9]
+    current_item["Item_Serial"] = ligne_split[9].rstrip()
     return current_item
     
     
