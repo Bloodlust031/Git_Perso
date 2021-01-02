@@ -4,6 +4,7 @@ Created on 30 nov. 2020
 
 @author: blood
 '''
+
 import os
 import json
 import Configuration
@@ -23,10 +24,9 @@ liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
 def maj_configuration():
-    Configuration.set_Date_list('2020-12-07', '2020-12-16')
-    Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])
-    #Configuration.set_Date_list('2020-12-15', '2020-12-16')
-    #Configuration.set_IMEI_List(['868996033820754'])
+    Configuration.set_Date_list('2020-10-14', '2020-12-16')
+    Configuration.set_IMEI_List(['864504031504844','867322034117739']) #Tracking only
+    Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
 
 def Supprim_Event_msg():
     print("Effacement des messages Event")
