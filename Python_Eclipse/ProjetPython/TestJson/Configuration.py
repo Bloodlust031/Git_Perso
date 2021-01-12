@@ -21,15 +21,13 @@ path_ImportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/genericInfo.txt'
 path_ExportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/export.xlsx'
 path_ExportD2HUBcsv = 'D:\Temp_JSON\INPUT_D2HUB/export.csv'
 
-#ATTENTION: ces 2 listes peuvent être surchargées par la fonction "maj_configuration" du module Telech_AWS_Json
+#ATTENTION: ces information peuvent être surchargées par la fonction "maj_configuration" du module Telech_AWS_Json
 IMEI_list = ['867322034083212','867322034092015','867322034105809']
 #Date_list = ['2020-11-22','2020-11-23','2020-11-24','2020-11-25','2020-11-26','2020-11-27','2020-11-28','2020-11-29','2020-11-30','2020-12-01','2020-12-02','2020-12-03','2020-12-04','2020-12-05','2020-12-06','2020-12-07','2020-12-08','2020-12-09','2020-12-10','2020-12-11']
 Date_list = ['2020-12-02','2020-12-03']
-
-
 Bucket = "/MARKETIP/"
-#Bucket2 = "/SDPV/"
 Bucket2 = ""
+#Bucket2 = "/OCEAN/"
 
 
 lbl_msg_Dic_Params_D2Hub_cnt = 'Msg_Params_decompose_D2Hub_cnt'  #decomposition du message en paramètre réalisé par D2Hub - Sous forme de dictionnaire
@@ -58,7 +56,14 @@ def set_Date_list(str_Date_Deb, str_Date_fin="0"):
             d_date_temp = d_date_deb + timedelta(days=i)
             str_date_temp = d_date_temp.isoformat()
             Date_list.append(str_date_temp)
-        #TODO
+
+def set_Bucket(Bucket_name):
+    global Bucket
+    Bucket = Bucket_name
+
+def set_Bucket2(Bucket_name):
+    global Bucket2
+    Bucket2 = Bucket_name
     
 
 if __name__ == '__main__':

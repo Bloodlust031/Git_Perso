@@ -53,10 +53,10 @@ def traite_1_1fic(nom_fic_msg):
         global_log_dict['NB_Msg']+=1
         #remplissage du dictionnaire du message courrant
         current_msg['IMEI'] = str(data['ime'])
-        current_msg['Timestamp_serveur'] = str(data['int'])
-        current_msg['Timestamp_msg'] = str(data['tim'])
-        current_msg['Date_serveur'] = str(datetime.fromtimestamp(int(data['int']) / 1000))
-        current_msg['Date_msg'] = str(datetime.fromtimestamp(int(data['tim']) / 1000))
+        current_msg['Timestamp_Reception'] = str(data['int'])
+        current_msg['Timestamp_Generation'] = str(data['tim'])
+        current_msg['Date_Reception'] = str(datetime.fromtimestamp(int(data['int']) / 1000))
+        current_msg['Date_Generation'] = str(datetime.fromtimestamp(int(data['tim']) / 1000))
         current_msg['Delai_GSM'] = '{:.0f}'.format((data['int']-data['tim'])/1000)
         current_msg['VIN'] = str(data['vin'])
         current_msg['Msg_Size'] = '{:.0f}'.format((len(data['bin']))/2)
@@ -111,6 +111,12 @@ def traite_1_1fic(nom_fic_msg):
         if (('GPS_Latitude' in current_msg) and ('GPS_Longitude' in current_msg)): 
             current_msg['http_link'] = 'https://www.google.fr/maps/search/' + str(current_msg['GPS_Latitude']) + "," + str(current_msg['GPS_Longitude']) + "/@" + str(current_msg['GPS_Latitude']) + "," + str(current_msg['GPS_Longitude']) + ",19z?hl=fr"
         
+        if "20229" in data['cnt']:
+            current_msg['ICCID'] = data['cnt']['20229']
+        if "20230" in data['cnt']:
+            current_msg['IMSI'] = data['cnt']['20230']
+        if "20032" in data['cnt']:
+            current_msg['Serial'] = data['cnt']['20032']
         
         #ajout du message courrant dans la liste de messages du boitier
         global_log_dict["Msg_list"].append(dict(current_msg))
@@ -137,7 +143,7 @@ def close_global_log_dict():
 def ecriture_csv():
     nom_fic = get_nom_fic_sortie('csv')
     with open(nom_fic, 'w', newline='') as csvfile:
-        fieldnames = ['http_link', 'NomFichier_Msg','IMEI', 'VIN', 'Date_serveur', 'Date_msg', 'Delai_GSM', 'Typ_Msg', 'Typ_Evt', 'Msg_Size', 'FW', 'Odometre', 'Distance_parcourue', 'Journey_Nb', 'Msg_Nb', 'GPS_Latitude', 'GPS_Longitude', 'Timestamp_serveur', 'Timestamp_msg']
+        fieldnames = ['http_link', 'NomFichier_Msg','IMEI', 'VIN', 'Date_Reception', 'Date_Generation', 'Delai_GSM', 'Typ_Msg', 'Typ_Evt', 'Msg_Size', 'FW', 'Odometre', 'Distance_parcourue', 'Journey_Nb', 'Msg_Nb', 'GPS_Latitude', 'GPS_Longitude', 'Timestamp_Reception', 'Timestamp_Generation', 'ICCID', 'IMSI', 'Serial']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writeheader()
@@ -150,9 +156,9 @@ if __name__ == "__main__":
     print("coucou")
     
     Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
-    Configuration.set_Date_list('2020-12-16', '2020-12-23')
-    #Telech_AWS_Json.gen_liste_cmd()
-    #Telech_AWS_Json.execute_cmd()
+    Configuration.set_Date_list('2021-01-01', '2021-01-08')
+    Telech_AWS_Json.gen_liste_cmd()
+    Telech_AWS_Json.execute_cmd()
     print("Téléchargement en cours")
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     

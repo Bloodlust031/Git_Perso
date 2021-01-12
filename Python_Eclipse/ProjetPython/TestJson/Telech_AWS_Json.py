@@ -24,9 +24,12 @@ liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
 def maj_configuration():
-    Configuration.set_Date_list('2020-10-14', '2020-12-16')
-    Configuration.set_IMEI_List(['864504031504844','867322034117739']) #Tracking only
-    Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
+    Configuration.set_Date_list('2021-01-06', '2021-01-08')
+    #Configuration.set_IMEI_List(['864504031504844','867322034117739','868996033820754']) #Tracking only
+    #Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
+
+    Configuration.set_IMEI_List(['867322034083212','867322034092015','867322034105809','867322038019717']) #Clio5 essence
+    Configuration.set_Bucket2("/OCEAN/")#Clio5 essence
 
 def Supprim_Event_msg():
     print("Effacement des messages Event")
@@ -63,7 +66,7 @@ def gen_liste_cmd():
             liste_cmd_bucket.append(str_temp)
             #print(str_temp)
             if (len(Configuration.Bucket2) > 1):
-                str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + Configuration.Bucket2 + imei +  "/ " + Configuration.Chemin_json + Configuration.Bucket + imei + "/"
+                str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + Configuration.Bucket2 + imei +  "/ " + Configuration.Chemin_json + Configuration.Bucket2 + imei + "/"
                 liste_cmd_bucket2.append(str_temp)
                 #print(str_temp)
             str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + "/UNMATCHED/" + imei +  "/ " + Configuration.Chemin_json + "/UNMATCHED/" + imei + "/"

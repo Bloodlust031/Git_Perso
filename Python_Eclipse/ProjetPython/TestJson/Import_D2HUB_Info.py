@@ -10,16 +10,17 @@ import Configuration
 import json
 import csv
 
-item_list = list()
+item_list_1 = list()
+item_list_2 = list()
+item_dico = dict()
 
 def Import_from_ImportD2HUB():
-    global item_list
+    global item_list_1
     liste_lignes = list()
-    item_list.clear()
     with open(Configuration.path_ImportD2HUB, 'r')as mon_fichier:
         liste_lignes = mon_fichier.readlines()
         for ligne in liste_lignes:
-            item_list.append(get_item_dico(ligne))
+            item_list_1.append(get_item_dico(ligne))
 
 def get_item_dico(Ligne_txt):
     current_item = dict()
@@ -81,8 +82,7 @@ def get_item_dico_ExportD2HUBcsv(ligne):
     return current_item
 
 def Import_from_ExportD2HUBcsv():
-    global item_list
-    item_list.clear()
+    global item_list_2
     
     with open(Configuration.path_ExportD2HUBcsv, mode='r', newline='', encoding='utf-8-sig') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=';')
@@ -94,25 +94,48 @@ def Import_from_ExportD2HUBcsv():
                 #print ("export en anglais")
                 for ligne in csv_reader:
                     #print (ligne)
-                    item_list.append(get_item_dico_ExportD2HUBcsv(ligne))
+                    item_list_2.append(get_item_dico_ExportD2HUBcsv(ligne))
     pass
     
-        
-    #print (csv_reader)
-    with open('D:\Temp_JSON\OUTPUT\exportD2HubCSV.json', 'w') as json_file_result:
-        json.dump(item_list, json_file_result)
-    pass 
     
-
+    
+def Dict_from_D2Hub_exports():
+    global item_list_1
+    global item_list_2
+    global item_dico
+    #TODO
+    current_item = dict()
+    
+    current_item.clear()
+    for current_item in item_list_1:
+        st_IMEI = current_item["Item_IMEI"]
+        item_dico[st_IMEI] = current_item
+    for current_item in item_list_2:
+        st_IMEI = current_item["Item_IMEI"]
+        if st_IMEI not in item_dico:
+            item_dico[st_IMEI] = dict()
+        for cle,valeur in current_item.items():
+            item_dico[st_IMEI][cle] = valeur
             
 if __name__ == '__main__':
+    item_list_1.clear()
+    item_list_2.clear()
+    item_dico.clear()
     Import_from_ImportD2HUB()
+    
     with open('D:\Temp_JSON\OUTPUT\genericInfo.json', 'w') as json_file_result:
-        json.dump(item_list, json_file_result)
+        json.dump(item_list_1, json_file_result)
     pass
-
+    
+    #item_list.clear()
     Import_from_ExportD2HUBcsv()
-   
-   
+    with open('D:\Temp_JSON\OUTPUT\exportD2HubCSV.json', 'w') as json_file_result:
+        json.dump(item_list_2, json_file_result)
+    pass 
+
+    Dict_from_D2Hub_exports()
+    with open('D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json', 'w') as json_file_result:
+        json.dump(item_dico, json_file_result)
+    pass   
    
     pass
