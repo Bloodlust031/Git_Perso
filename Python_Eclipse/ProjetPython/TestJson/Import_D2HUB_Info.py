@@ -10,13 +10,17 @@ import Configuration
 import json
 import csv
 
-item_list_1 = list()
-item_list_2 = list()
-item_dico = dict()
+item_list_1 = list()    #liste d'équipement issus de "genericInfo.txt" sous forme de liste
+item_list_2 = list()    #liste d'équipement issus de "export.csv" sous forme de liste
+item_dico = dict()      #liste d'équipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
+date_fic1 = 0
+date_fic2 = 0
 
 def Import_from_ImportD2HUB():
     global item_list_1
+    global date_fic1
     liste_lignes = list()
+    date_fic1 = os.path.getmtime(Configuration.path_ImportD2HUB)
     with open(Configuration.path_ImportD2HUB, 'r')as mon_fichier:
         liste_lignes = mon_fichier.readlines()
         for ligne in liste_lignes:
@@ -83,7 +87,9 @@ def get_item_dico_ExportD2HUBcsv(ligne):
 
 def Import_from_ExportD2HUBcsv():
     global item_list_2
+    global date_fic2
     
+    date_fic2 = os.path.getmtime(Configuration.path_ExportD2HUBcsv)
     with open(Configuration.path_ExportD2HUBcsv, mode='r', newline='', encoding='utf-8-sig') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=';')
         liste_champs = csv_reader.fieldnames
@@ -100,13 +106,14 @@ def Import_from_ExportD2HUBcsv():
     
     
 def Dict_from_D2Hub_exports():
+    #assemblage des données des 2 sources dans un dictionnaire
     global item_list_1
     global item_list_2
     global item_dico
-    #TODO
+
     current_item = dict()
-    
     current_item.clear()
+
     for current_item in item_list_1:
         st_IMEI = current_item["Item_IMEI"]
         item_dico[st_IMEI] = current_item
@@ -115,25 +122,39 @@ def Dict_from_D2Hub_exports():
         if st_IMEI not in item_dico:
             item_dico[st_IMEI] = dict()
         for cle,valeur in current_item.items():
-            item_dico[st_IMEI][cle] = valeur
-            
-if __name__ == '__main__':
+            if ((date_fic2>date_fic1) or (cle not in item_dico[st_IMEI])):
+                #le second fichier est plus recent ou l'information n'existe pas -> on peut écraser la valeur
+                item_dico[st_IMEI][cle] = valeur
+
+
+def Extract_infos_from_D2hHub():
+    global item_list_1
+    global item_list_2
+    global item_dico
+
     item_list_1.clear()
     item_list_2.clear()
     item_dico.clear()
-    Import_from_ImportD2HUB()
+
+    Import_from_ImportD2HUB()       #lecture des données de "genericInfo.txt"
+    Import_from_ExportD2HUBcsv()    #lecture des données de "export.csv"
+    Dict_from_D2Hub_exports()       #assemblage des données des 2 sources dans un dictionnaire
     
+    #Effacement des 2 premières listes pour gagner en mémoire vive. 
+    item_list_1.clear()
+    item_list_2.clear()
+
+    
+
+if __name__ == '__main__':
+    Extract_infos_from_D2hHub()
+    '''
     with open('D:\Temp_JSON\OUTPUT\genericInfo.json', 'w') as json_file_result:
         json.dump(item_list_1, json_file_result)
     pass
-    
-    #item_list.clear()
-    Import_from_ExportD2HUBcsv()
     with open('D:\Temp_JSON\OUTPUT\exportD2HubCSV.json', 'w') as json_file_result:
         json.dump(item_list_2, json_file_result)
-    pass 
-
-    Dict_from_D2Hub_exports()
+    pass''' 
     with open('D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json', 'w') as json_file_result:
         json.dump(item_dico, json_file_result)
     pass   
