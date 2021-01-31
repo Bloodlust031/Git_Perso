@@ -1,6 +1,6 @@
-# -*-coding:Latin-1 -*
+# -*-coding:utf-8 -*
 '''
-Created on 5 déc. 2020
+Created on 5 dï¿½c. 2020
 
 @author: blood
 '''
@@ -9,10 +9,11 @@ import os
 import Configuration
 import json
 import csv
+import requests
 
-item_list_1 = list()    #liste d'équipement issus de "genericInfo.txt" sous forme de liste
-item_list_2 = list()    #liste d'équipement issus de "export.csv" sous forme de liste
-item_dico = dict()      #liste d'équipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
+item_list_1 = list()    #liste d'ï¿½quipement issus de "genericInfo.txt" sous forme de liste
+item_list_2 = list()    #liste d'ï¿½quipement issus de "export.csv" sous forme de liste
+item_dico = dict()      #liste d'ï¿½quipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
 date_fic1 = 0
 date_fic2 = 0
 
@@ -94,7 +95,7 @@ def Import_from_ExportD2HUBcsv():
         csv_reader = csv.DictReader(csv_file, delimiter=';')
         liste_champs = csv_reader.fieldnames
         if "Type de boitier" in liste_champs:
-            print ("Export en français. Il faut utiliser l'export généré en anglais")
+            print ("Export en franï¿½ais. Il faut utiliser l'export gï¿½nï¿½rï¿½ en anglais")
         else:
             if "Device type" in liste_champs:
                 #print ("export en anglais")
@@ -106,7 +107,7 @@ def Import_from_ExportD2HUBcsv():
     
     
 def Dict_from_D2Hub_exports():
-    #assemblage des données des 2 sources dans un dictionnaire
+    #assemblage des donnï¿½es des 2 sources dans un dictionnaire
     global item_list_1
     global item_list_2
     global item_dico
@@ -123,7 +124,7 @@ def Dict_from_D2Hub_exports():
             item_dico[st_IMEI] = dict()
         for cle,valeur in current_item.items():
             if ((date_fic2>date_fic1) or (cle not in item_dico[st_IMEI])):
-                #le second fichier est plus recent ou l'information n'existe pas -> on peut écraser la valeur
+                #le second fichier est plus recent ou l'information n'existe pas -> on peut ï¿½craser la valeur
                 item_dico[st_IMEI][cle] = valeur
 
 
@@ -136,27 +137,39 @@ def Extract_infos_from_D2hHub():
     item_list_2.clear()
     item_dico.clear()
 
-    Import_from_ImportD2HUB()       #lecture des données de "genericInfo.txt"
-    Import_from_ExportD2HUBcsv()    #lecture des données de "export.csv"
-    Dict_from_D2Hub_exports()       #assemblage des données des 2 sources dans un dictionnaire
+    Import_from_ImportD2HUB()       #lecture des donnï¿½es de "genericInfo.txt"
+    Import_from_ExportD2HUBcsv()    #lecture des donnï¿½es de "export.csv"
+    Dict_from_D2Hub_exports()       #assemblage des donnï¿½es des 2 sources dans un dictionnaire
     
-    #Effacement des 2 premières listes pour gagner en mémoire vive. 
+    #enregistrement des rï¿½sultats
+    with open(Configuration.path_json_D2Hub_info1, 'w') as json_file_result:
+        json.dump(item_list_1, json_file_result)
+    pass
+    with open(Configuration.path_json_D2Hub_info2, 'w') as json_file_result:
+        json.dump(item_list_2, json_file_result)
+    pass 
+    with open(Configuration.path_json_D2Hub_info_total, 'w') as json_file_result:
+        json.dump(item_dico, json_file_result)
+    pass   
+
+    #Effacement des 2 premiï¿½res listes pour gagner en mï¿½moire vive. 
     item_list_1.clear()
     item_list_2.clear()
 
+def Get_D2Hub_Account_list():
+    curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/account.getlist'
+    curl_hearders = {'X-Api-Token':'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMjE3Mjg0MH0.rPqQWR9pw3_LCYZJMMhu8eBhEGmBiXsYdMihY6Ud4Rq6w7ha_mrNx2RwVSnTX4-rGD56vCMVarAFF-Ap1Q3fTg','Accept':'application/json','Content-Type':'application/json'}
+    r = requests.get(curl_url, headers = curl_hearders)
+    #print (r)
+    #r.encoding = 'cp1252'
+    with open(Configuration.path_json_D2Hub_account, 'w') as json_file_result:
+        json.dump(r.json(), json_file_result)
+    pass 
     
-
 if __name__ == '__main__':
     Extract_infos_from_D2hHub()
-    '''
-    with open('D:\Temp_JSON\OUTPUT\genericInfo.json', 'w') as json_file_result:
-        json.dump(item_list_1, json_file_result)
-    pass
-    with open('D:\Temp_JSON\OUTPUT\exportD2HubCSV.json', 'w') as json_file_result:
-        json.dump(item_list_2, json_file_result)
-    pass''' 
-    with open('D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json', 'w') as json_file_result:
-        json.dump(item_dico, json_file_result)
-    pass   
+    
+   
+    Get_D2Hub_Account_list()
    
     pass

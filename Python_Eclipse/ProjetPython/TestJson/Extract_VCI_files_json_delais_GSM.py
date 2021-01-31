@@ -156,7 +156,7 @@ if __name__ == "__main__":
     print("coucou")
     
     Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
-    Configuration.set_Date_list('2021-01-01', '2021-01-08')
+    Configuration.set_Date_list('2021-01-07', '2021-01-28')
     Telech_AWS_Json.gen_liste_cmd()
     Telech_AWS_Json.execute_cmd()
     print("Téléchargement en cours")
