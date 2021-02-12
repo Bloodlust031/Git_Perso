@@ -17,6 +17,7 @@ to_integrate_Msg_non_decompose_D2Hub = True
 Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
 #Chemin_json = 'D:\Boulot\Main\Ican\Extract_traces_FTP\TempDownAWSS3'
 path_sortie = 'D:/Temp_JSON/OUTPUT/'
+path_InputD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/'
 path_ImportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/genericInfo.txt'
 path_ExportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/export.xlsx'
 path_ExportD2HUBcsv = 'D:\Temp_JSON\INPUT_D2HUB/export.csv'

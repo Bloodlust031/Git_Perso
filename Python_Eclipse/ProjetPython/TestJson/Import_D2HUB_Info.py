@@ -16,6 +16,42 @@ item_dico = dict()      #liste d'équipement issus de "genericInfo.txt" et de "ex
 date_fic1 = 0
 date_fic2 = 0
 
+def Get_Info_Directly_from_D2Hub():
+    to_continue = True
+    cmd_number = 0
+    current_item = dict()
+    #Commande à répéter autant de fois que possible:
+    #curl -X GET "https://admin.d2hub.fr/api/admin/v2/integration/device.search?page=0" -H "X-Api-Token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzE5Nzc5NX0.EXEQxe8_bm2G_hatGCKoX1ZnqqPypHybqGf8v0MlkhSSS13uwMzs5fJg_u7O5xFJJDn-bsVNx2L2bu4m0KoUzA" -H "Accept: application/json" -H "Content-Type: application/json"
+    
+    while to_continue:
+        try:
+            #envoi de la commande CURL
+
+            #analyse du résultat            
+            
+            #incrémentation du compteur de page
+            cmd_number += 1
+        except:
+            to_continue = False
+            
+    
+
+def Telech_D2HUb_Info_from_AWS():
+    cmd_list = list()
+    commande = "start aws s3 sync s3://exchange.d2hub.fr/checkers/ " + Configuration.path_InputD2HUB    #cette requete donne des résultats obsolettes
+    #cmd_list.append(commande)
+    commande = "start aws s3 sync s3://exchange.d2hub.fr/iCANGeneralInfo/ " + Configuration.path_InputD2HUB
+    cmd_list.append(commande)
+    nb_req = len(cmd_list)
+    i = 0
+    for str_cmd in cmd_list:
+        i+=1
+        os.system(str_cmd)
+        print ("Commande " + str(i) + " / " + str(nb_req))
+    print("Téléchargement en cours")
+    os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
+    
+    
 def Import_from_ImportD2HUB():
     global item_list_1
     global date_fic1
@@ -136,9 +172,11 @@ def Extract_infos_from_D2hHub():
     item_list_2.clear()
     item_dico.clear()
 
+    Telech_D2HUb_Info_from_AWS()
     Import_from_ImportD2HUB()       #lecture des données de "genericInfo.txt"
     Import_from_ExportD2HUBcsv()    #lecture des données de "export.csv"
     Dict_from_D2Hub_exports()       #assemblage des données des 2 sources dans un dictionnaire
+    Get_Info_Directly_from_D2Hub()  #ces données sont plus récentes et peuvent donc écraser les autres.
     
     #Effacement des 2 premières listes pour gagner en mémoire vive. 
     item_list_1.clear()
@@ -158,5 +196,5 @@ if __name__ == '__main__':
     with open('D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json', 'w') as json_file_result:
         json.dump(item_dico, json_file_result)
     pass   
-   
+    print ("traitement terminé")
     pass
