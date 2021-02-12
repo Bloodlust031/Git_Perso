@@ -26,10 +26,10 @@ liste_cmd_invalid = list()
 def maj_configuration():
     Configuration.set_Date_list('2021-01-18', '2021-01-20')
     #Configuration.set_IMEI_List(['864504031504844','867322034117739','868996033820754']) #Tracking only
-    Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
+    #Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
 
     #Configuration.set_IMEI_List(['867322034083212','867322034092015','867322034105809','867322038019717']) #Clio5 essence
-    #Configuration.set_IMEI_List(['867322034110528'])
+    Configuration.set_IMEI_List(['864504039721531','864504039709734','868996033819343'])
     #Configuration.set_Bucket2("/OCEAN/")
 
 def Supprim_Event_msg():
