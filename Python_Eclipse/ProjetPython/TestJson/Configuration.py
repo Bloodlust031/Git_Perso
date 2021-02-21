@@ -25,6 +25,8 @@ path_json_D2Hub_info1 = 'D:\Temp_JSON\OUTPUT\genericInfo.json'              #ref
 path_json_D2Hub_info2 = 'D:\Temp_JSON\OUTPUT\exportD2HubCSV.json'           #reflet de export.csv
 path_json_D2Hub_info_total = 'D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json'   #Agglomération des données des 2 précédents exports
 path_json_D2Hub_account = 'D:\Temp_JSON\OUTPUT\Account_list.json'           
+path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
+API_D2HUB_Token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzk4NTI4NH0.y2rj6lGF-0Aynons9gZZzwglXfpZnw9ON68vgKpNQ2oO6dQUxJGhSpWI0C4T324OrUUVYtyXXzvIUyLMFECXYw'
 
 #ATTENTION: ces information peuvent être surchargées par la fonction "maj_configuration" du module Telech_AWS_Json
 IMEI_list = ['867322034083212','867322034092015','867322034105809']
