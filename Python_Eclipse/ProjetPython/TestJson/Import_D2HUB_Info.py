@@ -18,6 +18,20 @@ date_fic1 = 0
 date_fic2 = 0
 account_uuid_list = list()    #liste d'�quipement issus de "export.csv" sous forme de liste
 
+def recup_D2Hub_API_Token():
+    totouser = 'admin'
+    totopass = 'w,DVBYMbQAz@&6x5HlUFY:bz-z0d7'
+    curl_url = 'https://admin.d2hub.fr/api/admin/public/authenticate'
+    #curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?size=100&sort=imei,asc&page='
+    curl_headers = {'Accept':'application/json','Content-Type':'application/json'}
+    curl_payload = {'password':'Bordel31','username':'jdevay',"rememberMe":True}
+    r = requests.post(curl_url, headers = curl_headers, data = curl_payload)
+    if (r.status_code == 200):
+        print("cmdOK")
+        print(r.headers)
+    else:
+        print("cmdNOK: " + str(r.status_code))
+
 def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
     global item_dico
     current_item = dict()
@@ -313,7 +327,7 @@ def Extract_infos_from_D2hHub():
         item_dico.clear()
     
         #export depuis 2 fichiers à copier manuellement
-        Import_from_ImportD2HUB()       #lecture des donnees de "genericInfo.txt"
+        #Import_from_ImportD2HUB()       #lecture des donnees de "genericInfo.txt"
         Import_from_ExportD2HUBcsv()    #lecture des donnees de "export.csv"
         Dict_from_D2Hub_exports()       #assemblage des donnees des 2 sources dans un dictionnaire
 
@@ -363,6 +377,7 @@ def Get_D2Hub_Account_list():
     
     
 if __name__ == '__main__':
+    recup_D2Hub_API_Token()
     Extract_infos_from_D2hHub()
     '''
     with open('D:\Temp_JSON\OUTPUT\genericInfo.json', 'w') as json_file_result:
