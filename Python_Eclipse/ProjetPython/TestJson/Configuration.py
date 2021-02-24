@@ -27,6 +27,11 @@ path_json_D2Hub_info_total = 'D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json'   #Agg
 path_json_D2Hub_account = 'D:\Temp_JSON\OUTPUT\Account_list.json'           
 path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
 API_D2HUB_Token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxNDA3MDQ1NX0._wCx66P4G_-Ed3oYBkLkTpK96CkvZTM6H4F1l1maNNvwGV68kTWSTeMYtDsTSkkEZKjiScsBsExSDGsAJRzemQ'
+#API_D2HUB_USER = 'admin'
+#API_D2HUB_PASS = 'w,DVBYMbQAz@&6x5HlUFY:bz-z0d7'
+API_D2HUB_USER = 'jdevay'
+API_D2HUB_PASS = 'Bordel31'
+
 
 #ATTENTION: ces information peuvent être surchargées par la fonction "maj_configuration" du module Telech_AWS_Json
 IMEI_list = ['867322034083212','867322034092015','867322034105809']
@@ -71,7 +76,10 @@ def set_Bucket(Bucket_name):
 def set_Bucket2(Bucket_name):
     global Bucket2
     Bucket2 = Bucket_name
-    
+
+def set_D2HubToken(auth_Token):
+    global API_D2HUB_Token
+    API_D2HUB_Token = auth_Token    
 
 if __name__ == '__main__':
     set_Date_list('2020-11-22', '2020-12-11')

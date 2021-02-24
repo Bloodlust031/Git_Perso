@@ -10,27 +10,30 @@ import Configuration
 import json
 import csv
 import requests
+import time
 
 item_list_1 = list()    #liste d'�quipement issus de "genericInfo.txt" sous forme de liste
 item_list_2 = list()    #liste d'�quipement issus de "export.csv" sous forme de liste
 item_dico = dict()      #liste d'�quipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
 date_fic1 = 0
 date_fic2 = 0
-account_uuid_list = list()    #liste d'�quipement issus de "export.csv" sous forme de liste
+account_uuid_list = list()
+start_time = 0
+end_time = 0
+
 
 def recup_D2Hub_API_Token():
-    totouser = 'admin'
-    totopass = 'w,DVBYMbQAz@&6x5HlUFY:bz-z0d7'
     curl_url = 'https://admin.d2hub.fr/api/admin/public/authenticate'
-    #curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?size=100&sort=imei,asc&page='
     curl_headers = {'Accept':'application/json','Content-Type':'application/json'}
-    curl_payload = {'password':'Bordel31','username':'jdevay',"rememberMe":True}
-    r = requests.post(curl_url, headers = curl_headers, data = curl_payload)
+    curl_payload = {'password':Configuration.API_D2HUB_PASS,'username':Configuration.API_D2HUB_USER,"rememberMe":True}
+    r = requests.post(curl_url, headers = curl_headers, json = curl_payload)
     if (r.status_code == 200):
-        print("cmdOK")
-        print(r.headers)
+        tokenAuth = r.json()["id_token"]
+        Configuration.set_D2HubToken(tokenAuth)
+        return True
     else:
         print("cmdNOK: " + str(r.status_code))
+        return False
 
 def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
     global item_dico
@@ -43,6 +46,7 @@ def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
     print("Recuperation des données des iCAN directement depuis 2Hub.")
     for compte in account_uuid_list:
         print("Recuperation depuis le compte: " + str(num_compte) + " / " + str(nb_compte))
+        nb_item = 0
         num_compte += 1
         to_continue = True
         cmd_number = 0
@@ -51,40 +55,31 @@ def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
         curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
         curl_hearders['X-Api-Token'] = Configuration.API_D2HUB_Token
         while to_continue:
-            #try:
-            #envoi de la commande CURL
-            curl_url_nb = curl_url + str(cmd_number)
-            #print (curl_url_nb)
-            r = requests.get(curl_url_nb, headers = curl_hearders)
-            #print (r.status_code)
-            if (r.status_code == 200):
-                list_item.clear()
-                list_item = r.json()
-                if len(list_item) >= 1:
-                    print("   " + str(len(list_item)) + " objets sur ce compte.")
-                    
-                    for equipment in list_item:
-                        Dict_from_json_Directly_from_D2Hub(equipment)
-                    #print (r)
-                    #r.encoding = 'cp1252'
-                    '''with open(Configuration.path_json_D2Hub_item_list, 'a') as json_file_result:
-                        json.dump(list_item, json_file_result)
-                        #json.dump(r.json(), json_file_result)
-                    pass'''
+            try:
+                #envoi de la commande CURL
+                curl_url_nb = curl_url + str(cmd_number)
+                r = requests.get(curl_url_nb, headers = curl_hearders)
+                if (r.status_code == 200):
+                    list_item.clear()
+                    list_item = r.json()
+                    if len(list_item) >= 1:
+                        if (cmd_number == 0):
+                            nb_item = r.headers['X-Total-Count']
+                            print("   " + str(nb_item) + " objets sur ce compte.")
+                        for equipment in list_item:
+                            Dict_from_json_Directly_from_D2Hub(equipment)
+                    else:
+                        if (cmd_number == 0):
+                            print("   Aucun objet sur ce compte")
+                    if len(list_item) < 100:
+                        #La dernière réponse n'était pa pleine, pas la peine de continuer.
+                        to_continue = False
                 else:
-                    print("   Aucun objet sur ce compte")
-                if len(list_item) < 100:
-                    #La dernière réponse n'était pa pleine, pas la peine de continuer.
                     to_continue = False
-            else:
+                #incr�mentation du compteur de page
+                cmd_number += 1
+            except:
                 to_continue = False
-
-            #analyse du r�sultat            
-            
-            #incr�mentation du compteur de page
-            cmd_number += 1
-            #except:
-            #    to_continue = False
 
         '''to_continue = True
         cmd_number = 0
@@ -113,6 +108,56 @@ def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
                 cmd_number += 1
             except:
                 to_continue = False'''
+
+
+
+
+def Get_Info_Directly_from_D2Hub2(): 
+    global item_dico
+    current_item = dict()
+    list_item = list()
+    last_IMEI = "000000000000000"
+    #Commande � r�p�ter autant de fois que possible:
+    #curl -X GET "https://admin.d2hub.fr/api/admin/v2/integration/device.search?page=0" -H "X-Api-Token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzE5Nzc5NX0.EXEQxe8_bm2G_hatGCKoX1ZnqqPypHybqGf8v0MlkhSSS13uwMzs5fJg_u7O5xFJJDn-bsVNx2L2bu4m0KoUzA" -H "Accept: application/json" -H "Content-Type: application/json"
+    num_compte = 1
+    nb_compte = len(account_uuid_list)
+    to_continue2 = True
+    nb_item = 0
+    num_compte += 1
+    to_continue = True
+    cmd_number = 0
+    
+    #curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?size=100&sort=imei,asc&page='
+    curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
+    curl_hearders['X-Api-Token'] = Configuration.API_D2HUB_Token
+    while to_continue:
+        try:
+            #envoi de la commande CURL
+            curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?&size=100&sort=imei,asc&page=0&f=imei:>' + last_IMEI
+            r = requests.get(curl_url, headers = curl_hearders)
+            if (r.status_code == 200):
+                list_item.clear()
+                list_item = r.json()
+                if len(list_item) >= 1:
+                    if (cmd_number == 0):
+                        nb_item = r.headers['X-Total-Count']
+                        print("   " + str(nb_item) + " objets.")
+                    print("page: " + str(cmd_number))
+                    for equipment in list_item:
+                        Dict_from_json_Directly_from_D2Hub(equipment)
+                        last_IMEI = equipment["imei"]
+                else:
+                    if (cmd_number == 0):
+                        print("   Aucun objet sur ce compte")
+                if len(list_item) < 100:
+                    #La dernière réponse n'était pa pleine, pas la peine de continuer.
+                    to_continue = False
+            else:
+                to_continue = False
+            #incr�mentation du compteur de page
+            cmd_number += 1
+        except:
+            to_continue = False
             
 def Dict_from_json_Directly_from_D2Hub(equipment):
     global item_dico
@@ -228,7 +273,6 @@ def get_item_dico(Ligne_txt):
     current_item["Item_Serial"] = ligne_split[9].rstrip()
     return current_item
     
-    
 def Import_from_ExportD2HUB():
     liste_lignes = list()
 
@@ -305,20 +349,22 @@ def Dict_from_D2Hub_exports():
                 item_dico[st_IMEI][cle] = valeur
 
 
-def Extract_infos_from_D2hHub():
+def Extract_infos_from_D2Hub():
     global item_list_1
     global item_list_2
     global item_dico
 
     #extraction des données dans l'ordre des plus vieilles aux plus recente/fiables
 
-    bretour = False
-    txt_input = input("Avez-vous mis � jour l'Api-Token (O pour oui) ?")
-    try:
-        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
-            bretour = True
-    except:
-        bretour = False
+    bretour = recup_D2Hub_API_Token()
+    if (bretour == False):
+        print("Le token n'a pas pu être récupéré automatiquement.")
+        txt_input = input("Avez-vous mis a jour manuellement l'Api-Token (O pour oui) ?")
+        try:
+            if ((txt_input[0] == "O") or (txt_input[0] == "o")):
+                bretour = True
+        except:
+            bretour = False
     if bretour:
         Get_D2Hub_Account_list()
         
@@ -329,21 +375,15 @@ def Extract_infos_from_D2hHub():
         #export depuis 2 fichiers à copier manuellement
         #Import_from_ImportD2HUB()       #lecture des donnees de "genericInfo.txt"
         Import_from_ExportD2HUBcsv()    #lecture des donnees de "export.csv"
-        Dict_from_D2Hub_exports()       #assemblage des donnees des 2 sources dans un dictionnaire
+        #Dict_from_D2Hub_exports()       #assemblage des donnees des 2 sources dans un dictionnaire
 
         #export depuis 1 fichier mis à jour la nuit sur AWS
         Telech_D2HUb_Info_from_AWS()
         
         #export direct depuis D2Hub
-        Get_Info_Directly_from_D2Hub()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
+        Get_Info_Directly_from_D2Hub2()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
         
         #enregistrement des r�sultats
-        '''with open(Configuration.path_json_D2Hub_info1, 'w') as json_file_result:
-            json.dump(item_list_1, json_file_result)
-        pass
-        with open(Configuration.path_json_D2Hub_info2, 'w') as json_file_result:
-            json.dump(item_list_2, json_file_result)
-        pass''' 
         with open(Configuration.path_json_D2Hub_info_total, 'w') as json_file_result:
             json.dump(item_dico, json_file_result)
         pass   
@@ -351,8 +391,6 @@ def Extract_infos_from_D2hHub():
         #Effacement des 2 premieres listes pour gagner en m�moire vive. 
         item_list_1.clear()
         item_list_2.clear()
-        
-        
     else:
         print("Mettez � jour l'Api-Token (du module Configuration).")
 
@@ -363,8 +401,6 @@ def Get_D2Hub_Account_list():
     curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
     curl_hearders['X-Api-Token'] = Configuration.API_D2HUB_Token
     r = requests.get(curl_url, headers = curl_hearders)
-    #print (r)
-    #r.encoding = 'cp1252'
     if (r.status_code == 200):
         with open(Configuration.path_json_D2Hub_account, 'w') as json_file_result:
             json.dump(r.json(), json_file_result)
@@ -373,22 +409,14 @@ def Get_D2Hub_Account_list():
         for compte in r.json():
             account_uuid_list.append(compte["uuid"])
     else:
-        print("probleme dans la requete API de recuperation des comptes utilisateurs")
+        print("probleme dans la requete API de recuperation des comptes clients")
     
     
 if __name__ == '__main__':
-    recup_D2Hub_API_Token()
-    Extract_infos_from_D2hHub()
-    '''
-    with open('D:\Temp_JSON\OUTPUT\genericInfo.json', 'w') as json_file_result:
-        json.dump(item_list_1, json_file_result)
-    pass
-    with open('D:\Temp_JSON\OUTPUT\exportD2HubCSV.json', 'w') as json_file_result:
-        json.dump(item_list_2, json_file_result)
-    pass''' 
-    with open('D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json', 'w') as json_file_result:
-        json.dump(item_dico, json_file_result)
-    pass   
-    print ("traitement termine")
-    
+    start_time = time.time()
+    print ("Debut")
+    Extract_infos_from_D2Hub()
+    print ("Traitement termine")
+    end_time = time.time()
+    print( end_time-start_time, "secondes d'executions")    
     pass
