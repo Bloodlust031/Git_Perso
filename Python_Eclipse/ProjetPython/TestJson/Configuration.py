@@ -18,15 +18,16 @@ Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
 #Chemin_json = 'D:\Boulot\Main\Ican\Extract_traces_FTP\TempDownAWSS3'
 path_sortie = 'D:/Temp_JSON/OUTPUT/'
 path_InputD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/'
-path_ImportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/genericInfo.txt'
-path_ExportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/export.xlsx'
+#path_ImportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/genericInfo.txt'
+#path_ExportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/export.xlsx
 path_ExportD2HUBcsv = 'D:\Temp_JSON\INPUT_D2HUB/export.csv'
-path_json_D2Hub_info1 = 'D:\Temp_JSON\OUTPUT\genericInfo.json'              #reflet du genericInfo.txt
-path_json_D2Hub_info2 = 'D:\Temp_JSON\OUTPUT\exportD2HubCSV.json'           #reflet de export.csv
-path_json_D2Hub_info_total = 'D:\Temp_JSON\OUTPUT\exportD2HubGlobal.json'   #Agglomération des données des 2 précédents exports
-path_json_D2Hub_account = 'D:\Temp_JSON\OUTPUT\Account_list.json'           
-path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
+#path_json_D2Hub_info1 = 'D:\Temp_JSON\OUTPUT\genericInfo.json'              #reflet du genericInfo.txt
+#path_json_D2Hub_info2 = 'D:\Temp_JSON\OUTPUT\exportD2HubCSV.json'           #reflet de export.csv
+path_json_D2Hub_info_total = 'D:\Temp_JSON\INPUT_D2HUB\exportD2HubGlobal.json'   #dictionnaire des équipements declares sur D2Hub 
+path_json_D2Hub_account = 'D:\Temp_JSON\INPUT_D2HUB\Account_list.json'           
+#path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
 API_D2HUB_Token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxNDA3MDQ1NX0._wCx66P4G_-Ed3oYBkLkTpK96CkvZTM6H4F1l1maNNvwGV68kTWSTeMYtDsTSkkEZKjiScsBsExSDGsAJRzemQ'
+API_D2HUB_xsrf_Token = 'bcfa9285-2b1d-406e-830c-5008fd1c0f59'
 #API_D2HUB_USER = 'admin'
 #API_D2HUB_PASS = 'w,DVBYMbQAz@&6x5HlUFY:bz-z0d7'
 API_D2HUB_USER = 'jdevay'
@@ -80,6 +81,10 @@ def set_Bucket2(Bucket_name):
 def set_D2HubToken(auth_Token):
     global API_D2HUB_Token
     API_D2HUB_Token = auth_Token    
+
+def set_D2Hub_xsrf_Token(auth_Token):
+    global API_D2HUB_xsrf_Token
+    API_D2HUB_xsrf_Token = auth_Token    
 
 if __name__ == '__main__':
     set_Date_list('2020-11-22', '2020-12-11')

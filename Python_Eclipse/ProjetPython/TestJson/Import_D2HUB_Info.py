@@ -11,6 +11,7 @@ import json
 import csv
 import requests
 import time
+import re
 
 item_list_1 = list()    #liste d'�quipement issus de "genericInfo.txt" sous forme de liste
 item_list_2 = list()    #liste d'�quipement issus de "export.csv" sous forme de liste
@@ -30,12 +31,14 @@ def recup_D2Hub_API_Token():
     if (r.status_code == 200):
         tokenAuth = r.json()["id_token"]
         Configuration.set_D2HubToken(tokenAuth)
+        Configuration.set_D2Hub_xsrf_Token(re.sub(".*XSRF-TOKEN=(.*);.*",'\\1',r.headers['Set-Cookie']))
+        
         return True
     else:
         print("cmdNOK: " + str(r.status_code))
         return False
 
-def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
+'''def Get_Info_Directly_from_D2Hub_by_account(): #récupération de la liste des devices en passant par l'API device.search de D2Hub en filtrant puis en bouclant sur les comptes
     global item_dico
     current_item = dict()
     list_item = list()
@@ -79,53 +82,19 @@ def Get_Info_Directly_from_D2Hub(): #bloque à la page 100
                 #incr�mentation du compteur de page
                 cmd_number += 1
             except:
-                to_continue = False
-
-        '''to_continue = True
-        cmd_number = 0
-        curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?size=100&sort=imei,desc&page='
-        curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
-        curl_hearders['X-Api-Token'] = Configuration.API_D2HUB_Token
-        while to_continue:
-            try:
-                #envoi de la commande CURL
-                curl_url_nb = curl_url + str(cmd_number)
-                print (curl_url_nb)
-                r = requests.get(curl_url_nb, headers = curl_hearders)
-                print (r.status_code)
-                if (r.status_code == 200):
-                    #print (r)
-                    #r.encoding = 'cp1252'
-                    with open(Configuration.path_json_D2Hub_item_list, 'a') as json_file_result:
-                        json.dump(r.json(), json_file_result)
-                    pass
-                else:
-                    to_continue = False
-    
-                #analyse du r�sultat            
-                
-                #incr�mentation du compteur de page
-                cmd_number += 1
-            except:
                 to_continue = False'''
 
 
-
-
-def Get_Info_Directly_from_D2Hub2(): 
+def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en passant par l'API device.search de D2Hub
     global item_dico
-    current_item = dict()
     list_item = list()
     last_IMEI = "000000000000000"
     #Commande � r�p�ter autant de fois que possible:
     #curl -X GET "https://admin.d2hub.fr/api/admin/v2/integration/device.search?page=0" -H "X-Api-Token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzE5Nzc5NX0.EXEQxe8_bm2G_hatGCKoX1ZnqqPypHybqGf8v0MlkhSSS13uwMzs5fJg_u7O5xFJJDn-bsVNx2L2bu4m0KoUzA" -H "Accept: application/json" -H "Content-Type: application/json"
-    num_compte = 1
-    nb_compte = len(account_uuid_list)
-    to_continue2 = True
     nb_item = 0
-    num_compte += 1
     to_continue = True
-    cmd_number = 0
+    num_page = 0
+    nb_page = 0
     
     #curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?size=100&sort=imei,asc&page='
     curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
@@ -139,15 +108,16 @@ def Get_Info_Directly_from_D2Hub2():
                 list_item.clear()
                 list_item = r.json()
                 if len(list_item) >= 1:
-                    if (cmd_number == 0):
+                    if (num_page == 0):
                         nb_item = r.headers['X-Total-Count']
                         print("   " + str(nb_item) + " objets.")
-                    print("page: " + str(cmd_number))
+                        nb_page = int(nb_item)//100
+                    print("page: " + str(num_page) + " / " + str(nb_page))
                     for equipment in list_item:
                         Dict_from_json_Directly_from_D2Hub(equipment)
                         last_IMEI = equipment["imei"]
                 else:
-                    if (cmd_number == 0):
+                    if (num_page == 0):
                         print("   Aucun objet sur ce compte")
                 if len(list_item) < 100:
                     #La dernière réponse n'était pa pleine, pas la peine de continuer.
@@ -155,7 +125,7 @@ def Get_Info_Directly_from_D2Hub2():
             else:
                 to_continue = False
             #incr�mentation du compteur de page
-            cmd_number += 1
+            num_page += 1
         except:
             to_continue = False
             
@@ -235,9 +205,9 @@ def Telech_D2HUb_Info_from_AWS():
         os.system(str_cmd)
         print ("Commande " + str(i) + " / " + str(nb_req))
     print("Telechargement en cours")
-    os.system("pause") # On met le programme en pause pour éviter qu'il ne se referme (Windows)
+    #os.system("pause") # On met le programme en pause pour éviter qu'il ne se referme (Windows) -> pas besoin 
     
-    
+'''    #maintenant inutile: le fichier GenericInfo.txt est extrait des mêmes données que les API de D2Hub: /api/admin/v2/integration/device.search
 def Import_from_ImportD2HUB():
     #import depuis genericInfo.txt
     global item_list_1
@@ -247,7 +217,7 @@ def Import_from_ImportD2HUB():
     with open(Configuration.path_ImportD2HUB, 'r')as mon_fichier:
         liste_lignes = mon_fichier.readlines()
         for ligne in liste_lignes:
-            item_list_1.append(get_item_dico(ligne))
+            item_list_1.append(get_item_dico(ligne))'''
 
 def get_item_dico(Ligne_txt):
     current_item = dict()
@@ -325,7 +295,61 @@ def Import_from_ExportD2HUBcsv():
                     item_list_2.append(get_item_dico_ExportD2HUBcsv(ligne))
     pass
     
+def Telech_Export_csv_from_D2Hub():
+    to_continue = True
     
+    xsrf_token = '26afb6bb-39e7-4f95-a1ee-3651b511d26d'
+    curl_hearders1 = {}
+    curl_hearders1['cookie'] = 'NG_TRANSLATE_LANG_KEY=%22en%22; XSRF-TOKEN=' + Configuration.API_D2HUB_xsrf_Token
+    curl_hearders1['x-xsrf-token'] = Configuration.API_D2HUB_xsrf_Token
+    curl_hearders1['X-Api-Token'] = Configuration.API_D2HUB_Token
+    curl_url1 = 'https://admin.d2hub.fr/api/admin/v2/devices/export?format=CSV&full=true&sort=accountName,asc'
+    curl_json1 = {"c":"1e50b244-3953-442e-a210-632a50dcf2fe"}
+    
+    try:
+        r = requests.post(curl_url1, headers = curl_hearders1, json=curl_json1)
+        tempfile_name = str(r.text)
+        #print ("r.status_code: " + str(r.status_code))
+        #print ("r.headers: " + str(r.headers))
+        #print ("r.text: " + str(r.text))
+        #print ("fini")
+    except:
+        print ("erreur")
+        to_continue = False
+        
+    if to_continue:
+        #xsrf_token = 'bcfa9285-2b1d-406e-830c-5008fd1c0f59'
+        curl_url2 = 'https://admin.d2hub.fr/api/admin/v2/devices/export?filename=' + tempfile_name + '&format=CSV'
+        curl_hearders2 = {}
+        curl_hearders2['cookie'] = 'NG_TRANSLATE_LANG_KEY=%22fr%22; XSRF-TOKEN=' + Configuration.API_D2HUB_xsrf_Token
+        curl_hearders2['x-xsrf-token'] = Configuration.API_D2HUB_xsrf_Token
+        curl_hearders2['X-Api-Token'] = Configuration.API_D2HUB_Token
+    while to_continue:
+        r = requests.get(curl_url2, headers = curl_hearders2,stream=True)
+        #print ("r.status_code: " + str(r.status_code))
+        #print ("r.headers: " + str(r.headers))
+        #print ("r.text: " + str(r.text))
+        if str(r.status_code) == '204':
+            print ("Generation en cours")
+        else:
+            to_continue = False
+            try:
+                if str(r.status_code) == '200':
+                    print ("Generation terminee OK")
+                    '''with open('D:\Temp_JSON/export1.csv', 'w', newline='') as fp:
+                        fp.write(str(r.text))
+                        print ("Telechargement OK")                    
+                    with open('D:\Temp_JSON/export2.csv', 'w') as fp:
+                        fp.write(str(r.text))
+                        print ("téléchargement OK")'''                    
+                    with open(Configuration.path_ExportD2HUBcsv, 'wb') as fp:
+                        fp.write(r.content)
+                        print ("téléchargement OK")                    
+                else:
+                    print ("echec de téléchargement")
+            except:
+                to_continue = False
+
     
 def Dict_from_D2Hub_exports():
     #assemblage des donn�es des 2 sources dans un dictionnaire
@@ -366,27 +390,29 @@ def Extract_infos_from_D2Hub():
         except:
             bretour = False
     if bretour:
-        Get_D2Hub_Account_list()
-        
+        #Telechargement des fichiers sur AWS
+        Telech_D2HUb_Info_from_AWS()
+
         item_list_1.clear()
         item_list_2.clear()
         item_dico.clear()
     
-        #export depuis 2 fichiers à copier manuellement
-        #Import_from_ImportD2HUB()       #lecture des donnees de "genericInfo.txt"
+        #export depuis export.csv téléchargé automatiquement ici
+        Telech_Export_csv_from_D2Hub()
         Import_from_ExportD2HUBcsv()    #lecture des donnees de "export.csv"
-        #Dict_from_D2Hub_exports()       #assemblage des donnees des 2 sources dans un dictionnaire
+        Dict_from_D2Hub_exports()       #assemblage des donnees des 2 sources dans un dictionnaire
 
-        #export depuis 1 fichier mis à jour la nuit sur AWS
-        Telech_D2HUb_Info_from_AWS()
         
         #export direct depuis D2Hub
-        Get_Info_Directly_from_D2Hub2()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
+        Get_Info_Directly_from_D2Hub()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
         
         #enregistrement des r�sultats
         with open(Configuration.path_json_D2Hub_info_total, 'w') as json_file_result:
             json.dump(item_dico, json_file_result)
         pass   
+    
+        #traitement de la liste des comptes
+        Get_D2Hub_Account_list()
     
         #Effacement des 2 premieres listes pour gagner en m�moire vive. 
         item_list_1.clear()
