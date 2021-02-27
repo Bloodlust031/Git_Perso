@@ -12,16 +12,14 @@ import csv
 import requests
 import time
 import re
+import Boite_Outils
 
-item_list_1 = list()    #liste d'�quipement issus de "genericInfo.txt" sous forme de liste
-item_list_2 = list()    #liste d'�quipement issus de "export.csv" sous forme de liste
 item_dico = dict()      #liste d'�quipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
 date_fic1 = 0
 date_fic2 = 0
 account_uuid_list = list()
 start_time = 0
 end_time = 0
-
 
 def recup_D2Hub_API_Token():
     curl_url = 'https://admin.d2hub.fr/api/admin/public/authenticate'
@@ -88,6 +86,8 @@ def recup_D2Hub_API_Token():
 def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en passant par l'API device.search de D2Hub
     global item_dico
     list_item = list()
+    raw_list_item = list()
+    raw_list_item.clear()
     last_IMEI = "000000000000000"
     #Commande � r�p�ter autant de fois que possible:
     #curl -X GET "https://admin.d2hub.fr/api/admin/v2/integration/device.search?page=0" -H "X-Api-Token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzE5Nzc5NX0.EXEQxe8_bm2G_hatGCKoX1ZnqqPypHybqGf8v0MlkhSSS13uwMzs5fJg_u7O5xFJJDn-bsVNx2L2bu4m0KoUzA" -H "Accept: application/json" -H "Content-Type: application/json"
@@ -107,7 +107,8 @@ def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en p
             if (r.status_code == 200):
                 list_item.clear()
                 list_item = r.json()
-                if len(list_item) >= 1:
+                if (len(list_item) >= 1):
+                    raw_list_item.extend(list_item)
                     if (num_page == 0):
                         nb_item = r.headers['X-Total-Count']
                         print("   " + str(nb_item) + " objets.")
@@ -128,13 +129,36 @@ def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en p
             num_page += 1
         except:
             to_continue = False
+    with open(Configuration.path_json_D2Hub_equipment_list_raw, 'w') as json_file_result:
+        json.dump(raw_list_item, json_file_result, indent=4)
+    pass   
+
+def set_item_activ_communicating():
+    global item_dico
+    for equipment in item_dico.values():
+        #print(equipment)
+        equipment["Item_active"] = ""
+        if "Last_OTA_QUERY_Date" in equipment:
+            if(Boite_Outils.is_date_recent(equipment["Last_OTA_QUERY_Date"])):
+                equipment["Item_active"] = True
+            else:
+                equipment["Item_active"] = False
+            if "Last_Msg_Date" in equipment:
+                if(Boite_Outils.is_date_recent(equipment["Last_Msg_Date"])):
+                    equipment["Item_communicating"] = True
+                else:
+                    equipment["Item_communicating"] = False
+            else:
+                equipment["Item_communicating"] = False
+        else:
+            #le boitier n'a jamais tenté d'OTA. Il arrive qu'on ait reçu un message unique un jour.
+            equipment["Item_communicating"] = False
+            equipment["Item_active"] = False
+
             
 def Dict_from_json_Directly_from_D2Hub(equipment):
     global item_dico
 
-    current_item = dict()
-    current_item.clear()
-    
     st_IMEI = equipment["imei"]
     if st_IMEI not in item_dico:
         item_dico[st_IMEI] = dict()
@@ -247,35 +271,40 @@ def Import_from_ExportD2HUB():
     liste_lignes = list()
 
 def get_item_dico_ExportD2HUBcsv(ligne):
-    current_item = dict()
-    current_item.clear()
-    current_item["Item_IMEI"] = ligne["IMEI"]
-    current_item["Item_Type"] = ligne["Device type"]
-    current_item["Item_FW"] = ligne["Current firmware version"]
-    current_item["Item_Serial"] = ligne["Serial number"]
+    global item_dico
+
+    st_IMEI = ligne["IMEI"]
+    if st_IMEI not in item_dico:
+        item_dico[st_IMEI] = dict()
+        item_dico[st_IMEI]["Item_IMEI"] = st_IMEI
+    
+    item_dico[st_IMEI]["Item_IMEI"] = ligne["IMEI"]
+    item_dico[st_IMEI]["Item_Type"] = ligne["Device type"]
+    item_dico[st_IMEI]["Item_FW"] = ligne["Current firmware version"]
+    item_dico[st_IMEI]["Item_Serial"] = ligne["Serial number"]
     if (len(ligne["Customer account"]) >= 1):
-        current_item["Account_Name"] = ligne["Customer account"]
+        item_dico[st_IMEI]["Account_Name"] = ligne["Customer account"]
     if (len(ligne["Registration"]) >= 1):
-        current_item["VEH_Immat"] = ligne["Registration"]
+        item_dico[st_IMEI]["VEH_Immat"] = ligne["Registration"]
     if (len(ligne["Brand"]) >= 1):
-        current_item["VEH_Mark"] = ligne["Brand"]
+        item_dico[st_IMEI]["VEH_Mark"] = ligne["Brand"]
     if (len(ligne["Model"]) >= 1):
-        current_item["VEH_Model"] = ligne["Model"]
+        item_dico[st_IMEI]["VEH_Model"] = ligne["Model"]
     if (len(ligne["Serie"]) >= 1):
-        current_item["VEH_Serie"] = ligne["Serie"]
+        item_dico[st_IMEI]["VEH_Serie"] = ligne["Serie"]
     if (len(ligne["Vehicle name"]) >= 1):
-        current_item["VEH_Label"] = ligne["Vehicle name"]
+        item_dico[st_IMEI]["VEH_Label"] = ligne["Vehicle name"]
     if (len(ligne["VIN"]) >= 1):
-        current_item["VEH_VIN"] = ligne["VIN"]  
+        item_dico[st_IMEI]["VEH_VIN"] = ligne["VIN"]  
     if (len(ligne["last OTA update Request Date"]) >= 1):
-        current_item["Last_OTA_QUERY_Date"] = ligne["last OTA update Request Date"]  
+        item_dico[st_IMEI]["Last_OTA_QUERY_Date"] = ligne["last OTA update Request Date"] 
     if (len(ligne["Date of the first reco message received"]) >= 1):
-        current_item["First_RECO_Date"] = ligne["Date of the first reco message received"]  
+        item_dico[st_IMEI]["First_RECO_Date"] = ligne["Date of the first reco message received"]  
     if (len(ligne["Date of the last message received"]) >= 1):
-        current_item["Last_Msg_Date"] = ligne["Date of the last message received"]  
+        item_dico[st_IMEI]["Last_Msg_Date"] = ligne["Date of the last message received"]  
     if (len(ligne["Current service"]) >= 1):
-        current_item["Service_Name"] = ligne["Current service"]  
-    return current_item
+        item_dico[st_IMEI]["Service_Name"] = ligne["Current service"]  
+
 
 def Import_from_ExportD2HUBcsv():
     global item_list_2
@@ -292,13 +321,12 @@ def Import_from_ExportD2HUBcsv():
                 #print ("export en anglais")
                 for ligne in csv_reader:
                     #print (ligne)
-                    item_list_2.append(get_item_dico_ExportD2HUBcsv(ligne))
+                    get_item_dico_ExportD2HUBcsv(ligne)
     pass
     
 def Telech_Export_csv_from_D2Hub():
     to_continue = True
     
-    xsrf_token = '26afb6bb-39e7-4f95-a1ee-3651b511d26d'
     curl_hearders1 = {}
     curl_hearders1['cookie'] = 'NG_TRANSLATE_LANG_KEY=%22en%22; XSRF-TOKEN=' + Configuration.API_D2HUB_xsrf_Token
     curl_hearders1['x-xsrf-token'] = Configuration.API_D2HUB_xsrf_Token
@@ -351,31 +379,8 @@ def Telech_Export_csv_from_D2Hub():
                 to_continue = False
 
     
-def Dict_from_D2Hub_exports():
-    #assemblage des donn�es des 2 sources dans un dictionnaire
-    global item_list_1
-    global item_list_2
-    global item_dico
-
-    current_item = dict()
-    current_item.clear()
-
-    for current_item in item_list_1:
-        st_IMEI = current_item["Item_IMEI"]
-        item_dico[st_IMEI] = current_item
-    for current_item in item_list_2:
-        st_IMEI = current_item["Item_IMEI"]
-        if st_IMEI not in item_dico:
-            item_dico[st_IMEI] = dict()
-        for cle,valeur in current_item.items():
-            if ((date_fic2>date_fic1) or (cle not in item_dico[st_IMEI])):
-                #le second fichier est plus recent ou l'information n'existe pas -> on peut �craser la valeur
-                item_dico[st_IMEI][cle] = valeur
-
 
 def Extract_infos_from_D2Hub():
-    global item_list_1
-    global item_list_2
     global item_dico
 
     #extraction des données dans l'ordre des plus vieilles aux plus recente/fiables
@@ -393,33 +398,54 @@ def Extract_infos_from_D2Hub():
         #Telechargement des fichiers sur AWS
         Telech_D2HUb_Info_from_AWS()
 
-        item_list_1.clear()
-        item_list_2.clear()
         item_dico.clear()
     
         #export depuis export.csv téléchargé automatiquement ici
         Telech_Export_csv_from_D2Hub()
         Import_from_ExportD2HUBcsv()    #lecture des donnees de "export.csv"
-        Dict_from_D2Hub_exports()       #assemblage des donnees des 2 sources dans un dictionnaire
 
         
         #export direct depuis D2Hub
         Get_Info_Directly_from_D2Hub()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
         
+        set_item_activ_communicating()
+        
+        Get_Info_from_ICAN_HARDSTATUS()
+        
         #enregistrement des r�sultats
         with open(Configuration.path_json_D2Hub_info_total, 'w') as json_file_result:
-            json.dump(item_dico, json_file_result)
+            json.dump(item_dico, json_file_result, indent=4)
         pass   
     
         #traitement de la liste des comptes
         Get_D2Hub_Account_list()
     
-        #Effacement des 2 premieres listes pour gagner en m�moire vive. 
-        item_list_1.clear()
-        item_list_2.clear()
     else:
         print("Mettez � jour l'Api-Token (du module Configuration).")
 
+def Get_Info_from_ICAN_HARDSTATUS():
+    #on ne récupère que le bucket
+    global item_dico
+    
+    with open(Configuration.path_D2Hub_ICAN_HARD_STATUS, mode='r', newline='', encoding='utf-8-sig') as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=';')
+        for ligne in csv_reader:
+            st_IMEI = ligne["imei"]
+            if type(st_IMEI) == str:
+                st_Bucket = ligne["targetplatform"]
+                if type(st_Bucket) == str:
+                    if len(st_Bucket) >= 1:
+                        if st_Bucket == "-Inherited-":
+                            st_Bucket = "MARKETIP"
+                        if "MARKETIP" in st_Bucket:
+                            st_Bucket = "MARKETIP"
+                    else:
+                        st_Bucket = "MARKETIP"
+                else:
+                    st_Bucket = "MARKETIP"
+                item_dico[st_IMEI]["Msg_Bucket"] = st_Bucket
+    pass
+    
 
 def Get_D2Hub_Account_list():
     global account_uuid_list
@@ -429,7 +455,7 @@ def Get_D2Hub_Account_list():
     r = requests.get(curl_url, headers = curl_hearders)
     if (r.status_code == 200):
         with open(Configuration.path_json_D2Hub_account, 'w') as json_file_result:
-            json.dump(r.json(), json_file_result)
+            json.dump(r.json(), json_file_result, indent=4)
         pass
         account_uuid_list.clear()
         for compte in r.json():

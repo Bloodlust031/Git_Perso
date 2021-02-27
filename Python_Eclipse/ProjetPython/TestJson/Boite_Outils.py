@@ -6,6 +6,10 @@ Created on 25 nov. 2020
 @author: blood
 '''
 
+import datetime
+from datetime import date
+from datetime import timedelta
+from datetime import datetime
 
 
 def convert_Hex_decimal(str_raw, bigEndian = False):
@@ -46,6 +50,32 @@ def calc_CRC(data):
     return crc
 
 
+def is_date_recent(st_date):
+    
+    #"2021-02-26T13:11:17.683Z"
+    #"2021-02-26T13:10:00.236+0000"
+    #print("input: " + st_date)
+    if type(st_date) == str:
+        if len(st_date) == 20:
+            date_old = datetime.strptime(st_date,'%Y-%m-%dT%H:%M:%S%z')
+        else: 
+            if (st_date[-5:] == "+0000"):
+                st_date2 = st_date[:-5] + "Z"
+            else:
+                st_date2 = st_date
+            date_old = datetime.strptime(st_date2,'%Y-%m-%dT%H:%M:%S.%f%z')
+
+        today = date.today()
+        ecart = today-date_old.date()
+        if (ecart > timedelta(days=15)):
+            return False
+        else:
+            return True
+    else:
+        return False
+
+
+
 if __name__ == '__main__':
     
 #    convert_Hex_decimal('8C010000', True)
@@ -53,4 +83,13 @@ if __name__ == '__main__':
 
     crc = calc_CRC('0000000014000B10060D02F5000000990018000F003836343530343033313530343834346C001600060010000B00140064001600060006000D0002000F0018001100565237454359485A524B4A3836383532359D00040001000165001F0008007720C51354EF454066001F000800B35E0CE5447BF43F680002000400000000006700020004000000000069001F0008003333333333236140AB4E1F000800000000000000F03F6A001F00080000000000000000006B001F000800000000000000F03FFF7F040001006413000200040071F3DE007C4E0300020000007D4E030002000100FF2A0400010001FA4E020004000219B25F')
     print(crc)#normalement "31997" (en décimal)
+    
+    is_date_recent("2018-05-09T08:31:55Z")
+    is_date_recent("2019-09-10T07:00:57.600Z")
+    is_date_recent("2021-02-26T13:10:00.236+0000")
+    is_date_recent("2021-02-26T15:27:59.347Z")
+    is_date_recent("2020-05-19T12:22:56.053Z")
+    is_date_recent("2021-02-26T15:26:21.500+0000")
+    
+    
     pass

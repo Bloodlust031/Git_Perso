@@ -1,4 +1,35 @@
 Champs dans le exportD2HubGlobal.json:
-
-
+    "868996033820754": {
+        "Item_IMEI": "868996033820754",
+        "Item_Type": "ICAN_V2",
+        "Item_FW": "3.4.F",
+        "Item_Serial": "53421",
+        "Account_Name": "essaisiCAN2",
+        "VEH_Immat": "Immat_JDEVAY",
+        "VEH_Mark": "CITROEN",
+        "VEH_Model": "BERLINGO",
+        "VEH_Serie": "III",
+        "VEH_VIN": "VR7ECYHZRKJ868524",
+        "Last_OTA_QUERY_Date": "2021-02-27T17:08:08.074Z",
+        "First_RECO_Date": "2020-05-19T12:22:56.053Z",
+        "Last_Msg_Date": "2021-02-27T17:06:30.731+0000",
+        "Service_Name": "psa",
+        "Account_ID": "85907fae-26d7-45b6-8c0e-1ea6000ef984",
+        "VEH_Label": null,
+        "VEH_Motor_NbCyl": "4",
+        "VEH_Motor_Cyl": "1500",
+        "VEH_Motor_FuelType": "4",
+        "Item_active": true,
+        "Item_communicating": true,
+        "Msg_Bucket": "MARKETIP"
+    },
+    
+Champs dans le Account_list.json:
+    {
+        "uuid": "42c15865-0129-4c3f-a9ee-af0074fa0aed",
+        "parentUuid": "1e50b244-3953-442e-a210-632a50dcf2fe",
+        "accountName": "Test GSM",
+        "parentName": "ADMIN_ROOT",
+        "state": "A"
+    },
 
