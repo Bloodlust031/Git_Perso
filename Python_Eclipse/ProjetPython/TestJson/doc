@@ -22,6 +22,7 @@ Champs dans le exportD2HubGlobal.json:
         "Item_active": true,
         "Item_communicating": true,
         "Msg_Bucket": "MARKETIP"
+        "Item_conf_Validity"
     },
     
 Champs dans le Account_list.json:

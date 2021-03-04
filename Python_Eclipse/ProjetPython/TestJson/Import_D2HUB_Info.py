@@ -15,6 +15,7 @@ import re
 import Boite_Outils
 
 item_dico = dict()      #liste d'�quipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
+account_dico = dict()
 date_fic1 = 0
 date_fic2 = 0
 account_uuid_list = list()
@@ -432,38 +433,85 @@ def Get_Info_from_ICAN_HARDSTATUS():
         for ligne in csv_reader:
             st_IMEI = ligne["imei"]
             if type(st_IMEI) == str:
-                st_Bucket = ligne["targetplatform"]
-                if type(st_Bucket) == str:
-                    if len(st_Bucket) >= 1:
-                        if st_Bucket == "-Inherited-":
-                            st_Bucket = "MARKETIP"
-                        if "MARKETIP" in st_Bucket:
-                            st_Bucket = "MARKETIP"
+                #Msg_Bucket
+                st_Temp = ligne["targetplatform"]
+                if type(st_Temp) == str:
+                    if len(st_Temp) >= 1:
+                        if st_Temp == "-Inherited-":
+                            st_Temp = "MARKETIP"
+                        if "MARKETIP" in st_Temp:
+                            st_Temp = "MARKETIP"
                     else:
-                        st_Bucket = "MARKETIP"
+                        st_Temp = "MARKETIP"
                 else:
-                    st_Bucket = "MARKETIP"
-                item_dico[st_IMEI]["Msg_Bucket"] = st_Bucket
+                    st_Temp = "MARKETIP"
+                item_dico[st_IMEI]["Msg_Bucket"] = st_Temp
+                #Item_conf_Validity
+                st_Temp = ligne["config_valid"]
+                item_dico[st_IMEI]["Item_conf_Validity"] = st_Temp
     pass
     
 
 def Get_D2Hub_Account_list():
     global account_uuid_list
+    global account_dico
+    
+    
     curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/account.getlist'
     curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
     curl_hearders['X-Api-Token'] = Configuration.API_D2HUB_Token
     r = requests.get(curl_url, headers = curl_hearders)
+    
     if (r.status_code == 200):
-        with open(Configuration.path_json_D2Hub_account, 'w') as json_file_result:
+        account_dico.clear()
+        with open(Configuration.path_json_D2Hub_account_raw, 'w') as json_file_result:
             json.dump(r.json(), json_file_result, indent=4)
         pass
         account_uuid_list.clear()
         for compte in r.json():
             account_uuid_list.append(compte["uuid"])
+            account_dico[compte["uuid"]] = dict()
+            account_dico[compte["uuid"]]["uuid"] = compte["uuid"]
+            account_dico[compte["uuid"]]["parentUuid"] = compte["parentUuid"]
+            account_dico[compte["uuid"]]["accountName"] = compte["accountName"]
+            account_dico[compte["uuid"]]["parentName"] = compte["parentName"]
+            account_dico[compte["uuid"]]["state"] = compte["state"]
+            if (compte["parentName"] == "ADMIN_ROOT") or (compte["accountName"] == "ADMIN_ROOT"):
+                account_dico[compte["uuid"]]["isMaster"] = True
+            else:
+                account_dico[compte["uuid"]]["isMaster"] = False
+
+        for compte_uuid in account_dico:
+            if  account_dico[compte_uuid]["isMaster"] == False:
+                to_continue = True
+                parent_uuid = account_dico[compte_uuid]["parentUuid"]
+                while to_continue:
+                    if account_dico[parent_uuid]["isMaster"] == True:
+                        account_dico[compte_uuid]["MasterName"] = account_dico[parent_uuid]["accountName"]
+                        account_dico[compte_uuid]["MastertUuid"] = account_dico[parent_uuid]["uuid"]
+                        to_continue = False
+                    else:
+                        parent_uuid = account_dico[parent_uuid]["parentUuid"]
+        with open(Configuration.path_json_D2Hub_account, 'w') as json_file_result:
+            json.dump(account_dico, json_file_result, indent=4)
+        pass
     else:
         print("probleme dans la requete API de recuperation des comptes clients")
     
     
+def get_bucket_IMEI(stIMEI):
+    global item_dico
+    
+    if len(item_dico) == 0:
+        #le dictionnaire est vide, on va le remplir depuis le fichier json
+        print("Remplissage du dictionnaire")
+        with open(Configuration.path_json_D2Hub_info_total) as json_file:
+            item_dico = json.load(json_file)
+    bucket = item_dico[stIMEI]["Msg_Bucket"]
+    #print("bucket: ", bucket)
+    return bucket
+
+
 if __name__ == '__main__':
     start_time = time.time()
     print ("Debut")

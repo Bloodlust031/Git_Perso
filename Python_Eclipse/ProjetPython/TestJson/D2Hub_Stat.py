@@ -61,6 +61,16 @@ def Set_Account_List_():
                                 master_account["children_list"].append(current_item.copy())
                                 children_list.remove(current_item)'''
 
+def gen_stat()
+    txt_input = input("Voulez-vous mettre à jour les données d'entrées (O pour oui) ?")
+    try:
+        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
+            bretour = True
+            Import_D2HUB_Info.Extract_infos_from_D2Hub()
+    except:
+        bretour = False
+    
+    
 
 if __name__ == '__main__':
     #mise � jour des informations depuis D2Hub

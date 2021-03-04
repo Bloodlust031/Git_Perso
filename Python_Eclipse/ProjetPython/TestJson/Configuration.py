@@ -25,7 +25,8 @@ path_ExportD2HUBcsv = 'D:\Temp_JSON\INPUT_D2HUB/export.csv'
 #path_json_D2Hub_info2 = 'D:\Temp_JSON\OUTPUT\exportD2HubCSV.json'           #reflet de export.csv
 path_json_D2Hub_info_total = 'D:\Temp_JSON\INPUT_D2HUB\exportD2HubGlobal.json'   #dictionnaire des équipements declares sur D2Hub 
 path_json_D2Hub_equipment_list_raw = 'D:\Temp_JSON\INPUT_D2HUB\D2Hub_equipment_list_raw.json'   #dictionnaire des équipements declares sur D2Hub
-path_json_D2Hub_account = 'D:\Temp_JSON\INPUT_D2HUB\Account_list.json'
+path_json_D2Hub_account = 'D:\Temp_JSON\INPUT_D2HUB\Account_dict.json'
+path_json_D2Hub_account_raw = 'D:\Temp_JSON\INPUT_D2HUB\Account_list_raw.json'
 path_D2Hub_ICAN_HARD_STATUS = 'D:\Temp_JSON\INPUT_D2HUB\ICAN_HARD_STATUS.csv'           
 #path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
 API_D2HUB_Token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxNDA3MDQ1NX0._wCx66P4G_-Ed3oYBkLkTpK96CkvZTM6H4F1l1maNNvwGV68kTWSTeMYtDsTSkkEZKjiScsBsExSDGsAJRzemQ'
@@ -38,11 +39,7 @@ API_D2HUB_PASS = 'Bordel31'
 
 #ATTENTION: ces information peuvent être surchargées par la fonction "maj_configuration" du module Telech_AWS_Json
 IMEI_list = ['867322034083212','867322034092015','867322034105809']
-#Date_list = ['2020-11-22','2020-11-23','2020-11-24','2020-11-25','2020-11-26','2020-11-27','2020-11-28','2020-11-29','2020-11-30','2020-12-01','2020-12-02','2020-12-03','2020-12-04','2020-12-05','2020-12-06','2020-12-07','2020-12-08','2020-12-09','2020-12-10','2020-12-11']
 Date_list = ['2020-12-02','2020-12-03']
-Bucket = "/MARKETIP/"
-Bucket2 = ""
-#Bucket2 = "/OCEAN/"
 
 
 lbl_msg_Dic_Params_D2Hub_cnt = 'Msg_Params_decompose_D2Hub_cnt'  #decomposition du message en paramètre réalisé par D2Hub - Sous forme de dictionnaire
@@ -71,14 +68,6 @@ def set_Date_list(str_Date_Deb, str_Date_fin="0"):
             d_date_temp = d_date_deb + timedelta(days=i)
             str_date_temp = d_date_temp.isoformat()
             Date_list.append(str_date_temp)
-
-def set_Bucket(Bucket_name):
-    global Bucket
-    Bucket = Bucket_name
-
-def set_Bucket2(Bucket_name):
-    global Bucket2
-    Bucket2 = Bucket_name
 
 def set_D2HubToken(auth_Token):
     global API_D2HUB_Token
