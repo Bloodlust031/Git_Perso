@@ -13,6 +13,8 @@ import requests
 import time
 import re
 import Boite_Outils
+import logging
+#import logging.config
 
 item_dico = dict()      #liste d'�quipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
 account_dico = dict()
@@ -385,6 +387,10 @@ def Extract_infos_from_D2Hub():
     global item_dico
 
     #extraction des données dans l'ordre des plus vieilles aux plus recente/fiables
+    #logging.shutdown()
+    logging.basicConfig(filename=Configuration.path_json_log_D2HubInfo, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+    #logging.config.fileConfig(Configuration.path_json_log_D2HubInfo)
+    logging.info('Extract_infos_from_D2Hub')
 
     bretour = recup_D2Hub_API_Token()
     if (bretour == False):
@@ -397,20 +403,24 @@ def Extract_infos_from_D2Hub():
             bretour = False
     if bretour:
         #Telechargement des fichiers sur AWS
+        logging.info('Telech_D2HUb_Info_from_AWS')
         Telech_D2HUb_Info_from_AWS()
 
         item_dico.clear()
     
         #export depuis export.csv téléchargé automatiquement ici
+        logging.info('Telech_Export_csv_from_D2Hub')
         Telech_Export_csv_from_D2Hub()
         Import_from_ExportD2HUBcsv()    #lecture des donnees de "export.csv"
 
         
         #export direct depuis D2Hub
+        logging.info('Get_Info_Directly_from_D2Hub')
         Get_Info_Directly_from_D2Hub()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
         
         set_item_activ_communicating()
         
+        logging.info('Get_Info_from_ICAN_HARDSTATUS')
         Get_Info_from_ICAN_HARDSTATUS()
         
         #enregistrement des r�sultats
@@ -419,8 +429,9 @@ def Extract_infos_from_D2Hub():
         pass   
     
         #traitement de la liste des comptes
+        logging.info('Get_D2Hub_Account_list')
         Get_D2Hub_Account_list()
-    
+        logging.info('Fini')
     else:
         print("Mettez � jour l'Api-Token (du module Configuration).")
 
