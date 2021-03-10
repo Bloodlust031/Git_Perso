@@ -149,6 +149,7 @@ def set_item_activ_communicating():
             if "Last_Msg_Date" in equipment:
                 if(Boite_Outils.is_date_recent(equipment["Last_Msg_Date"])):
                     equipment["Item_communicating"] = True
+                    equipment["Item_active"] = True
                 else:
                     equipment["Item_communicating"] = False
             else:
@@ -386,10 +387,16 @@ def Telech_Export_csv_from_D2Hub():
 def Extract_infos_from_D2Hub():
     global item_dico
 
-    #extraction des données dans l'ordre des plus vieilles aux plus recente/fiables
-    #logging.shutdown()
-    logging.basicConfig(filename=Configuration.path_json_log_D2HubInfo, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
-    #logging.config.fileConfig(Configuration.path_json_log_D2HubInfo)
+    fh_D2Hub = logging.FileHandler(Configuration.path_json_log_D2HubInfo, 'w')
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    fh_D2Hub.setFormatter(formatter)
+    log = logging.getLogger()  # root logger
+    log.setLevel(logging.DEBUG)
+    for hdlr in log.handlers[:]:  # remove all old handlers
+        log.removeHandler(hdlr)
+    log.addHandler(fh_D2Hub)      # set the new handler    
+    
+    
     logging.info('Extract_infos_from_D2Hub')
 
     bretour = recup_D2Hub_API_Token()

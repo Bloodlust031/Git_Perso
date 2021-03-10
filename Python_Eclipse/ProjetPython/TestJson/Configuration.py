@@ -30,6 +30,8 @@ path_json_D2Hub_account_raw = 'D:\Temp_JSON\INPUT_D2HUB\Account_list_raw.json'
 path_D2Hub_ICAN_HARD_STATUS = 'D:\Temp_JSON\INPUT_D2HUB\ICAN_HARD_STATUS.csv'           
 #path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
 path_json_stat_by_account = 'D:\Temp_JSON\OUTPUT\Stat_By_Account.json'
+path_json_stat_by_account_csv = 'D:\Temp_JSON\OUTPUT\Stat_By_Account.csv'
+path_json_Globalstat = 'D:\Temp_JSON\OUTPUT\GlobalStat.json'
 path_json_log_stat = 'D:\Temp_JSON\OUTPUT\Log_Stat.log'
 path_json_log_D2HubInfo = 'D:\Temp_JSON\OUTPUT\Log_D2HubInfo.log'
 
