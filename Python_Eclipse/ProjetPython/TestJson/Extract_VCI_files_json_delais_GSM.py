@@ -25,18 +25,18 @@ end_time = 0
 
 def listdirectory(path): 
     liste_fichier=[] 
-    #for root, dirs, files in os.walk(path): 
+    #for root, dirs, files in os.walk(path):
     for root, dirs, files in os.walk(path): 
-        for i in files: 
-            liste_fichier.append(os.path.join(root, i))
+        for i in files:
+            if i.endswith(".json"):
+                liste_fichier.append(os.path.join(root, i))
     liste_fichier.sort()    #Les messages sont traités dans l'ordre chronologique.
     #liste_fichier.sort(reverse = True)    #Les messages sont traités dans l'ordre anti-chronologique.
     return liste_fichier
 
 
 def traite_1_1fic(nom_fic_msg): 
-    #print("fichier en cours: ", path)
-    #print("fichier en cours: ", os.path.basename(path))
+    #print("fichier en cours: ", nom_fic_msg)
     global current_dict_messages
     current_msg = dict()
     
@@ -156,9 +156,9 @@ if __name__ == "__main__":
     print("coucou")
     
     Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158','862010039042896','864504031167089','867322034107201'])  #test GSM - TrackingOnly
-    Configuration.set_Date_list('2021-02-23', '2021-02-28')
+    Configuration.set_Date_list('2021-03-05', '2021-03-11')
     Telech_AWS_Json.gen_liste_cmd()
-    Telech_AWS_Json.execute_cmd()
+    Telech_AWS_Json.execute_cmd()   #telechargement des messages
     print("Téléchargement en cours")
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     

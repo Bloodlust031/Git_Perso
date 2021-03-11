@@ -25,13 +25,13 @@ liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
 def maj_configuration():
-    Configuration.set_Date_list('2021-03-01', '2021-03-08')
+    Configuration.set_Date_list('2021-03-01', '2021-03-11')
     #Configuration.set_IMEI_List(['864504031504844','867322034117739','868996033820754']) #Tracking only
     #Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
 
     #Configuration.set_IMEI_List(['867322034083212','867322034092015','867322034105809','867322038019717']) #Clio5 essence
     #Configuration.set_IMEI_List(['864504031783646','864504031784438','864504031308253','869103026381394','864504039629882','864504039684291','864504031769983'])
-    Configuration.set_IMEI_List(['867322038574596'])
+    Configuration.set_IMEI_List(['864504031504844','868996033820754'])
     #Configuration.set_Bucket2("/OCEAN/")
     #Configuration.set_IMEI_List(['867322034097105'])
     
@@ -43,15 +43,16 @@ def Supprim_Event_msg():
     for root, dirs, files in os.walk(Configuration.Chemin_json): 
         for fichier in files: 
             nom_fichier = os.path.join(root, fichier)
-            with open(nom_fichier, 'r') as json_file_result:
-                current_dict_messages = json.load(json_file_result)
-            pass
-            if 'evt' in current_dict_messages:
-                if (str(current_dict_messages['evt']) == '100'):
-                    #message event à supprimer
-                    if (str(current_dict_messages['eid']) != '2A'):
-                        os.remove(nom_fichier)
-            current_dict_messages.clear()
+            if nom_fichier.endswith(".json"):
+                with open(nom_fichier, 'r') as json_file_result:
+                    current_dict_messages = json.load(json_file_result)
+                pass
+                if 'evt' in current_dict_messages:
+                    if (str(current_dict_messages['evt']) == '100'):
+                        #message event à supprimer
+                        if (str(current_dict_messages['eid']) != '2A'):
+                            os.remove(nom_fichier)
+                current_dict_messages.clear()
 
 
 def gen_liste_cmd():

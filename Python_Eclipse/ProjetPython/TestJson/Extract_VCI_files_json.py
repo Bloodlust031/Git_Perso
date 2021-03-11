@@ -25,7 +25,8 @@ def listdirectory(path):
     #for root, dirs, files in os.walk(path): 
     for root, dirs, files in os.walk(path): 
         for i in files: 
-            liste_fichier.append(os.path.join(root, i))
+            if i.endswith(".json"):
+                liste_fichier.append(os.path.join(root, i))
     liste_fichier.sort()    #Les messages sont traités dans l'ordre chronologique.
     #liste_fichier.sort(reverse = True)    #Les messages sont traités dans l'ordre anti-chronologique.
     return liste_fichier
