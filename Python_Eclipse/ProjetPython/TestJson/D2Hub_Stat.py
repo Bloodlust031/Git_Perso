@@ -10,12 +10,12 @@ import json
 import Import_D2HUB_Info
 import logging
 import csv
+#import os
+#import sys
+
 
 
 def gen_stat_by_account():
-    #account_dico = dict()
-    #equipment_dico = dict()
-    account_dico = dict()
     current_account = dict()
     stat_account_dict = dict()
         
@@ -138,7 +138,7 @@ def gen_stat_by_account():
         json.dump(stat_account_dict, json_file_result, indent=4)
     with open(Configuration.path_json_stat_by_account_csv, 'w', newline='') as csvfile:
         fieldnames = ['name', 'nb_iCAN1','nb_iCAN2', 'nb_iCAN_Active', 'nb_iCAN_communicating', 'nb FW 2.6.x older', 'nb FW 2.7.x 2.8.x', 'nb FW 3.1.x 3.2.x', 'nb FW 3.3.x newer', 'FW_list']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore')
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
         writer.writeheader()
         for account_UUID in stat_account_dict:
             writer.writerow(stat_account_dict[account_UUID])
@@ -188,6 +188,115 @@ def gen_stat_by_equipment():
     with open(Configuration.path_json_Globalstat, 'w') as json_file_result:
         json.dump(stat_dict, json_file_result, indent=4)
 
+def gen_stat_by_Veh(st_Model):
+    stat_dict = dict()
+    stat_dict.clear()
+    
+    with open(Configuration.path_json_D2Hub_info_total) as json_file3:
+        equipment_dico = json.load(json_file3)
+        stat_dict["Total"] = 0
+        stat_dict["Item_active"] = dict()
+        stat_dict["Item_active"]["Total"] = 0
+        stat_dict["Item_communicating"] = dict()
+        stat_dict["Item_communicating"]["Total"] = 0
+        stat_dict["Item_active"]["FW_list"] = dict()
+        stat_dict["Item_active"]["Service_list"] = dict()
+        stat_dict["Item_communicating"]["FW_list"] = dict()
+        stat_dict["Item_communicating"]["Service_list"] = dict()
+
+        nom_fic = Configuration.path_sortie + "Stat_Veh_" + st_Model + ".json"
+        stat_dict["Item_active"]["Serie"] = dict()
+        stat_dict["Item_communicating"]["Serie"] = dict()
+        
+        for imei in equipment_dico:
+            a_traiter = False
+            if "VEH_Model" in equipment_dico[imei]:
+                if(equipment_dico[imei]["VEH_Model"] == st_Model):
+                    a_traiter = True
+                        
+            if a_traiter == True:
+                stat_dict["Total"] += 1
+                if(equipment_dico[imei]["Item_active"] == True):
+                    stat_dict["Item_active"]["Total"] += 1
+                    str_fw = equipment_dico[imei]["Item_FW"]
+                    if(str_fw not in stat_dict["Item_active"]["FW_list"]):
+                        stat_dict["Item_active"]["FW_list"][str_fw] = 1
+                    else:
+                        stat_dict["Item_active"]["FW_list"][str_fw] += 1
+                    
+                    if("Service_Name" in equipment_dico[imei]):
+                        str_tmp = equipment_dico[imei]["Service_Name"]
+                        if(str_tmp not in stat_dict["Item_active"]["Service_list"]):
+                            stat_dict["Item_active"]["Service_list"][str_tmp] = 1
+                        else:
+                            stat_dict["Item_active"]["Service_list"][str_tmp] += 1
+                    
+                    st_VEH_Serie = equipment_dico[imei]["VEH_Serie"]
+                    try:
+                        if len(st_VEH_Serie) == 0:
+                            st_VEH_Serie = "vide"
+                    except:
+                        st_VEH_Serie = "vide"
+                    if(st_VEH_Serie not in stat_dict["Item_active"]["Serie"]):
+                        stat_dict["Item_active"]["Serie"][st_VEH_Serie] = dict()
+                        stat_dict["Item_active"]["Serie"][st_VEH_Serie]["Total"] = 0
+                        stat_dict["Item_active"]["Serie"][st_VEH_Serie]["FW_list"] = dict()
+                        stat_dict["Item_active"]["Serie"][st_VEH_Serie]["Service_list"] = dict()
+                    
+                    stat_dict["Item_active"]["Serie"][st_VEH_Serie]["Total"] += 1
+                    if("Service_Name" in equipment_dico[imei]):
+                        str_tmp = equipment_dico[imei]["Service_Name"]
+                        if(str_tmp not in stat_dict["Item_active"]["Serie"][st_VEH_Serie]["Service_list"]):
+                            stat_dict["Item_active"]["Serie"][st_VEH_Serie]["Service_list"][str_tmp] = 1
+                        else:
+                            stat_dict["Item_active"]["Serie"][st_VEH_Serie]["Service_list"][str_tmp] += 1
+                    if(str_fw not in stat_dict["Item_active"]["Serie"][st_VEH_Serie]["FW_list"]):
+                        stat_dict["Item_active"]["Serie"][st_VEH_Serie]["FW_list"][str_fw] = 1
+                    else:
+                        stat_dict["Item_active"]["Serie"][st_VEH_Serie]["FW_list"][str_fw] += 1
+                            
+                        
+                if(equipment_dico[imei]["Item_communicating"] == True):
+                    stat_dict["Item_communicating"]["Total"] += 1
+                    str_fw = equipment_dico[imei]["Item_FW"]
+                    if(str_fw not in stat_dict["Item_communicating"]["FW_list"]):
+                        stat_dict["Item_communicating"]["FW_list"][str_fw] = 1
+                    else:
+                        stat_dict["Item_communicating"]["FW_list"][str_fw] += 1
+                    
+                    if("Service_Name" in equipment_dico[imei]):
+                        str_tmp = equipment_dico[imei]["Service_Name"]
+                        if(str_tmp not in stat_dict["Item_communicating"]["Service_list"]):
+                            stat_dict["Item_communicating"]["Service_list"][str_tmp] = 1
+                        else:
+                            stat_dict["Item_communicating"]["Service_list"][str_tmp] += 1
+                    st_VEH_Serie = equipment_dico[imei]["VEH_Serie"]
+                    try:
+                        if len(st_VEH_Serie) == 0:
+                            st_VEH_Serie = "vide"
+                    except:
+                        st_VEH_Serie = "vide"
+                    if(st_VEH_Serie not in stat_dict["Item_communicating"]["Serie"]):
+                        stat_dict["Item_communicating"]["Serie"][st_VEH_Serie] = dict()
+                        stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["Total"] = 0
+                        stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["FW_list"] = dict()
+                        stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["Service_list"] = dict()
+                    
+                    stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["Total"] += 1
+                    if("Service_Name" in equipment_dico[imei]):
+                        str_tmp = equipment_dico[imei]["Service_Name"]
+                        if(str_tmp not in stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["Service_list"]):
+                            stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["Service_list"][str_tmp] = 1
+                        else:
+                            stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["Service_list"][str_tmp] += 1
+                    if(str_fw not in stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["FW_list"]):
+                        stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["FW_list"][str_fw] = 1
+                    else:
+                        stat_dict["Item_communicating"]["Serie"][st_VEH_Serie]["FW_list"][str_fw] += 1
+                        
+    with open(nom_fic, 'w') as json_file_result:
+        json.dump(stat_dict, json_file_result, indent=4)
+
 
 def gen_stat():
     
@@ -212,7 +321,6 @@ def gen_stat():
         bretour = False
         
     if bretour == True:
-        
         logging.info('MAJ des infos d entree depuis D2Hub/AWS')
         Import_D2HUB_Info.Extract_infos_from_D2Hub()
         fh_Stat = logging.FileHandler(Configuration.path_json_log_stat, 'a')
@@ -230,13 +338,16 @@ def gen_stat():
     logging.info('gen_stat_by_equipment')
     gen_stat_by_equipment()
     
+    gen_stat_by_Veh("MASTER")
+    gen_stat_by_Veh("DAILY")
+    gen_stat_by_Veh("MAXITY")
+    
+    
     logging.info('Fin de generation des stats')
 
 if __name__ == '__main__':
-    #mise � jour des informations depuis D2Hub
-    #Import_D2HUB_Info.Extract_infos_from_D2hHub()
-    #Import_D2HUB_Info.Get_D2Hub_Account_list()
     
+    #sys.stdin.read(1);
     gen_stat()
     
     
