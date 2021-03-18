@@ -125,7 +125,6 @@ def traite_1_1fic(nom_fic_msg):
 def get_nom_fic_sortie(extension):
     nom = Configuration.path_sortie + '__Global_log_delai_GSM.' + extension
     return nom
-
     
 def close_global_log_dict():
     global global_log_dict
@@ -144,21 +143,20 @@ def ecriture_csv():
     nom_fic = get_nom_fic_sortie('csv')
     with open(nom_fic, 'w', newline='') as csvfile:
         fieldnames = ['http_link', 'NomFichier_Msg','IMEI', 'VIN', 'Date_Reception', 'Date_Generation', 'Delai_GSM', 'Typ_Msg', 'Typ_Evt', 'Msg_Size', 'FW', 'Odometre', 'Distance_parcourue', 'Journey_Nb', 'Msg_Nb', 'GPS_Latitude', 'GPS_Longitude', 'Timestamp_Reception', 'Timestamp_Generation', 'ICCID', 'IMSI', 'Serial']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,delimiter=";")
 
         writer.writeheader()
         for msg in global_log_dict["Msg_list"]:
             writer.writerow(msg)
     pass
-    
 
 if __name__ == "__main__":
     print("coucou")
     
     Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158','862010039042896','864504031167089','867322034107201'])  #test GSM - TrackingOnly
-    Configuration.set_Date_list('2021-03-10', '2021-03-15')
+    Configuration.set_Date_list('2021-03-10', '2021-03-18')
     Telech_AWS_Json.gen_liste_cmd()
-    Telech_AWS_Json.execute_cmd()   #telechargement des messages
+    #Telech_AWS_Json.execute_cmd()   #telechargement des messages
     print("Téléchargement en cours")
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     

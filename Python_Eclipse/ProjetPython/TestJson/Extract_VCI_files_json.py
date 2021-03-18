@@ -10,7 +10,7 @@ import time
 import fnmatch
 import Boite_Outils
 import Configuration
-
+import Telech_AWS_Json
 
 prefixe_nom_sortie = 'Msg_IMEI_'
 
@@ -78,6 +78,7 @@ def traite_1_1fic(nom_fic_msg):
         
         if "20033" in data['cnt']:
             str_temp =  data['cnt']['20033']
+            current_msg['FW'] = str_temp
             if str_temp not in current_dict_messages["FW_list"]:
                 current_dict_messages["FW_list"].append(str_temp)
 
@@ -281,10 +282,29 @@ def set_Dstrib_delais_GSM(delai):
                 i = taille
         i+=1
         
-    
+def telech_msg():
+    Configuration.set_IMEI_List(['868996033815168'])  #test GSM - TrackingOnly
+    Configuration.set_Date_list('2021-03-08', '2021-03-12')
+    Telech_AWS_Json.gen_liste_cmd()
+    print("Téléchargement en cours")
+    Telech_AWS_Json.execute_cmd()   #telechargement des messages
+    print("Attendre la fin des téléchargements")
+    bretour = False
+    txt_input = input("Voulez vous supprimer les messages Event (O pour oui) ?")
+    try:
+        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
+            bretour = True
+    except:
+        bretour = False
+    if bretour:
+        Telech_AWS_Json.Supprim_Event_msg()
+
     
 if __name__ == "__main__":
     print("coucou")
+    
+    telech_msg()
+    
     liste_fichiers = list()
 
     init_global_log_dict()
@@ -307,7 +327,7 @@ if __name__ == "__main__":
     
     print( end_time-start_time, "secondes d'executions")
     print(nb_fic, "fichiers analyses")
-    
+    print("fini")
     #print(global_log_dict)
     
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
