@@ -337,23 +337,36 @@ def gen_stat_by_Service():
                         stat_dict["Item_active"][str_serv] = dict()
                         stat_dict["Item_active"][str_serv]["Count"] = 0
                         stat_dict["Item_active"][str_serv]["Veh_list"] = dict()
+                        stat_dict["Item_active"][str_serv]["FW_list"] = dict()
                     stat_dict["Item_active"][str_serv]["Count"] += 1
                     if (veh_ID not in stat_dict["Item_active"][str_serv]["Veh_list"]):
                         stat_dict["Item_active"][str_serv]["Veh_list"][veh_ID] = 1
                     else:
                         stat_dict["Item_active"][str_serv]["Veh_list"][veh_ID] += 1
-                    #TODO
+                        
+                    str_fw = equipment_dico[imei]["Item_FW"]
+                    if(str_fw not in stat_dict["Item_active"][str_serv]["FW_list"]):
+                        stat_dict["Item_active"][str_serv]["FW_list"][str_fw] = 1
+                    else:
+                        stat_dict["Item_active"][str_serv]["FW_list"][str_fw] += 1
+                                                
                 if(equipment_dico[imei]["Item_communicating"] == True):
                     stat_dict["Item_communicating"]["Count"] += 1
                     if str_serv not in stat_dict["Item_communicating"]:
                         stat_dict["Item_communicating"][str_serv] = dict()
                         stat_dict["Item_communicating"][str_serv]["Count"] = 0
                         stat_dict["Item_communicating"][str_serv]["Veh_list"] = dict()
+                        stat_dict["Item_communicating"][str_serv]["FW_list"] = dict()
                     stat_dict["Item_communicating"][str_serv]["Count"] += 1
                     if (veh_ID not in stat_dict["Item_communicating"][str_serv]["Veh_list"]):
                         stat_dict["Item_communicating"][str_serv]["Veh_list"][veh_ID] = 1
                     else:
-                        stat_dict["Item_communicating"][str_serv]["Veh_list"][veh_ID] += 1                    #TODO
+                        stat_dict["Item_communicating"][str_serv]["Veh_list"][veh_ID] += 1
+                    str_fw = equipment_dico[imei]["Item_FW"]
+                    if(str_fw not in stat_dict["Item_communicating"][str_serv]["FW_list"]):
+                        stat_dict["Item_communicating"][str_serv]["FW_list"][str_fw] = 1
+                    else:
+                        stat_dict["Item_communicating"][str_serv]["FW_list"][str_fw] += 1                        
 
     with open(nom_fic, 'w') as json_file_result:
         json.dump(stat_dict, json_file_result, indent=4)
