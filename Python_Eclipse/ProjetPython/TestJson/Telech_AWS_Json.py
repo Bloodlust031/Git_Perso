@@ -9,6 +9,10 @@ import os
 import json
 import Configuration
 import Import_D2HUB_Info
+import sys
+import shutil
+import glob 
+import os.path 
 
 #commande =  "aws s3 sync s3://ican.processed.d2hub.fr/2020-11-27/MARKETIP/864504031504844/ H:/Boulot/TempDownAWSS3/MARKETIP/864504031504844/"
 #os.system("start " + commande)
@@ -25,15 +29,10 @@ liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
 def maj_configuration():
-    Configuration.set_Date_list('2021-03-08', '2021-03-17')
-    #Configuration.set_IMEI_List(['864504031504844','867322034117739','868996033820754']) #Tracking only
-    #Configuration.set_IMEI_List(['867322038021531','867322034091553','864504031784453','867322034104158'])  #test GSM - TrackingOnly
+    Configuration.set_Date_list('2021-03-22', '2021-03-22')
 
-    #Configuration.set_IMEI_List(['867322034083212','867322034092015','867322034105809','867322038019717']) #Clio5 essence
-    #Configuration.set_IMEI_List(['864504031783646','864504031784438','864504031308253','869103026381394','864504039629882','864504039684291','864504031769983'])
-    #Configuration.set_IMEI_List(['864504031504844','868996033820754'])
+    #Configuration.set_IMEI_List(['864504031504844','868996033820754']) #Mes iCAN Berlingo
     Configuration.set_IMEI_List(['868996033831231','868996033816059','865794031350400','865794031367990','865794031412234','864504031078534','868996033846445','868996033828906','868996033830191','868996033829706','868997035956422','868997035942661','868997035956604'])
-    #Configuration.set_Bucket2("/OCEAN/")
     #Configuration.set_IMEI_List(['867322034097105'])
     
 def Supprim_Event_msg():
@@ -96,12 +95,64 @@ def execute_cmd():
         i+=1
         os.system(str_cmd)
         print ("Commande " + str(i) + " / " + str(nb_req))
+ 
+def efface_old_msg():
+    #effacement des messages précédemment téléchargés.
+    bretour = False
+    txt_input = input("Voulez vous effacer les messages précédents (O pour oui) ?")
+    try:
+        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
+            bretour = True
+    except:
+        bretour = False
+    if bretour:
+        for root, dirs, files in os.walk(Configuration.Chemin_json): 
+            for fichier in files: 
+                nom_fichier = os.path.join(root, fichier)
+                os.remove(nom_fichier)
+
+
+def telech(Date_list = [], IMEI_list = []):
+    if len(Date_list) == 1:
+        Configuration.set_Date_list(Date_list[0], "0")  #on n'a pas de date de fin-> on va juste télécharger les messages de ce jour
+    if len(Date_list) > 1:
+        Configuration.set_Date_list(Date_list[0], Date_list[1]) #on prend tous les jours entre ces 2 dates
+    if len(IMEI_list)>0:
+        Configuration.set_IMEI_List(IMEI_list)
+    efface_old_msg()
+    gen_liste_cmd()
+    execute_cmd()
+        
+def deplacement():
+    
+    bretour = False
+    txt_input = input("Voulez vous déplacer les fichiers pour les extraire avec l'outil Excel ?")
+    try:
+        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
+            bretour = True
+    except:
+        bretour = False
+        
+    if bretour:
+        l = glob.glob(Configuration.Chemin_json + '/*') 
+        for nom_dossier in l: 
+            if os.path.isdir(nom_dossier): 
+                print (nom_dossier)
+                nom = nom_dossier[len(Configuration.Chemin_json)+1:]
+                print (nom)
+                if (nom != Configuration.Chemin_json_Outil_iCAN):
+                    new_dossier = Configuration.Chemin_json + "/" + Configuration.Chemin_json_Outil_iCAN + "/" + nom
+                    print (new_dossier)
+                    shutil.move(nom_dossier, new_dossier)
     
 
 if __name__ == '__main__':
+    
+    deplacement()
+    os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
+    
     maj_configuration()
-    gen_liste_cmd()
-    execute_cmd()
+    telech()
     
     bretour = False
     txt_input = input("Voulez vous supprimer les messages Event (O pour oui) ?")
@@ -112,5 +163,7 @@ if __name__ == '__main__':
         bretour = False
     if bretour:
         Supprim_Event_msg()
+
+    deplacement()        
     
     pass

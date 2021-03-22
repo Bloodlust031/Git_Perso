@@ -134,9 +134,9 @@ def gen_stat_by_account():
         logging.info('Comptes sans iCAN actives (nb_iCAN1/nb_iCAN2): ' + inactive_account)
     
     #sauvegarde du résultat
-    with open(Configuration.path_json_stat_by_account, 'w') as json_file_result:
+    with open(Configuration.path_sortie_Stat + "Stat_By_Account.json", 'w') as json_file_result:
         json.dump(stat_account_dict, json_file_result, indent=4)
-    with open(Configuration.path_json_stat_by_account_csv, 'w', newline='') as csvfile:
+    with open(Configuration.path_sortie_Stat + "Stat_By_Account.csv", 'w', newline='') as csvfile:
         fieldnames = ['name', 'nb_iCAN1','nb_iCAN2', 'nb_iCAN_Active', 'nb_iCAN_communicating', 'nb FW 2.6.x older', 'nb FW 2.7.x 2.8.x', 'nb FW 3.1.x 3.2.x', 'nb FW 3.3.x newer', 'FW_list']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
         writer.writeheader()
@@ -185,7 +185,7 @@ def gen_stat_by_equipment():
                         stat_dict["Item_communicating"]["Service_list"][str_tmp] += 1
 
 
-    with open(Configuration.path_json_Globalstat, 'w') as json_file_result:
+    with open(Configuration.path_sortie_Stat + "GlobalStat.json", 'w') as json_file_result:
         json.dump(stat_dict, json_file_result, indent=4)
 
 def gen_stat_by_Veh(st_Model):
@@ -204,7 +204,7 @@ def gen_stat_by_Veh(st_Model):
         stat_dict["Item_communicating"]["FW_list"] = dict()
         stat_dict["Item_communicating"]["Service_list"] = dict()
 
-        nom_fic = Configuration.path_sortie + "Stat_Veh_" + st_Model + ".json"
+        nom_fic = Configuration.path_sortie_Stat + "Stat_Veh_" + st_Model + ".json"
         stat_dict["Item_active"]["Serie"] = dict()
         stat_dict["Item_communicating"]["Serie"] = dict()
         
@@ -310,7 +310,7 @@ def gen_stat_by_Service():
         stat_dict["Item_active"]["Veh_list"] = dict()
         stat_dict["Item_communicating"]["Veh_list"] = dict()
 
-        nom_fic = Configuration.path_sortie + "Stat_Services.json"
+        nom_fic = Configuration.path_sortie_Stat + "Stat_Services.json"
         stat_dict["Item_active"]["Serie"] = dict()
         stat_dict["Item_communicating"]["Serie"] = dict()
         
@@ -374,7 +374,7 @@ def gen_stat_by_Service():
 
 def gen_stat():
     
-    fh_Stat = logging.FileHandler(Configuration.path_json_log_stat, 'w')
+    fh_Stat = logging.FileHandler(Configuration.path_sortie_Stat + "Log_Stat.log", 'w')
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     fh_Stat.setFormatter(formatter)
     fh_Stat.setLevel(logging.DEBUG)
@@ -397,7 +397,7 @@ def gen_stat():
     if bretour == True:
         logging.info('MAJ des infos d entree depuis D2Hub/AWS')
         Import_D2HUB_Info.Extract_infos_from_D2Hub()
-        fh_Stat = logging.FileHandler(Configuration.path_json_log_stat, 'a')
+        fh_Stat = logging.FileHandler(Configuration.path_sortie_Stat + "Log_Stat.log", 'a')
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         fh_Stat.setFormatter(formatter)
         log = logging.getLogger()  # root logger

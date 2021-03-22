@@ -283,11 +283,11 @@ def set_Dstrib_delais_GSM(delai):
         i+=1
         
 def telech_msg():
-    Configuration.set_IMEI_List(['868996033815168'])  #test GSM - TrackingOnly
-    Configuration.set_Date_list('2021-03-08', '2021-03-12')
-    Telech_AWS_Json.gen_liste_cmd()
-    print("Téléchargement en cours")
-    Telech_AWS_Json.execute_cmd()   #telechargement des messages
+    #Configuration.set_IMEI_List(['868996033815168'])  #test GSM - TrackingOnly
+    #Configuration.set_Date_list('2021-03-08', '2021-03-12')
+    print("Lancement du Téléchargement")
+    
+    Telech_AWS_Json.telech(Date_list = ['2021-03-08', '2021-03-12'], IMEI_list = ['868996033815168'])
     print("Attendre la fin des téléchargements")
     bretour = False
     txt_input = input("Voulez vous supprimer les messages Event (O pour oui) ?")

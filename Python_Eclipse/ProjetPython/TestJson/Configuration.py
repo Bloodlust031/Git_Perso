@@ -15,8 +15,10 @@ to_integrate_Msg_decompose = False
 to_integrate_Msg_non_decompose_D2Hub = True
 
 Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
+Chemin_json_Outil_iCAN = 'TempDownAWSS3'
 #Chemin_json = 'D:\Boulot\Main\Ican\Extract_traces_FTP\TempDownAWSS3'
 path_sortie = 'D:/Temp_JSON/OUTPUT/'
+path_sortie_Stat = 'D:/Temp_JSON/OUTPUT/Stat/'
 path_InputD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/'
 #path_ImportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/genericInfo.txt'
 #path_ExportD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/export.xlsx
@@ -29,10 +31,6 @@ path_json_D2Hub_account = 'D:\Temp_JSON\INPUT_D2HUB\Account_dict.json'
 path_json_D2Hub_account_raw = 'D:\Temp_JSON\INPUT_D2HUB\Account_list_raw.json'
 path_D2Hub_ICAN_HARD_STATUS = 'D:\Temp_JSON\INPUT_D2HUB\ICAN_HARD_STATUS.csv'           
 #path_json_D2Hub_item_list = 'D:\Temp_JSON\OUTPUT\D2Hub_Item_list.json'
-path_json_stat_by_account = 'D:\Temp_JSON\OUTPUT\Stat_By_Account.json'
-path_json_stat_by_account_csv = 'D:\Temp_JSON\OUTPUT\Stat_By_Account.csv'
-path_json_Globalstat = 'D:\Temp_JSON\OUTPUT\GlobalStat.json'
-path_json_log_stat = 'D:\Temp_JSON\OUTPUT\Log_Stat.log'
 path_json_log_D2HubInfo = 'D:\Temp_JSON\OUTPUT\Log_D2HubInfo.log'
 
 API_D2HUB_Token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxNDA3MDQ1NX0._wCx66P4G_-Ed3oYBkLkTpK96CkvZTM6H4F1l1maNNvwGV68kTWSTeMYtDsTSkkEZKjiScsBsExSDGsAJRzemQ'
