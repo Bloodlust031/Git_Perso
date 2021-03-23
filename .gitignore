@@ -1,4 +1,3 @@
 Python_Eclipse/.metadata/.log
-Python_Eclipse/.metadata/.plugins/*
-Python_Eclipse/.metadata/version.ini
-/metadata/
+Python_Eclipse/.metadata/.plugins/
+*.pyc
