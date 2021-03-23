@@ -113,6 +113,8 @@ def efface_old_msg():
 
 
 def telech(Date_list = [], IMEI_list = []):
+    Configuration.init_config()
+    
     if len(Date_list) == 1:
         Configuration.set_Date_list(Date_list[0], "0")  #on n'a pas de date de fin-> on va juste télécharger les messages de ce jour
     if len(Date_list) > 1:
@@ -148,9 +150,7 @@ def deplacement():
 
 if __name__ == '__main__':
     
-    deplacement()
-    os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
-    
+    Configuration.init_config()
     maj_configuration()
     telech()
     

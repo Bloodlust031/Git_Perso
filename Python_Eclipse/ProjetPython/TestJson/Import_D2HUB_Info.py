@@ -39,53 +39,6 @@ def recup_D2Hub_API_Token():
         print("cmdNOK: " + str(r.status_code))
         return False
 
-'''def Get_Info_Directly_from_D2Hub_by_account(): #récupération de la liste des devices en passant par l'API device.search de D2Hub en filtrant puis en bouclant sur les comptes
-    global item_dico
-    current_item = dict()
-    list_item = list()
-    #Commande � r�p�ter autant de fois que possible:
-    #curl -X GET "https://admin.d2hub.fr/api/admin/v2/integration/device.search?page=0" -H "X-Api-Token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzE5Nzc5NX0.EXEQxe8_bm2G_hatGCKoX1ZnqqPypHybqGf8v0MlkhSSS13uwMzs5fJg_u7O5xFJJDn-bsVNx2L2bu4m0KoUzA" -H "Accept: application/json" -H "Content-Type: application/json"
-    num_compte = 1
-    nb_compte = len(account_uuid_list)
-    print("Recuperation des données des iCAN directement depuis 2Hub.")
-    for compte in account_uuid_list:
-        print("Recuperation depuis le compte: " + str(num_compte) + " / " + str(nb_compte))
-        nb_item = 0
-        num_compte += 1
-        to_continue = True
-        cmd_number = 0
-        curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?c=' + compte + '&size=100&sort=imei,asc&page='
-        #curl_url = 'https://admin.d2hub.fr/api/admin/v2/integration/device.search?size=100&sort=imei,asc&page='
-        curl_hearders = {'Accept':'application/json','Content-Type':'application/json'}
-        curl_hearders['X-Api-Token'] = Configuration.API_D2HUB_Token
-        while to_continue:
-            try:
-                #envoi de la commande CURL
-                curl_url_nb = curl_url + str(cmd_number)
-                r = requests.get(curl_url_nb, headers = curl_hearders)
-                if (r.status_code == 200):
-                    list_item.clear()
-                    list_item = r.json()
-                    if len(list_item) >= 1:
-                        if (cmd_number == 0):
-                            nb_item = r.headers['X-Total-Count']
-                            print("   " + str(nb_item) + " objets sur ce compte.")
-                        for equipment in list_item:
-                            Dict_from_json_Directly_from_D2Hub(equipment)
-                    else:
-                        if (cmd_number == 0):
-                            print("   Aucun objet sur ce compte")
-                    if len(list_item) < 100:
-                        #La dernière réponse n'était pa pleine, pas la peine de continuer.
-                        to_continue = False
-                else:
-                    to_continue = False
-                #incr�mentation du compteur de page
-                cmd_number += 1
-            except:
-                to_continue = False'''
-
-
 def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en passant par l'API device.search de D2Hub
     global item_dico
     list_item = list()
@@ -396,7 +349,10 @@ def Extract_infos_from_D2Hub():
         log.removeHandler(hdlr)
     log.addHandler(fh_D2Hub)      # set the new handler    
     
-    
+    logging.info('Lecture de Config.ini')
+    Configuration.init_config()
+    logging.info('D2Hub API username: ' + Configuration.API_D2HUB_USER)
+
     logging.info('Extract_infos_from_D2Hub')
 
     bretour = recup_D2Hub_API_Token()

@@ -303,6 +303,8 @@ def telech_msg():
 if __name__ == "__main__":
     print("coucou")
     
+    Configuration.init_config()
+    
     telech_msg()
     
     liste_fichiers = list()
