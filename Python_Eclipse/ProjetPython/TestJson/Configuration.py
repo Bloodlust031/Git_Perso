@@ -36,8 +36,6 @@ path_json_log_D2HubInfo = 'D:\Temp_JSON\OUTPUT\Log_D2HubInfo.log'
 
 API_D2HUB_USER = 'admin'
 API_D2HUB_PASS = 'w,DVBYMbQAz@&6x5HlUFY:bz-z0d7'
-#API_D2HUB_USER = 'jdevay'
-#API_D2HUB_PASS = 'Bordel31'
 
 #valeurs remplies automatiquement par des API de D2Hub
 API_D2HUB_Token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqZGV2YXkiLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxNDA3MDQ1NX0._wCx66P4G_-Ed3oYBkLkTpK96CkvZTM6H4F1l1maNNvwGV68kTWSTeMYtDsTSkkEZKjiScsBsExSDGsAJRzemQ'
