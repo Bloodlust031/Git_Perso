@@ -28,13 +28,9 @@ liste_cmd_bucket2 = list()
 liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
-def maj_configuration():
-    Configuration.set_Date_list('2021-03-22', '2021-03-22')
+str_Date_list = ['2021-03-22', '2021-03-22']
+str_IMEI_list = ['868996033831231','868996033816059','865794031350400','865794031367990','865794031412234','864504031078534','868996033846445','868996033828906','868996033830191','868996033829706','868997035956422','868997035942661','868997035956604']
 
-    #Configuration.set_IMEI_List(['864504031504844','868996033820754']) #Mes iCAN Berlingo
-    Configuration.set_IMEI_List(['868996033831231','868996033816059','865794031350400','865794031367990','865794031412234','864504031078534','868996033846445','868996033828906','868996033830191','868996033829706','868997035956422','868997035942661','868997035956604'])
-    #Configuration.set_IMEI_List(['867322034097105'])
-    
 def Supprim_Event_msg():
     print("Effacement des messages Event")
     current_dict_messages = dict()
@@ -151,8 +147,7 @@ def deplacement():
 if __name__ == '__main__':
     
     Configuration.init_config()
-    maj_configuration()
-    telech()
+    telech(Date_list = str_Date_list, IMEI_list = str_IMEI_list)
     
     bretour = False
     txt_input = input("Voulez vous supprimer les messages Event (O pour oui) ?")

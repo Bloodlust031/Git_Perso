@@ -18,8 +18,6 @@ import logging
 
 item_dico = dict()      #liste d'�quipement issus de "genericInfo.txt" et de "export.csv" sous forme de dictionnaire (avec l'IMEI pour identifiant principal)
 account_dico = dict()
-date_fic1 = 0
-date_fic2 = 0
 account_uuid_list = list()
 start_time = 0
 end_time = 0
@@ -85,7 +83,7 @@ def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en p
             num_page += 1
         except:
             to_continue = False
-    with open(Configuration.path_json_D2Hub_equipment_list_raw, 'w') as json_file_result:
+    with open(Configuration.path_InputD2HUB + 'D2Hub_equipment_list_raw.json', 'w') as json_file_result:
         json.dump(raw_list_item, json_file_result, indent=4)
     pass   
 
@@ -265,10 +263,9 @@ def get_item_dico_ExportD2HUBcsv(ligne):
 
 def Import_from_ExportD2HUBcsv():
     global item_list_2
-    global date_fic2
     
-    date_fic2 = os.path.getmtime(Configuration.path_ExportD2HUBcsv)
-    with open(Configuration.path_ExportD2HUBcsv, mode='r', newline='', encoding='utf-8-sig') as csv_file:
+    #date_fic2 = os.path.getmtime(Configuration.path_ExportD2HUBcsv)
+    with open(Configuration.path_InputD2HUB + 'export.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=';')
         liste_champs = csv_reader.fieldnames
         if "Type de boitier" in liste_champs:
@@ -327,7 +324,7 @@ def Telech_Export_csv_from_D2Hub():
                     with open('D:\Temp_JSON/export2.csv', 'w') as fp:
                         fp.write(str(r.text))
                         print ("téléchargement OK")'''                    
-                    with open(Configuration.path_ExportD2HUBcsv, 'wb') as fp:
+                    with open(Configuration.path_InputD2HUB + "export.csv", 'wb') as fp:
                         fp.write(r.content)
                         print ("téléchargement OK")                    
                 else:
@@ -340,7 +337,7 @@ def Telech_Export_csv_from_D2Hub():
 def Extract_infos_from_D2Hub():
     global item_dico
 
-    fh_D2Hub = logging.FileHandler(Configuration.path_json_log_D2HubInfo, 'w')
+    fh_D2Hub = logging.FileHandler(Configuration.path_sortie + 'Log_D2HubInfo.log', 'w')
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     fh_D2Hub.setFormatter(formatter)
     log = logging.getLogger()  # root logger
@@ -402,7 +399,7 @@ def Get_Info_from_ICAN_HARDSTATUS():
     #on ne récupère que le bucket
     global item_dico
     
-    with open(Configuration.path_D2Hub_ICAN_HARD_STATUS, mode='r', newline='', encoding='utf-8-sig') as csv_file:
+    with open(Configuration.path_InputD2HUB + 'ICAN_HARD_STATUS.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=';')
         for ligne in csv_reader:
             st_IMEI = ligne["imei"]
@@ -438,7 +435,7 @@ def Get_D2Hub_Account_list():
     
     if (r.status_code == 200):
         account_dico.clear()
-        with open(Configuration.path_json_D2Hub_account_raw, 'w') as json_file_result:
+        with open(Configuration.path_InputD2HUB + 'Account_list_raw.json', 'w') as json_file_result:
             json.dump(r.json(), json_file_result, indent=4)
         pass
         account_uuid_list.clear()

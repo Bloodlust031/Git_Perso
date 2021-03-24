@@ -26,13 +26,8 @@ Chemin_json_Outil_iCAN = 'TempDownAWSS3'
 path_sortie = 'D:/Temp_JSON/OUTPUT/'
 path_sortie_Stat = 'D:/Temp_JSON/OUTPUT/Stat/'
 path_InputD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/'
-path_ExportD2HUBcsv = 'D:\Temp_JSON\INPUT_D2HUB/export.csv'
-path_json_D2Hub_info_total = 'D:\Temp_JSON\INPUT_D2HUB\exportD2HubGlobal.json'   #dictionnaire des équipements declares sur D2Hub 
-path_json_D2Hub_equipment_list_raw = 'D:\Temp_JSON\INPUT_D2HUB\D2Hub_equipment_list_raw.json'   #dictionnaire des équipements declares sur D2Hub
-path_json_D2Hub_account = 'D:\Temp_JSON\INPUT_D2HUB\Account_dict.json'
-path_json_D2Hub_account_raw = 'D:\Temp_JSON\INPUT_D2HUB\Account_list_raw.json'
-path_D2Hub_ICAN_HARD_STATUS = 'D:\Temp_JSON\INPUT_D2HUB\ICAN_HARD_STATUS.csv'           
-path_json_log_D2HubInfo = 'D:\Temp_JSON\OUTPUT\Log_D2HubInfo.log'
+path_json_D2Hub_info_total = path_InputD2HUB + 'Processed_Equipement_List.json' #dictionnaire des équipements declares sur D2Hub
+path_json_D2Hub_account = path_InputD2HUB + 'Processed_Account_List.json'       #dictionnaire des comptes declares sur D2Hub
 
 API_D2HUB_USER = 'admin'
 API_D2HUB_PASS = 'w,DVBYMbQAz@&6x5HlUFY:bz-z0d7'
@@ -90,6 +85,10 @@ def write_config_ini(Chemin):
                                            'non_decompose_D2Hub' : to_integrate_Msg_non_decompose_D2Hub}
     config['API_D2HUB'] = {'user' : API_D2HUB_USER,
                            'pass' : API_D2HUB_PASS}
+    config['Path'] = {'path_sortie' : path_sortie,
+                      'path_sortie_Stat' : path_sortie_Stat,
+                      'path_InputD2HUB' : path_InputD2HUB,
+                      'path_Input_msg': Chemin_json}
 
     with open(Chemin, 'w') as configfile:
         config.write(configfile)
@@ -97,6 +96,17 @@ def write_config_ini(Chemin):
 def read_config_ini(Chemin):
     global API_D2HUB_USER
     global API_D2HUB_PASS
+    global to_integrate_Msg_bin
+    global to_integrate_Msg_raw
+    global to_integrate_Msg_cnt
+    global to_integrate_Msg_decompose
+    global to_integrate_Msg_non_decompose_D2Hub
+    global path_sortie
+    global path_sortie_Stat
+    global path_InputD2HUB
+    global path_json_D2Hub_info_total
+    global Chemin_json
+    
     
     if os.path.exists(Chemin):
         #Lecture du fichier de configuration
@@ -107,6 +117,28 @@ def read_config_ini(Chemin):
                 API_D2HUB_USER = config['API_D2HUB']['user']
             if 'pass' in config['API_D2HUB']:
                 API_D2HUB_PASS = config['API_D2HUB']['pass']
+        if 'Extract_VCI_files_content' in config:
+            if 'bin' in config['Extract_VCI_files_content']:
+                to_integrate_Msg_bin = config['Extract_VCI_files_content']['bin']
+            if 'raw' in config['Extract_VCI_files_content']:
+                to_integrate_Msg_raw = config['Extract_VCI_files_content']['raw']
+            if 'cnt' in config['Extract_VCI_files_content']:
+                to_integrate_Msg_cnt = config['Extract_VCI_files_content']['cnt']
+            if 'decompose' in config['Extract_VCI_files_content']:
+                to_integrate_Msg_decompose = config['Extract_VCI_files_content']['decompose']
+            if 'non_decompose_D2Hub' in config['Extract_VCI_files_content']:
+                to_integrate_Msg_non_decompose_D2Hub = config['Extract_VCI_files_content']['non_decompose_D2Hub']
+        if 'Path' in config:
+            if 'path_sortie' in config['Path']:
+                path_sortie = config['Path']['path_sortie']
+            if 'path_sortie_Stat' in config['Path']:
+                path_sortie_Stat = config['Path']['path_sortie_Stat']
+            if 'path_InputD2HUB' in config['Path']:
+                path_InputD2HUB = config['Path']['path_InputD2HUB']
+                path_json_D2Hub_info_total = path_InputD2HUB + 'Processed_Equipement_List.json' 
+                path_json_D2Hub_account = path_InputD2HUB + 'Processed_Account_List.json'
+            if 'path_Input_msg' in config['Path']:
+                Chemin_json = config['Path']['path_Input_msg']
         
     #Ecriture de Config.ini"
     write_config_ini(Chemin)
