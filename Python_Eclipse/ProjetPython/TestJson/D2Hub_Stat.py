@@ -18,11 +18,12 @@ import csv
 def gen_stat_by_account():
     current_account = dict()
     stat_account_dict = dict()
+    stat_account_dict.clear()
+    stat_account_dict["Active account"] = dict()
+    stat_account_dict["Inactive account"] = dict()
         
     with open(Configuration.path_json_D2Hub_account) as json_file2:
         account_dico = json.load(json_file2)
-        
-    stat_account_dict.clear()
     
     #préparation du dictionnaire résultat    
     current_account["uuid"] = "Global"
@@ -40,7 +41,7 @@ def gen_stat_by_account():
     current_account["nb FW 2.7.x 2.8.x"] = 0
     current_account["nb FW 3.1.x 3.2.x"] = 0
     current_account["nb FW 3.3.x newer"] = 0
-    stat_account_dict[current_account["uuid"]] = current_account.copy()
+    stat_account_dict["Active account"][current_account["uuid"]] = current_account.copy()
     for account_UUID in account_dico:
         if account_dico[account_UUID]["isMaster"] == True:
             current_account["uuid"] = account_UUID
@@ -58,7 +59,7 @@ def gen_stat_by_account():
             current_account["nb FW 2.7.x 2.8.x"] = 0
             current_account["nb FW 3.1.x 3.2.x"] = 0
             current_account["nb FW 3.3.x newer"] = 0
-            stat_account_dict[current_account["uuid"]] = current_account.copy()
+            stat_account_dict["Active account"][current_account["uuid"]] = current_account.copy()
 
     #parcours du tableau des équipements
     with open(Configuration.path_json_D2Hub_info_total) as json_file3:
@@ -70,82 +71,88 @@ def gen_stat_by_account():
         else:    
             master_uuid = account_dico[account_uuid]["MastertUuid"]
         if (equipment_dico[imei]["Item_Type"] == "ICAN_V2"):
-            stat_account_dict["Global"]["nb_iCAN2"] +=1
-            stat_account_dict[master_uuid]["nb_iCAN2"] +=1
+            stat_account_dict["Active account"]["Global"]["nb_iCAN2"] +=1
+            stat_account_dict["Active account"][master_uuid]["nb_iCAN2"] +=1
             if(equipment_dico[imei]["Item_active"] == True):
-                stat_account_dict["Global"]["nb_iCAN_Active"] +=1
-                stat_account_dict["Global"]["nb_iCAN2_Active"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN_Active"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN2_Active"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN_Active"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN2_Active"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN_Active"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN2_Active"] +=1
             if(equipment_dico[imei]["Item_communicating"] == True):
-                stat_account_dict["Global"]["nb_iCAN_communicating"] +=1
-                stat_account_dict["Global"]["nb_iCAN2_communicating"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN_communicating"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN2_communicating"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN_communicating"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN2_communicating"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN_communicating"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN2_communicating"] +=1
         else:
-            stat_account_dict["Global"]["nb_iCAN1"] +=1
-            stat_account_dict[master_uuid]["nb_iCAN1"] +=1
+            stat_account_dict["Active account"]["Global"]["nb_iCAN1"] +=1
+            stat_account_dict["Active account"][master_uuid]["nb_iCAN1"] +=1
             if(equipment_dico[imei]["Item_active"] == True):
-                stat_account_dict["Global"]["nb_iCAN_Active"] +=1
-                stat_account_dict["Global"]["nb_iCAN1_Active"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN_Active"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN1_Active"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN_Active"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN1_Active"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN_Active"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN1_Active"] +=1
             if(equipment_dico[imei]["Item_communicating"] == True):
-                stat_account_dict["Global"]["nb_iCAN_communicating"] +=1
-                stat_account_dict["Global"]["nb_iCAN1_communicating"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN_communicating"] +=1
-                stat_account_dict[master_uuid]["nb_iCAN1_communicating"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN_communicating"] +=1
+                stat_account_dict["Active account"]["Global"]["nb_iCAN1_communicating"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN_communicating"] +=1
+                stat_account_dict["Active account"][master_uuid]["nb_iCAN1_communicating"] +=1
         if(equipment_dico[imei]["Item_active"] == True):    
             str_fw = equipment_dico[imei]["Item_FW"]
-            if(str_fw not in stat_account_dict["Global"]["FW_list"]):
-                stat_account_dict["Global"]["FW_list"][str_fw] = 1
+            if(str_fw not in stat_account_dict["Active account"]["Global"]["FW_list"]):
+                stat_account_dict["Active account"]["Global"]["FW_list"][str_fw] = 1
             else:
-                stat_account_dict["Global"]["FW_list"][str_fw] += 1
-            if(str_fw not in stat_account_dict[master_uuid]["FW_list"]):
-                stat_account_dict[master_uuid]["FW_list"][str_fw] = 1
+                stat_account_dict["Active account"]["Global"]["FW_list"][str_fw] += 1
+            if(str_fw not in stat_account_dict["Active account"][master_uuid]["FW_list"]):
+                stat_account_dict["Active account"][master_uuid]["FW_list"][str_fw] = 1
             else:
-                stat_account_dict[master_uuid]["FW_list"][str_fw] += 1
+                stat_account_dict["Active account"][master_uuid]["FW_list"][str_fw] += 1
             if(str_fw < "2.7.0"):
-                stat_account_dict["Global"]["nb FW 2.6.x older"] += 1
-                stat_account_dict[master_uuid]["nb FW 2.6.x older"] += 1
+                stat_account_dict["Active account"]["Global"]["nb FW 2.6.x older"] += 1
+                stat_account_dict["Active account"][master_uuid]["nb FW 2.6.x older"] += 1
             elif(str_fw < "3.0.0"):
-                stat_account_dict["Global"]["nb FW 2.7.x 2.8.x"] += 1
-                stat_account_dict[master_uuid]["nb FW 2.7.x 2.8.x"] += 1
+                stat_account_dict["Active account"]["Global"]["nb FW 2.7.x 2.8.x"] += 1
+                stat_account_dict["Active account"][master_uuid]["nb FW 2.7.x 2.8.x"] += 1
             elif(str_fw < "3.3.0"):
-                stat_account_dict["Global"]["nb FW 3.1.x 3.2.x"] += 1
-                stat_account_dict[master_uuid]["nb FW 3.1.x 3.2.x"] += 1
+                stat_account_dict["Active account"]["Global"]["nb FW 3.1.x 3.2.x"] += 1
+                stat_account_dict["Active account"][master_uuid]["nb FW 3.1.x 3.2.x"] += 1
             else:
-                stat_account_dict["Global"]["nb FW 3.3.x newer"] += 1
-                stat_account_dict[master_uuid]["nb FW 3.3.x newer"] += 1
+                stat_account_dict["Active account"]["Global"]["nb FW 3.3.x newer"] += 1
+                stat_account_dict["Active account"][master_uuid]["nb FW 3.3.x newer"] += 1
                 
+    with open(Configuration.path_sortie_Stat + "Stat_By_Account.csv", 'w', newline='') as csvfile:
+        fieldnames = ['name', 'nb_iCAN1','nb_iCAN2', 'nb_iCAN_Active', 'nb_iCAN_communicating', 'nb FW 2.6.x older', 'nb FW 2.7.x 2.8.x', 'nb FW 3.1.x 3.2.x', 'nb FW 3.3.x newer', 'FW_list']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
+        writer.writeheader()
+        for account_UUID in stat_account_dict["Active account"]:
+            writer.writerow(stat_account_dict["Active account"][account_UUID])
+    pass
     
     #suppression des comptes sans iCAN actives et/ou communicantes
     inactive_account = ""
     inactive_account_list = list()
-    for account_UUID in stat_account_dict:
-        if stat_account_dict[account_UUID]["nb_iCAN_Active"] == 0:
+    for account_UUID in stat_account_dict["Active account"]:
+        if stat_account_dict["Active account"][account_UUID]["nb_iCAN_Active"] == 0:
+            stat_account_dict["Inactive account"][account_UUID] = dict()
+            stat_account_dict["Inactive account"][account_UUID]["uuid"] = stat_account_dict["Active account"][account_UUID]["uuid"]
+            stat_account_dict["Inactive account"][account_UUID]["name"] = stat_account_dict["Active account"][account_UUID]["name"]
+            stat_account_dict["Inactive account"][account_UUID]["nb_iCAN1"] = stat_account_dict["Active account"][account_UUID]["nb_iCAN1"]
+            stat_account_dict["Inactive account"][account_UUID]["nb_iCAN2"] = stat_account_dict["Active account"][account_UUID]["nb_iCAN2"]
+            
             if len(inactive_account) > 0:
                 inactive_account = inactive_account + ", "
-            inactive_account = inactive_account + stat_account_dict[account_UUID]["name"] + "(" + str(stat_account_dict[account_UUID]["nb_iCAN1"]) + "/" + str(stat_account_dict[account_UUID]["nb_iCAN2"]) + ")"
+            inactive_account = inactive_account + stat_account_dict["Active account"][account_UUID]["name"] + "(" + str(stat_account_dict["Active account"][account_UUID]["nb_iCAN1"]) + "/" + str(stat_account_dict["Active account"][account_UUID]["nb_iCAN2"]) + ")"
             inactive_account_list.append(account_UUID)
     for account_UUID in inactive_account_list:
-        del stat_account_dict[account_UUID]
+        del stat_account_dict["Active account"][account_UUID]
     if len(inactive_account) > 0:
         logging.info('Comptes sans iCAN actives (nb_iCAN1/nb_iCAN2): ' + inactive_account)
     
     #sauvegarde du résultat
     with open(Configuration.path_sortie_Stat + "Stat_By_Account.json", 'w') as json_file_result:
         json.dump(stat_account_dict, json_file_result, indent=4)
-    with open(Configuration.path_sortie_Stat + "Stat_By_Account.csv", 'w', newline='') as csvfile:
-        fieldnames = ['name', 'nb_iCAN1','nb_iCAN2', 'nb_iCAN_Active', 'nb_iCAN_communicating', 'nb FW 2.6.x older', 'nb FW 2.7.x 2.8.x', 'nb FW 3.1.x 3.2.x', 'nb FW 3.3.x newer', 'FW_list']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
-        writer.writeheader()
-        for account_UUID in stat_account_dict:
-            writer.writerow(stat_account_dict[account_UUID])
-    pass
 
 
-def gen_stat_by_equipment():
+def gen_stat_globales():
     stat_dict = dict()
     stat_dict.clear()
     with open(Configuration.path_json_D2Hub_info_total) as json_file3:
@@ -402,14 +409,14 @@ def gen_stat():
     logging.info('gen_stat_by_account')
     gen_stat_by_account()
 
-    logging.info('gen_stat_by_equipment')
-    gen_stat_by_equipment()
+    logging.info('gen_stat_globales')
+    gen_stat_globales()
     
     gen_stat_by_Veh("MASTER")
     gen_stat_by_Veh("DAILY")
-    gen_stat_by_Veh("MAXITY")
-    gen_stat_by_Veh("CLIO")
-    gen_stat_by_Veh("RANGER")
+    #gen_stat_by_Veh("MAXITY")
+    #gen_stat_by_Veh("CLIO")
+    #gen_stat_by_Veh("RANGER")
     
     gen_stat_by_Service()
     
