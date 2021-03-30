@@ -74,8 +74,6 @@ def is_date_recent(st_date):
     else:
         return False
 
-
-
 if __name__ == '__main__':
     
 #    convert_Hex_decimal('8C010000', True)

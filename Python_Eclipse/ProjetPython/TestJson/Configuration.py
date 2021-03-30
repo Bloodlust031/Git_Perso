@@ -11,6 +11,8 @@ from datetime import timedelta
 import sys
 import os
 import configparser
+import json
+import ast
 
 deja_init = False
 
@@ -21,6 +23,10 @@ to_integrate_Msg_decompose = False
 to_integrate_Msg_non_decompose_D2Hub = True
 
 Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
+Chemin_json_msg = 'D:\Temp_JSON\INPUT_Msg\TempDownAWSS3'
+Chemin_json_failure = 'D:\Temp_JSON\INPUT_Msg\Failure'
+Chemin_json_rescue = 'D:\Temp_JSON\INPUT_Msg\Rescue'
+
 Chemin_json_Outil_iCAN = 'TempDownAWSS3'
 
 path_sortie = 'D:/Temp_JSON/OUTPUT/'
@@ -46,6 +52,8 @@ lbl_msg_Dic_Params_Python = 'Msg_Params_decompose_Python'
 lbl_msg_Dic_Params_NonD2Hub = 'Msg_Params_non_decompose_D2Hub'
 
 distribution_delais_GSM = [10, 60, 120, 180, 300, 600, 1200, 3600]    #Distribution des délais de réception en secondes
+
+str_veh_list = ["MASTER","DAILY","MAXITY","CLIO","RANGER"]
 
 def set_IMEI_List(liste):
     global IMEI_list
@@ -89,7 +97,8 @@ def write_config_ini(Chemin):
                       'path_sortie_Stat' : path_sortie_Stat,
                       'path_InputD2HUB' : path_InputD2HUB,
                       'path_Input_msg': Chemin_json}
-
+    config['Stat'] = {'Veh_list' : str_veh_list}
+                      
     with open(Chemin, 'w') as configfile:
         config.write(configfile)
     
@@ -106,6 +115,7 @@ def read_config_ini(Chemin):
     global path_InputD2HUB
     global path_json_D2Hub_info_total
     global Chemin_json
+    global str_veh_list
     
     
     if os.path.exists(Chemin):
@@ -139,7 +149,12 @@ def read_config_ini(Chemin):
                 path_json_D2Hub_account = path_InputD2HUB + 'Processed_Account_List.json'
             if 'path_Input_msg' in config['Path']:
                 Chemin_json = config['Path']['path_Input_msg']
-        
+                Chemin_json_msg = Chemin_json + 'TempDownAWSS3'
+                Chemin_json_failure = Chemin_json + 'Failure'
+                Chemin_json_rescue = Chemin_json + 'TempDownAWSS3'
+        if 'Stat' in config:
+            if 'Veh_list' in config['Stat']:
+                str_veh_list = ast.literal_eval(config.get("Stat","Veh_list"))  #pour décomposer la liste
     #Ecriture de Config.ini"
     write_config_ini(Chemin)
     
@@ -153,9 +168,21 @@ def init_config():
         write_config_ini(Chemin)
         deja_init = True
 
+def verif_create_dossier(st_chemin):
+    if not os.path.exists(st_chemin):
+        try:
+            os.makedirs(st_chemin)
+        except:
+            print ("Ce dossier n'existe pas et il est impossible de le créer: " + st_chemin)
+        
+        
+            
+
 if __name__ == '__main__':
     init_config()
+    
     print('D2Hub API username: ' + API_D2HUB_USER)
     set_Date_list('2020-11-22', '2020-12-11')
     print (Date_list)
+    
     pass

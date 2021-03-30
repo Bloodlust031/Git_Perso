@@ -164,7 +164,7 @@ if __name__ == "__main__":
     global_log_dict['NB_Msg'] = 0
     global_log_dict["Msg_list"] = list() 
     
-    liste_fichiers = listdirectory(Configuration.Chemin_json)
+    liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
     nb_fic = 0
     
     

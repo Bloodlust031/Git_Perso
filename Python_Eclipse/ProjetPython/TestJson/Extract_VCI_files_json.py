@@ -311,7 +311,7 @@ if __name__ == "__main__":
 
     init_global_log_dict()
     
-    liste_fichiers = listdirectory(Configuration.Chemin_json)
+    liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
     nb_fic = 0
     
     efface_dictionnaire_messages()

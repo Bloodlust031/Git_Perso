@@ -28,15 +28,15 @@ liste_cmd_bucket2 = list()
 liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
-str_Date_list = ['2021-03-22', '2021-03-22']
-str_IMEI_list = ['868996033831231','868996033816059','865794031350400','865794031367990','865794031412234','864504031078534','868996033846445','868996033828906','868996033830191','868996033829706','868997035956422','868997035942661','868997035956604']
+str_Date_list = ['2021-03-21', '2021-03-26']
+str_IMEI_list = ['864504039675323','867322038577961','864504039676115','868996033841859']
 
 def Supprim_Event_msg():
     print("Effacement des messages Event")
     current_dict_messages = dict()
     current_dict_messages.clear()
     
-    for root, dirs, files in os.walk(Configuration.Chemin_json): 
+    for root, dirs, files in os.walk(Configuration.Chemin_json_msg): 
         for fichier in files: 
             nom_fichier = os.path.join(root, fichier)
             if nom_fichier.endswith(".json"):
@@ -64,12 +64,12 @@ def gen_liste_cmd():
     for imei in Configuration.IMEI_list:
         bucket = "/" + Import_D2HUB_Info.get_bucket_IMEI(imei) + "/"
         for jour in Configuration.Date_list:
-            str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + bucket + imei +  "/ " + Configuration.Chemin_json + bucket + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + bucket + imei +  "/ " + Configuration.Chemin_json_msg + bucket + imei + "/"
             liste_cmd_bucket.append(str_temp)
             #print(str_temp)
-            str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + "/UNMATCHED/" + imei +  "/ " + Configuration.Chemin_json + "/UNMATCHED/" + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + "/UNMATCHED/" + imei +  "/ " + Configuration.Chemin_json_msg + "/UNMATCHED/" + imei + "/"
             liste_cmd_UNMATCHED.append(str_temp)
-            str_temp = "start aws s3 sync s3://ican.invalid.d2hub.fr/" + jour + "/" + imei +  "/ " + Configuration.Chemin_json + "/INVALID/" + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.invalid.d2hub.fr/" + jour + "/" + imei +  "/ " + Configuration.Chemin_json_msg + "/INVALID/" + imei + "/"
             liste_cmd_invalid.append(str_temp)
 
 def execute_cmd():
@@ -102,7 +102,7 @@ def efface_old_msg():
     except:
         bretour = False
     if bretour:
-        for root, dirs, files in os.walk(Configuration.Chemin_json): 
+        for root, dirs, files in os.walk(Configuration.Chemin_json_msg): 
             for fichier in files: 
                 nom_fichier = os.path.join(root, fichier)
                 os.remove(nom_fichier)
@@ -110,6 +110,7 @@ def efface_old_msg():
 
 def telech(Date_list = [], IMEI_list = []):
     Configuration.init_config()
+    Configuration.verif_create_dossier(Configuration.Chemin_json_msg)
     
     if len(Date_list) == 1:
         Configuration.set_Date_list(Date_list[0], "0")  #on n'a pas de date de fin-> on va juste télécharger les messages de ce jour
@@ -120,6 +121,19 @@ def telech(Date_list = [], IMEI_list = []):
     efface_old_msg()
     gen_liste_cmd()
     execute_cmd()
+        
+'''def move_over(src_dir, dest_dir):
+    fileList = os.listdir(src_dir)
+    for i in fileList:
+        src = os.path.join(src_dir, i)
+        dest = os.path.join(dest_dir, i)
+        if os.path.exists(dest):
+            if os.path.isdir(dest):
+                move_over(src, dest)
+                continue
+            else:
+                os.remove(dest)
+        shutil.move(src, dest_dir)        
         
 def deplacement():
     
@@ -135,13 +149,25 @@ def deplacement():
         l = glob.glob(Configuration.Chemin_json + '/*') 
         for nom_dossier in l: 
             if os.path.isdir(nom_dossier): 
-                print (nom_dossier)
+                #print (nom_dossier)
                 nom = nom_dossier[len(Configuration.Chemin_json)+1:]
-                print (nom)
+                #print (nom)
                 if (nom != Configuration.Chemin_json_Outil_iCAN):
                     new_dossier = Configuration.Chemin_json + "/" + Configuration.Chemin_json_Outil_iCAN + "/" + nom
-                    print (new_dossier)
-                    shutil.move(nom_dossier, new_dossier)
+                    #new_dossier = Configuration.Chemin_json + "/" + Configuration.Chemin_json_Outil_iCAN
+                    #print (new_dossier)
+                    #shutil.copy(nom_dossier, new_dossier)
+                    if os.path.isdir(new_dossier): 
+                        #print("le dossier de destination existe déjà.")
+                        fileList = os.listdir(nom_dossier)
+                        for i in fileList:
+                            src = os.path.join(nom_dossier, i)
+                            dest = os.path.join(new_dossier, i)
+                            shutil.move(src, dest)   
+                        #os.remove(nom_dossier)     
+                    else:
+                        #print("le dossier de destination n'existe pas.")
+                        shutil.move(nom_dossier, new_dossier)'''
     
 
 if __name__ == '__main__':
@@ -159,6 +185,6 @@ if __name__ == '__main__':
     if bretour:
         Supprim_Event_msg()
 
-    deplacement()        
+    #deplacement()        
     
     pass

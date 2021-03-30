@@ -14,6 +14,13 @@ import csv
 #import sys
 
 
+    #gen_stat_by_Veh("MASTER")
+    #gen_stat_by_Veh("DAILY")
+    #gen_stat_by_Veh("MAXITY")
+    #gen_stat_by_Veh("CLIO")
+    #gen_stat_by_Veh("RANGER")
+    
+#str_veh_list = ["MASTER","DAILY","MAXITY","CLIO","RANGER"]
 
 def gen_stat_by_account():
     current_account = dict()
@@ -406,17 +413,15 @@ def gen_stat():
             log.removeHandler(hdlr)
         log.addHandler(fh_Stat)      # set the new handler    
 
+    print('Début de generation des stats')
     logging.info('gen_stat_by_account')
     gen_stat_by_account()
 
     logging.info('gen_stat_globales')
     gen_stat_globales()
     
-    gen_stat_by_Veh("MASTER")
-    gen_stat_by_Veh("DAILY")
-    #gen_stat_by_Veh("MAXITY")
-    #gen_stat_by_Veh("CLIO")
-    #gen_stat_by_Veh("RANGER")
+    for veh in  Configuration.str_veh_list:
+        gen_stat_by_Veh(veh)
     
     gen_stat_by_Service()
     
