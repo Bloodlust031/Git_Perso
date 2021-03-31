@@ -28,8 +28,10 @@ liste_cmd_bucket2 = list()
 liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
-str_Date_list = ['2021-03-21', '2021-03-26']
-str_IMEI_list = ['864504039675323','867322038577961','864504039676115','868996033841859']
+str_Date_list = ['2021-03-01', '2021-03-31']
+str_IMEI_list = ['868996033842196']
+
+#mes iCANs: '867322034096248','865794031287537'
 
 def Supprim_Event_msg():
     print("Effacement des messages Event")
