@@ -447,7 +447,7 @@ def Get_D2Hub_Account_list():
             account_dico[compte["uuid"]]["accountName"] = compte["accountName"]
             account_dico[compte["uuid"]]["parentName"] = compte["parentName"]
             account_dico[compte["uuid"]]["state"] = compte["state"]
-            if (compte["parentName"] == "ADMIN_ROOT") or (compte["accountName"] == "ADMIN_ROOT"):
+            if (compte["parentName"] == "ADMIN_ROOT") or (compte["accountName"] == "ADMIN_ROOT") or (compte["parentName"] == "InterneACTIA"):
                 account_dico[compte["uuid"]]["isMaster"] = True
             else:
                 account_dico[compte["uuid"]]["isMaster"] = False
