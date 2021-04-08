@@ -9,10 +9,6 @@ import os
 import json
 import Configuration
 import Import_D2HUB_Info
-import sys
-import shutil
-import glob 
-import os.path 
 
 #commande =  "aws s3 sync s3://ican.processed.d2hub.fr/2020-11-27/MARKETIP/864504031504844/ H:/Boulot/TempDownAWSS3/MARKETIP/864504031504844/"
 #os.system("start " + commande)

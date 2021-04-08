@@ -9,10 +9,7 @@ import os
 import json
 import Configuration
 import Import_D2HUB_Info
-import sys
-import shutil
-import glob 
-import os.path 
+#import os.path 
 
 #commande =  "aws s3 sync s3://ican.processed.d2hub.fr/2020-11-27/MARKETIP/864504031504844/ H:/Boulot/TempDownAWSS3/MARKETIP/864504031504844/"
 #os.system("start " + commande)
@@ -28,8 +25,8 @@ liste_cmd_bucket2 = list()
 liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
-str_Date_list = ['2021-03-01', '2021-03-31']
-str_IMEI_list = ['868996033842196']
+str_Date_list = ['2021-04-08', '2021-04-08']
+str_IMEI_list = ['867322034096248']
 
 #mes iCANs: '867322034096248','865794031287537'
 
@@ -106,9 +103,6 @@ def gen_liste_cmd():
 
 
 def execute_cmd():
-    nb_req = len(liste_cmd_bucket) + len(liste_cmd_bucket2) + len(liste_cmd_UNMATCHED) + len(liste_cmd_invalid)
-    i = 0
-    
     str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_bucket.bat'
     os.system(str_cmd)
     str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_UNMATCHED.bat'
@@ -155,54 +149,6 @@ def telech(Date_list = [], IMEI_list = []):
     gen_liste_cmd()
     execute_cmd()
         
-'''def move_over(src_dir, dest_dir):
-    fileList = os.listdir(src_dir)
-    for i in fileList:
-        src = os.path.join(src_dir, i)
-        dest = os.path.join(dest_dir, i)
-        if os.path.exists(dest):
-            if os.path.isdir(dest):
-                move_over(src, dest)
-                continue
-            else:
-                os.remove(dest)
-        shutil.move(src, dest_dir)        
-        
-def deplacement():
-    
-    bretour = False
-    txt_input = input("Voulez vous déplacer les fichiers pour les extraire avec l'outil Excel ?")
-    try:
-        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
-            bretour = True
-    except:
-        bretour = False
-        
-    if bretour:
-        l = glob.glob(Configuration.Chemin_json + '/*') 
-        for nom_dossier in l: 
-            if os.path.isdir(nom_dossier): 
-                #print (nom_dossier)
-                nom = nom_dossier[len(Configuration.Chemin_json)+1:]
-                #print (nom)
-                if (nom != Configuration.Chemin_json_Outil_iCAN):
-                    new_dossier = Configuration.Chemin_json + "/" + Configuration.Chemin_json_Outil_iCAN + "/" + nom
-                    #new_dossier = Configuration.Chemin_json + "/" + Configuration.Chemin_json_Outil_iCAN
-                    #print (new_dossier)
-                    #shutil.copy(nom_dossier, new_dossier)
-                    if os.path.isdir(new_dossier): 
-                        #print("le dossier de destination existe déjà.")
-                        fileList = os.listdir(nom_dossier)
-                        for i in fileList:
-                            src = os.path.join(nom_dossier, i)
-                            dest = os.path.join(new_dossier, i)
-                            shutil.move(src, dest)   
-                        #os.remove(nom_dossier)     
-                    else:
-                        #print("le dossier de destination n'existe pas.")
-                        shutil.move(nom_dossier, new_dossier)'''
-    
-
 if __name__ == '__main__':
     
     Configuration.init_config()
@@ -218,6 +164,5 @@ if __name__ == '__main__':
     if bretour:
         Supprim_Event_msg()
 
-    #deplacement()        
     
     pass

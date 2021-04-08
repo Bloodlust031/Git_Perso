@@ -7,8 +7,6 @@ Created on 6 nov. 2020
 import os
 import json
 import time
-import fnmatch
-import Boite_Outils
 import Configuration
 import csv
 from datetime import datetime

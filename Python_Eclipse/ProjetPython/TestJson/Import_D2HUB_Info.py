@@ -173,7 +173,7 @@ def Dict_from_json_Directly_from_D2Hub(equipment):
 def Telech_D2HUb_Info_from_AWS():
     cmd_list = list()
     print("Telechargement d'informations depuis AWS")
-    commande = "start aws s3 sync s3://exchange.d2hub.fr/checkers/ " + Configuration.path_InputD2HUB    #cette requete donne des r�sultats obsolettes
+    #commande = "start aws s3 sync s3://exchange.d2hub.fr/checkers/ " + Configuration.path_InputD2HUB    #cette requete donne des r�sultats obsolettes
     #cmd_list.append(commande)
     commande = "start aws s3 sync s3://exchange.d2hub.fr/iCANGeneralInfo/ " + Configuration.path_InputD2HUB
     cmd_list.append(commande)
@@ -222,9 +222,6 @@ def get_item_dico(Ligne_txt):
     current_item["Item_Serial"] = ligne_split[9].rstrip()
     return current_item
     
-def Import_from_ExportD2HUB():
-    liste_lignes = list()
-
 def get_item_dico_ExportD2HUBcsv(ligne):
     global item_dico
 
