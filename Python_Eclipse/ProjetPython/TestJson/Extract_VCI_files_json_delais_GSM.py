@@ -22,7 +22,8 @@ current_dict_messages = dict()
 global_log_dict = dict()
 start_time = 0
 end_time = 0
-str_IMEI_List = ['867322038021531','867322034091553','864504031784453','867322034104158','862010039042896','864504031167089','867322034107201']  #test GSM - TrackingOnly
+#str_IMEI_List = ['864504031784453','867322038021531','867322034091553','867322034104158','862010039042896','864504031167089','867322034107201']  #test GSM - TrackingOnly
+str_IMEI_List = ['867322038021531','867322034091553','868996033829870','867322034104158','867322034107201']  #test GSM - TrackingOnly
 
 def listdirectory(path): 
     liste_fichier=[] 
@@ -157,7 +158,7 @@ if __name__ == "__main__":
     Configuration.init_config()
     
     print("Lancement du Téléchargement")
-    Telech_AWS_Json.telech(Date_list = ['2021-03-10', '2021-04-06'], IMEI_list = str_IMEI_List)
+    Telech_AWS_Json.telech(Date_list = ['2021-04-08', '2021-04-08'], IMEI_list = str_IMEI_List)
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     
     liste_fichiers = list()

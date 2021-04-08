@@ -287,6 +287,7 @@ def Telech_Export_csv_from_D2Hub():
     curl_hearders1['X-Api-Token'] = Configuration.API_D2HUB_Token
     curl_url1 = 'https://admin.d2hub.fr/api/admin/v2/devices/export?format=CSV&full=true&sort=accountName,asc'
     curl_json1 = {"c":"1e50b244-3953-442e-a210-632a50dcf2fe"}
+    #curl_json1 = {"c":"1e50b244-3953-442e-a210-632a50dcf2fe","f":"accountName:(*test* AND *gsm*)"}
     
     try:
         r = requests.post(curl_url1, headers = curl_hearders1, json=curl_json1)
@@ -318,12 +319,6 @@ def Telech_Export_csv_from_D2Hub():
             try:
                 if str(r.status_code) == '200':
                     print ("Generation terminee OK")
-                    '''with open('D:\Temp_JSON/export1.csv', 'w', newline='') as fp:
-                        fp.write(str(r.text))
-                        print ("Telechargement OK")                    
-                    with open('D:\Temp_JSON/export2.csv', 'w') as fp:
-                        fp.write(str(r.text))
-                        print ("téléchargement OK")'''                    
                     with open(Configuration.path_InputD2HUB + "export.csv", 'wb') as fp:
                         fp.write(r.content)
                         print ("téléchargement OK")                    
@@ -332,6 +327,46 @@ def Telech_Export_csv_from_D2Hub():
             except:
                 to_continue = False
 
+def Telech_Export_xls_from_D2Hub():
+    to_continue = True
+    
+    curl_hearders1 = {}
+    curl_hearders1['cookie'] = 'NG_TRANSLATE_LANG_KEY=%22en%22; XSRF-TOKEN=' + Configuration.API_D2HUB_xsrf_Token
+    curl_hearders1['x-xsrf-token'] = Configuration.API_D2HUB_xsrf_Token
+    curl_hearders1['X-Api-Token'] = Configuration.API_D2HUB_Token
+    curl_url1 = 'https://admin.d2hub.fr/api/admin/v2/devices/export?format=XLS&full=true&sort=accountName,asc'
+    curl_json1 = {"c":"1e50b244-3953-442e-a210-632a50dcf2fe"}
+    #curl_json1 = {"c":"1e50b244-3953-442e-a210-632a50dcf2fe","f":"accountName:(*test* AND *gsm*)"}
+    
+    try:
+        r = requests.post(curl_url1, headers = curl_hearders1, json=curl_json1)
+        tempfile_name = str(r.text)
+    except:
+        print ("erreur")
+        to_continue = False
+        
+    if to_continue:
+        curl_url2 = 'https://admin.d2hub.fr/api/admin/v2/devices/export?filename=' + tempfile_name + '&format=XLS'
+        curl_hearders2 = {}
+        curl_hearders2['cookie'] = 'NG_TRANSLATE_LANG_KEY=%22fr%22; XSRF-TOKEN=' + Configuration.API_D2HUB_xsrf_Token
+        curl_hearders2['x-xsrf-token'] = Configuration.API_D2HUB_xsrf_Token
+        curl_hearders2['X-Api-Token'] = Configuration.API_D2HUB_Token
+    while to_continue:
+        r = requests.get(curl_url2, headers = curl_hearders2,stream=True)
+        if str(r.status_code) == '204':
+            print ("Generation en cours")
+        else:
+            to_continue = False
+            try:
+                if str(r.status_code) == '200':
+                    print ("Generation terminee OK")
+                    with open(Configuration.path_InputD2HUB + "export.xlsx", 'wb') as fp:
+                        fp.write(r.content)
+                        print ("téléchargement OK")                    
+                else:
+                    print ("echec de téléchargement")
+            except:
+                to_continue = False
     
 
 def Extract_infos_from_D2Hub():
@@ -372,8 +407,8 @@ def Extract_infos_from_D2Hub():
         logging.info('Telech_Export_csv_from_D2Hub')
         Telech_Export_csv_from_D2Hub()
         Import_from_ExportD2HUBcsv()    #lecture des donnees de "export.csv"
+        Telech_Export_xls_from_D2Hub()
 
-        
         #export direct depuis D2Hub
         logging.info('Get_Info_Directly_from_D2Hub')
         Get_Info_Directly_from_D2Hub()  #ces donn�es sont plus r�centes et peuvent donc �craser les autres.
@@ -391,6 +426,7 @@ def Extract_infos_from_D2Hub():
         #traitement de la liste des comptes
         logging.info('Get_D2Hub_Account_list')
         Get_D2Hub_Account_list()
+
         logging.info('Fini')
     else:
         print("Mettez � jour l'Api-Token (du module Configuration).")

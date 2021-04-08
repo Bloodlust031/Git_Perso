@@ -63,59 +63,36 @@ def gen_liste_cmd():
     liste_cmd_UNMATCHED.clear()
     liste_cmd_invalid.clear()
     
-    efface_BatTemp()
     for imei in Configuration.IMEI_list:
         bucket = "/" + Import_D2HUB_Info.get_bucket_IMEI(imei) + "/"
         for jour in Configuration.Date_list:
-            str_temp = "aws s3 sync s3://ican.processed.d2hub.fr/" + jour + bucket + imei +  "/ " + Configuration.Chemin_json_msg + bucket + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + bucket + imei +  "/ " + Configuration.Chemin_json_msg + bucket + imei + "/"
             liste_cmd_bucket.append(str_temp)
             #print(str_temp)
-            str_temp = "aws s3 sync s3://ican.processed.d2hub.fr/" + jour + "/UNMATCHED/" + imei +  "/ " + Configuration.Chemin_json_msg + "/UNMATCHED/" + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.processed.d2hub.fr/" + jour + "/UNMATCHED/" + imei +  "/ " + Configuration.Chemin_json_msg + "/UNMATCHED/" + imei + "/"
             liste_cmd_UNMATCHED.append(str_temp)
-            str_temp = "aws s3 sync s3://ican.invalid.d2hub.fr/" + jour + "/" + imei +  "/ " + Configuration.Chemin_json_msg + "/INVALID/" + imei + "/"
+            str_temp = "start aws s3 sync s3://ican.invalid.d2hub.fr/" + jour + "/" + imei +  "/ " + Configuration.Chemin_json_msg + "/INVALID/" + imei + "/"
             liste_cmd_invalid.append(str_temp)
-    
-    i = 0
-    nb_req = len(liste_cmd_bucket)
-    with open(Configuration.Chemin_json_BatTemp + '/bat_cmd_bucket.bat', 'w') as batfile:
-        for str_temp in liste_cmd_bucket:
-            i+=1
-            batfile.write("echo Commande " + str(i) + " / " + str(nb_req) + "\n")
-            batfile.write(str_temp + "\n")
-        batfile.write("exit\n")
-    pass
-    i = 0
-    nb_req = len(liste_cmd_UNMATCHED)
-    with open(Configuration.Chemin_json_BatTemp + '/bat_cmd_UNMATCHED.bat', 'w') as batfile:
-        for str_temp in liste_cmd_UNMATCHED:
-            i+=1
-            batfile.write("echo Commande " + str(i) + " / " + str(nb_req) + "\n")
-            batfile.write(str_temp + "\n")
-        batfile.write("exit\n")
-    pass
-    i = 0
-    nb_req = len(liste_cmd_invalid)
-    with open(Configuration.Chemin_json_BatTemp + '/bat_cmd_invalid.bat', 'w') as batfile:
-        for str_temp in liste_cmd_invalid:
-            i+=1
-            batfile.write("echo Commande " + str(i) + " / " + str(nb_req) + "\n")
-            batfile.write(str_temp + "\n")
-        batfile.write("exit\n")
-    pass
-
-
 
 def execute_cmd():
     nb_req = len(liste_cmd_bucket) + len(liste_cmd_bucket2) + len(liste_cmd_UNMATCHED) + len(liste_cmd_invalid)
     i = 0
-    
-    str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_bucket.bat'
-    os.system(str_cmd)
-    str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_UNMATCHED.bat'
-    os.system(str_cmd)
-    str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_invalid.bat'
-    os.system(str_cmd)
-    
+    for str_cmd in liste_cmd_invalid:
+        i+=1
+        os.system(str_cmd)
+        print ("Commande " + str(i) + " / " + str(nb_req))
+    for str_cmd in liste_cmd_UNMATCHED:
+        i+=1
+        os.system(str_cmd)
+        print ("Commande " + str(i) + " / " + str(nb_req))
+    for str_cmd in liste_cmd_bucket:
+        i+=1
+        os.system(str_cmd)
+        print ("Commande " + str(i) + " / " + str(nb_req))
+    for str_cmd in liste_cmd_bucket2:
+        i+=1
+        os.system(str_cmd)
+        print ("Commande " + str(i) + " / " + str(nb_req))
  
 def efface_old_msg():
     #effacement des messages précédemment téléchargés.
@@ -131,19 +108,11 @@ def efface_old_msg():
             for fichier in files: 
                 nom_fichier = os.path.join(root, fichier)
                 os.remove(nom_fichier)
-                
-def efface_BatTemp():
-    #effacement des .bat précédents
-    for root, dirs, files in os.walk(Configuration.Chemin_json_BatTemp): 
-        for fichier in files: 
-            nom_fichier = os.path.join(root, fichier)
-            os.remove(nom_fichier)
 
 
 def telech(Date_list = [], IMEI_list = []):
     Configuration.init_config()
     Configuration.verif_create_dossier(Configuration.Chemin_json_msg)
-    Configuration.verif_create_dossier(Configuration.Chemin_json_BatTemp)
     
     if len(Date_list) == 1:
         Configuration.set_Date_list(Date_list[0], "0")  #on n'a pas de date de fin-> on va juste télécharger les messages de ce jour

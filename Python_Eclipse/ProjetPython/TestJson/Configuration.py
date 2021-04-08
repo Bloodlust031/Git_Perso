@@ -26,6 +26,7 @@ Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
 Chemin_json_msg = 'D:\Temp_JSON\INPUT_Msg\TempDownAWSS3'
 Chemin_json_failure = 'D:\Temp_JSON\INPUT_Msg\Failure'
 Chemin_json_rescue = 'D:\Temp_JSON\INPUT_Msg\Rescue'
+Chemin_json_BatTemp = 'D:\Temp_JSON\INPUT_Msg\BatTemp'
 
 Chemin_json_Outil_iCAN = 'TempDownAWSS3'
 
@@ -152,6 +153,7 @@ def read_config_ini(Chemin):
                 Chemin_json_msg = Chemin_json + 'TempDownAWSS3'
                 Chemin_json_failure = Chemin_json + 'Failure'
                 Chemin_json_rescue = Chemin_json + 'TempDownAWSS3'
+                Chemin_json_BatTemp = Chemin_json + 'BatTemp'
         if 'Stat' in config:
             if 'Veh_list' in config['Stat']:
                 str_veh_list = ast.literal_eval(config.get("Stat","Veh_list"))  #pour décomposer la liste
