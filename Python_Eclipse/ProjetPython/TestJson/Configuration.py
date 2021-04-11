@@ -13,6 +13,7 @@ import os
 import configparser
 import json
 import ast
+import Boite_Outils
 
 deja_init = False
 
@@ -25,6 +26,7 @@ to_integrate_Msg_non_decompose_D2Hub = True
 Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
 Chemin_json_msg = 'D:\Temp_JSON\INPUT_Msg\TempDownAWSS3'
 Chemin_json_failure = 'D:\Temp_JSON\INPUT_Msg\Failure'
+Chemin_json_reco = 'D:\Temp_JSON\INPUT_Msg\Reco'
 Chemin_json_rescue = 'D:\Temp_JSON\INPUT_Msg\Rescue'
 Chemin_json_BatTemp = 'D:\Temp_JSON\INPUT_Msg\BatTemp'
 
@@ -152,6 +154,7 @@ def read_config_ini(Chemin):
                 Chemin_json = config['Path']['path_Input_msg']
                 Chemin_json_msg = Chemin_json + 'TempDownAWSS3'
                 Chemin_json_failure = Chemin_json + 'Failure'
+                Chemin_json_reco = Chemin_json + 'Reco'
                 Chemin_json_rescue = Chemin_json + 'TempDownAWSS3'
                 Chemin_json_BatTemp = Chemin_json + 'BatTemp'
         if 'Stat' in config:
@@ -160,6 +163,7 @@ def read_config_ini(Chemin):
     #Ecriture de Config.ini"
     write_config_ini(Chemin)
     
+@Boite_Outils.print_temps    
 def init_config():
     global deja_init
     

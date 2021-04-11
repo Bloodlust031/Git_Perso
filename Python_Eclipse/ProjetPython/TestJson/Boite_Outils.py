@@ -10,7 +10,24 @@ import datetime
 from datetime import date
 from datetime import timedelta
 from datetime import datetime
+import time
 
+def print_temps(fonction_a_executer):
+    """Notre décorateur. C'est lui qui est appelé directement LORS
+    DE LA DEFINITION de notre fonction (fonction_a_executer)"""
+    
+    def fonction_modifiee():
+        """Fonction renvoyée par notre décorateur. Elle se charge
+        de calculer le temps mis par la fonction à s'exécuter"""
+        
+        tps_avant = time.time() # Avant d'exécuter la fonction
+        valeur_renvoyee = fonction_a_executer() # On exécute la fonction
+        tps_apres = time.time()
+        tps_execution = tps_apres - tps_avant
+        print("La fonction {0} a mis {1} pour s'exécuter".format( \
+                fonction_a_executer, tps_execution))
+        return valeur_renvoyee
+    return fonction_modifiee
 
 def convert_Hex_decimal(str_raw, bigEndian = False):
     if (bigEndian):

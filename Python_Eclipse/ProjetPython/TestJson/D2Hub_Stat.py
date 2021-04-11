@@ -10,6 +10,8 @@ import json
 import Import_D2HUB_Info
 import logging
 import csv
+import Boite_Outils
+
 #import os
 #import sys
 
@@ -22,6 +24,10 @@ import csv
     
 #str_veh_list = ["MASTER","DAILY","MAXITY","CLIO","RANGER"]
 
+
+
+
+@Boite_Outils.print_temps
 def gen_stat_by_account():
     current_account = dict()
     stat_account_dict = dict()
@@ -374,7 +380,7 @@ def gen_stat_by_Service():
     with open(nom_fic, 'w') as json_file_result:
         json.dump(stat_dict, json_file_result, indent=4)
 
-
+@Boite_Outils.print_temps
 def gen_stat():
     
     fh_Stat = logging.FileHandler(Configuration.path_sortie_Stat + "Log_Stat.log", 'w')

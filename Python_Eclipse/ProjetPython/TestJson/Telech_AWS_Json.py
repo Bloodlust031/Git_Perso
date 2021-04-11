@@ -25,8 +25,9 @@ liste_cmd_bucket2 = list()
 liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
-str_Date_list = ['2021-04-08', '2021-04-08']
-str_IMEI_list = ['867322034096248']
+str_Date_list = ['2021-02-01', '2021-04-09']
+#str_IMEI_list = ['867322034096248']
+str_IMEI_list = ['869103026251605']
 
 #mes iCANs: '867322034096248','865794031287537'
 
@@ -101,7 +102,6 @@ def gen_liste_cmd():
     pass
 
 
-
 def execute_cmd():
     str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_bucket.bat'
     os.system(str_cmd)
@@ -109,7 +109,7 @@ def execute_cmd():
     os.system(str_cmd)
     str_cmd = "start " + Configuration.Chemin_json_BatTemp + '/bat_cmd_invalid.bat'
     os.system(str_cmd)
-    
+
  
 def efface_old_msg():
     #effacement des messages précédemment téléchargés.
