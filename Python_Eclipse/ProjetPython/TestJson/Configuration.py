@@ -163,7 +163,8 @@ def read_config_ini(Chemin):
     #Ecriture de Config.ini"
     write_config_ini(Chemin)
     
-@Boite_Outils.print_temps    
+    
+#@Boite_Outils.print_temps    
 def init_config():
     global deja_init
     
@@ -173,6 +174,7 @@ def init_config():
         read_config_ini(Chemin)
         write_config_ini(Chemin)
         deja_init = True
+
 
 def verif_create_dossier(st_chemin):
     if not os.path.exists(st_chemin):

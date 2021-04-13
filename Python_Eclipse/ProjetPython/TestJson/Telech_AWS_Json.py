@@ -25,9 +25,9 @@ liste_cmd_bucket2 = list()
 liste_cmd_UNMATCHED = list()
 liste_cmd_invalid = list()
 
-str_Date_list = ['2021-02-01', '2021-04-09']
-#str_IMEI_list = ['867322034096248']
-str_IMEI_list = ['869103026251605']
+str_Date_list = ['2021-04-09', '2021-04-13']
+str_IMEI_list = ['867322034096248']
+#str_IMEI_list = ['868997035961331','868996033820754','864504031504844']
 
 #mes iCANs: '867322034096248','865794031287537'
 

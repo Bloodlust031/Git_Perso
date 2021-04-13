@@ -22,6 +22,7 @@ start_time = 0
 end_time = 0
 #str_IMEI_List = ['864504031784453','867322038021531','867322034091553','867322034104158','862010039042896','864504031167089','867322034107201']  #test GSM - TrackingOnly
 str_IMEI_List = ['867322038021531','867322034091553','868996033829870','867322034104158','867322034107201']  #test GSM - TrackingOnly
+str_Date_list = ['2021-04-12', '2021-04-13']
 
 def listdirectory(path): 
     liste_fichier=[] 
@@ -156,7 +157,7 @@ if __name__ == "__main__":
     Configuration.init_config()
     
     print("Lancement du Téléchargement")
-    Telech_AWS_Json.telech(Date_list = ['2021-04-08', '2021-04-12'], IMEI_list = str_IMEI_List)
+    Telech_AWS_Json.telech(Date_list = str_Date_list, IMEI_list = str_IMEI_List)
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     
     liste_fichiers = list()

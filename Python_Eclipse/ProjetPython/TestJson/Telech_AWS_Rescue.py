@@ -10,6 +10,7 @@ import Configuration
 #import time
 import csv
 import datetime
+import json
 
 #aws s3 sync s3://ican.rescue.d2hub.fr/ D:\temp\Rescue\
 
@@ -41,6 +42,10 @@ def Extract_rescue():
     extract_list = list()
     extract_list.clear()
     liste_fichier=[] 
+
+    with open(Configuration.path_json_D2Hub_info_total) as json_file3:
+        equipment_dico = json.load(json_file3) 
+            
     for root, dirs, files in os.walk(Configuration.Chemin_json_rescue): 
         for i in files: 
             if i.endswith(".bin"):
@@ -57,13 +62,16 @@ def Extract_rescue():
         str_temp = nom_fic[-32:]
         str_temp = str_temp[0:15]
         current_msg["IMEI"] = str_temp
+        if str_temp in equipment_dico:
+            current_msg["FW"] = equipment_dico[str_temp]["Item_FW"]
+            current_msg["Account"] = equipment_dico[str_temp]["Account_Name"]
         print (str_temp)
         extract_list.append(dict(current_msg))
     
     print(extract_list)
 
     with open(Configuration.Chemin_json_rescue + "/OTA_Rescue.csv", 'w', newline='') as csvfile:
-        fieldnames = ['nomfic', 'date_fic','IMEI']
+        fieldnames = ['nomfic', 'date_fic','IMEI',"FW","Account"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
         writer.writeheader()
         for msg in extract_list:
@@ -73,5 +81,6 @@ def Extract_rescue():
 
 if __name__ == '__main__':
     telech()
+    os.system("pause") # On met le programme en pause pour éviter qu'il ne se referme (Windows)
     Extract_rescue()
     pass

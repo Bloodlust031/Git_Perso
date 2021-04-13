@@ -15,19 +15,9 @@ import Boite_Outils
 #commande =  "start aws s3 sync s3://ican.failure.d2hub.fr/2021-03-29/ D:\Temp_JSON\INPUT_Msg\Failure"
 
 liste_cmd = list()
-str_Date_list = ['2021-04-09', '2021-04-12']
+str_Date_list = ['2021-04-13', '2021-04-13']
 list_fail = list()
 
-def listdirectory(path): 
-    liste_fichier=[] 
-    #for root, dirs, files in os.walk(path): 
-    for root, dirs, files in os.walk(path): 
-        for i in files: 
-            if i.endswith(".json"):
-                liste_fichier.append(os.path.join(root, i))
-    liste_fichier.sort()    #Les messages sont traités dans l'ordre chronologique.
-    #liste_fichier.sort(reverse = True)    #Les messages sont traités dans l'ordre anti-chronologique.
-    return liste_fichier
 
 def gen_liste_cmd():
     global liste_cmd
@@ -36,6 +26,7 @@ def gen_liste_cmd():
     for jour in Configuration.Date_list:
         str_temp = "start aws s3 sync s3://ican.failure.d2hub.fr/" + jour + "/ " + Configuration.Chemin_json_failure
         liste_cmd.append(str_temp)
+
 
 def execute_cmd():
     nb_req = len(liste_cmd)
@@ -66,6 +57,9 @@ def extract_failure():
     list_fail.clear()
     fail_dict = dict()
     
+    with open(Configuration.path_json_D2Hub_info_total) as json_file3:
+        equipment_dico = json.load(json_file3)    
+    
     fail_stat_dict = dict() 
     fail_stat_dict["NbFailure"] = 0
     fail_stat_dict["IMEI List"] = dict()
@@ -92,14 +86,22 @@ def extract_failure():
             fail_dict["IMEI"] = strIMEI
             if len(strIMEI) >= 15:
                 if strIMEI in fail_stat_dict["IMEI List"]:
-                    fail_stat_dict["IMEI List"][strIMEI] += 1
+                    fail_stat_dict["IMEI List"][strIMEI]["nb"] += 1
                 else:
-                    fail_stat_dict["IMEI List"][strIMEI] = 1 
+                    fail_stat_dict["IMEI List"][strIMEI] = dict()
+                    fail_stat_dict["IMEI List"][strIMEI]["nb"] = 1
+                    fail_stat_dict["IMEI List"][strIMEI]["IMEI"] = strIMEI
+            if strIMEI in equipment_dico:
+                fail_stat_dict["IMEI List"][strIMEI]["FW"] = equipment_dico[strIMEI]["Item_FW"]
+                fail_stat_dict["IMEI List"][strIMEI]["Account"] = equipment_dico[strIMEI]["Account_Name"]
+                fail_dict["FW"] = equipment_dico[strIMEI]["Item_FW"]
+                fail_dict["Account"] = equipment_dico[strIMEI]["Account_Name"]
+
             
         list_fail.append(fail_dict.copy())
     
     with open(Configuration.Chemin_json_failure + "\Failure.csv", 'w', newline='') as csvfile:
-        fieldnames = ['Fichier', 'Date','IMEI']
+        fieldnames = ['Fichier', 'Date','IMEI',"FW","Account"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
         writer.writeheader()
         for item in list_fail:
@@ -111,7 +113,7 @@ def extract_failure():
     
 
 if __name__ == '__main__':
-    
-    #telech(Date_list = str_Date_list)
+    telech(Date_list = str_Date_list)
+    os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     extract_failure()
     pass
