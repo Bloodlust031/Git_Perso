@@ -156,7 +156,7 @@ if __name__ == "__main__":
     Configuration.init_config()
     
     print("Lancement du Téléchargement")
-    Telech_AWS_Json.telech(Date_list = ['2021-04-08', '2021-04-08'], IMEI_list = str_IMEI_List)
+    Telech_AWS_Json.telech(Date_list = ['2021-04-08', '2021-04-12'], IMEI_list = str_IMEI_List)
     os.system("pause") # On met le programme en pause pour Ã©viter qu'il ne se referme (Windows)
     
     liste_fichiers = list()

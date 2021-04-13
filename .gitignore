@@ -1,3 +1,5 @@
 Python_Eclipse/.metadata/.log
 Python_Eclipse/.metadata/.plugins/
 *.pyc
+Python_Eclipse/ProjetPython/.pydevproject
+Python_Eclipse/ProjetPython/.settings/org.eclipse.core.resources.prefs
