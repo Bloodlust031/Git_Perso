@@ -380,6 +380,56 @@ def gen_stat_by_Service():
     with open(nom_fic, 'w') as json_file_result:
         json.dump(stat_dict, json_file_result, indent=4)
 
+
+def gen_List_VU():
+    nom_fic = Configuration.path_sortie_Stat + "List_VU.json"
+    VU_list = list()
+    VU_list.clear()
+    
+    VU_dico = dict()
+    VU_dico.clear()
+    VU_dico["Model"] = "MASTER"
+    VU_dico["Serie"] = "III"
+    VU_dico["NB"] = 0
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "DAILY"
+    VU_dico["Serie"] = "V"
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "MAXITY"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "DUCATO"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "JUMPER"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "BOXER"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    for VU in VU_list: 
+        VU["IMEI_List"] = list()
+    
+    with open(Configuration.path_json_D2Hub_info_total) as json_file3:
+        equipment_dico = json.load(json_file3)
+        for imei in equipment_dico:
+            if(equipment_dico[imei]["Item_communicating"] == True):
+                if equipment_dico[imei]["Item_FW"] == '3.3.4':
+                    for VU in VU_list:
+                        if "VEH_Model" in equipment_dico[imei]:
+                            if(equipment_dico[imei]["VEH_Model"] == VU["Model"]):
+                                if len(VU["Serie"]) >= 1:
+                                    if(equipment_dico[imei]["VEH_Serie"] == VU["Serie"]):
+                                        VU["NB"] += 1
+                                        VU["IMEI_List"].append(equipment_dico[imei]["Item_IMEI"])
+                                else:
+                                    VU["NB"] += 1
+                                    VU["IMEI_List"].append(equipment_dico[imei]["Item_IMEI"])
+                    #on ne regarde que les iCAN avec des FW récents et communicantes 
+                    
+    with open(nom_fic, 'w') as json_file_result:
+        json.dump(VU_list, json_file_result, indent=4)
+
 @Boite_Outils.print_temps
 def gen_stat():
     
@@ -430,6 +480,8 @@ def gen_stat():
         gen_stat_by_Veh(veh)
     
     gen_stat_by_Service()
+    
+    gen_List_VU()
     
     logging.info('Fin de generation des stats')
 
