@@ -407,6 +407,24 @@ def gen_List_VU():
     VU_dico["Model"] = "BOXER"
     VU_dico["Serie"] = ""
     VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "TRAFIC"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "KANGOO"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "BERLINGO"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "PARTNER"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "JUMPY"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "EXPERT"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
     for VU in VU_list: 
         VU["IMEI_List"] = list()
     
