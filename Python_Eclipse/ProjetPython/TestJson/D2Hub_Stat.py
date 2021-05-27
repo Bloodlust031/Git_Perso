@@ -425,6 +425,9 @@ def gen_List_VU():
     VU_dico["Model"] = "EXPERT"
     VU_dico["Serie"] = ""
     VU_list.append(VU_dico.copy())
+    VU_dico["Model"] = "SPRINTER"
+    VU_dico["Serie"] = ""
+    VU_list.append(VU_dico.copy())
     for VU in VU_list: 
         VU["IMEI_List"] = list()
     
