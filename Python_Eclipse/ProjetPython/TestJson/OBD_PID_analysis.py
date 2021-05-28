@@ -17,7 +17,7 @@ PID_list = [0x5E, 0x83]
 
 dicoMapping = dict()
 dico_result = dict()
-strPID_list = list()
+strPID_list = list()    #equivalent à PID_list mais sous forme de chaine de caracteres pour faciliter l'impression
 
 
 def listdirectory(path): 
@@ -59,11 +59,9 @@ def get_mapping_from_MappingList_log():
             st_IMEI = ligne[0:15]
             st_Mapping = ligne[16:80]
             if (st_IMEI not in dicoMapping):
-                dicoMapping[st_IMEI] = dict()
-                dicoMapping[st_IMEI]["IMEI"] = st_IMEI
-                dicoMapping[st_IMEI]["Mapping_PID"] = st_Mapping
+                dicoMapping[st_IMEI] = st_Mapping
             else:
-                dicoMapping[st_IMEI]["Mapping_PID"] = Fusion_Mapping_PID(dicoMapping[st_IMEI]["Mapping_PID"], st_Mapping)
+                dicoMapping[st_IMEI] = Fusion_Mapping_PID(dicoMapping[st_IMEI], st_Mapping)
             ligne = filin.readline()
 
 
@@ -87,7 +85,7 @@ def set_IMEI_INFO():
                         if equipment_dico[st_IMEI]["VEH_Serie"] is not None:
                             dico_result[st_IMEI]["VEH_Model"] = dico_result[st_IMEI]["VEH_Model"] + " " + equipment_dico[st_IMEI]["VEH_Serie"]
                 if st_IMEI in dicoMapping:
-                    dico_result[st_IMEI]["Mapping_PID"] = dicoMapping[st_IMEI]["Mapping_PID"]
+                    dico_result[st_IMEI]["Mapping_PID"] = dicoMapping[st_IMEI]
 
 
 def set_PID_Present():
@@ -163,11 +161,9 @@ def get_mapping_from_one_json_file(nom_fic_msg):
                 st_temp = st_temp[pos+12:]
                 st_Mapping = st_temp[:64]
             if (st_IMEI not in dicoMapping):
-                dicoMapping[st_IMEI] = dict()
-                dicoMapping[st_IMEI]["IMEI"] = st_IMEI
-                dicoMapping[st_IMEI]["Mapping_PID"] = st_Mapping
+                dicoMapping[st_IMEI] = st_Mapping
             else:
-                dicoMapping[st_IMEI]["Mapping_PID"] = Fusion_Mapping_PID(dicoMapping[st_IMEI]["Mapping_PID"], st_Mapping)
+                dicoMapping[st_IMEI] = Fusion_Mapping_PID(dicoMapping[st_IMEI], st_Mapping)
 
 
 @Boite_Outils.print_temps
