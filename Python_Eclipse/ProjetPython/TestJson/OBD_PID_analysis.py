@@ -1,3 +1,4 @@
+# -*-coding:utf-8 -*
 '''
 Created on 26 mai 2021
 
@@ -8,8 +9,9 @@ import Configuration
 import csv
 import json
 import Boite_Outils
+import os
 
-#------------Mettre la liste des PID � analyser ici:
+#------------Mettre la liste des PID � analyser ici:
 PID_list = [0x5E, 0x83]
 
 
@@ -17,6 +19,15 @@ dicoMapping = dict()
 dico_result = dict()
 strPID_list = list()
 
+
+def listdirectory(path): 
+    liste_fichier=[] 
+    for root, dirs, files in os.walk(path): 
+        for i in files:
+            if i.endswith(".json"):
+                liste_fichier.append(os.path.join(root, i))
+    liste_fichier.sort()    #Les messages sont traités dans l'ordre chronologique.
+    return liste_fichier
 
 
 def Masque_OU(car_a, car_b):
@@ -28,12 +39,18 @@ def Masque_OU(car_a, car_b):
 
 def Fusion_Mapping_PID(st_Mapping_old, st_Mapping_new):
     st_temp = ""
-    for i in range(0, len(st_Mapping_old)):
-        st_temp = st_temp + Masque_OU(st_Mapping_old[i:i+1],st_Mapping_new[i:i+1])
+    if (len(st_Mapping_new) == 64):
+        if (len(st_Mapping_old) != 64):
+            st_temp = st_Mapping_new
+        else:
+            for i in range(0, len(st_Mapping_old)):
+                st_temp = st_temp + Masque_OU(st_Mapping_old[i:i+1],st_Mapping_new[i:i+1])
+    else:
+        st_temp = st_Mapping_old
     return st_temp
 
 
-def set_liste_Mapping():
+def get_mapping_from_MappingList_log():
     global dicoMapping
     dicoMapping.clear
     with open("D:\\Temp_JSON\\allMappings.log", "r") as filin:
@@ -116,10 +133,54 @@ def sauvegarde():
     pass
 
 
-if __name__ == '__main__':
-    set_liste_Mapping()
+def get_mapping_from_json_files():
+    global dicoMapping
+    dicoMapping.clear()
+    liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    nb_fic = 0
+    nb_fic_total = str(len(liste_fichiers))
+    print(nb_fic_total + " fichiers a analyser")
+    for nom_fic in liste_fichiers:
+        get_mapping_from_one_json_file(nom_fic)
+        nb_fic = nb_fic+1
+        if ((nb_fic % 10000) == 0):
+            print(str(nb_fic) + " fichiers analysés sur " + nb_fic_total)
+    print("Fin de lecture des messages")
+
+
+def get_mapping_from_one_json_file(nom_fic_msg):
+    global dicoMapping
+    st_temp =""
+    
+    with open(nom_fic_msg) as json_file2:
+        data = json.load(json_file2)
+        st_IMEI = str(data['ime'])
+        st_Mapping = "0"
+        if (str(data['evt']) == "102"):
+            st_temp = data["bin"]
+            pos = st_temp.find('DB0719002000')
+            if pos>0:
+                st_temp = st_temp[pos+12:]
+                st_Mapping = st_temp[:64]
+            if (st_IMEI not in dicoMapping):
+                dicoMapping[st_IMEI] = dict()
+                dicoMapping[st_IMEI]["IMEI"] = st_IMEI
+                dicoMapping[st_IMEI]["Mapping_PID"] = st_Mapping
+            else:
+                dicoMapping[st_IMEI]["Mapping_PID"] = Fusion_Mapping_PID(dicoMapping[st_IMEI]["Mapping_PID"], st_Mapping)
+
+
+@Boite_Outils.print_temps
+def Analyse_PID():
+    
+    get_mapping_from_json_files()           #pour récupérer les mappings OBD depuis les messages json
+    #get_mapping_from_MappingList_log()    #pour récupérer les mappings depuis l'extract "allMappings.log" à récupérer sur la VM
+    
     set_IMEI_INFO()
     set_PID_Present()
     sauvegarde()
+
+if __name__ == '__main__':
+    Analyse_PID()
     print ("Fini")
     pass
