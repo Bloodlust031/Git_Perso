@@ -18,7 +18,7 @@ PID_list = [0x5E, 0x83]
 dicoMapping = dict()
 dico_result = dict()
 strPID_list = list()    #equivalent à PID_list mais sous forme de chaine de caracteres pour faciliter l'impression
-
+userchoice = 4
 
 def listdirectory(path): 
     liste_fichier=[] 
@@ -121,7 +121,9 @@ def Is_PID_present(st_Mapping, PID):
     
 
 def sauvegarde():
-    with open("D:\Temp_JSON\PID_analysis.csv", 'w', newline='') as csvfile:
+    with open(Configuration.path_sortie_Stat + "PID_list.json", 'w') as json_file_result:
+        json.dump(dicoMapping, json_file_result, indent=4)
+    with open(Configuration.path_sortie_Stat + "PID_analysis.csv", 'w', newline='') as csvfile:
         fieldnames = ['IMEI', 'Item_FW',"Service_Name","VEH_Mark","VEH_Model", "Mapping_PID"]
         fieldnames.extend(strPID_list)
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
@@ -134,7 +136,9 @@ def sauvegarde():
 def get_mapping_from_json_files():
     global dicoMapping
     dicoMapping.clear()
-    liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    print("définition de la liste de fichiers a analyser")
+    #liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    liste_fichiers = listdirectory("D:\Temp_JSON\IMEI_SORTED")
     nb_fic = 0
     nb_fic_total = str(len(liste_fichiers))
     print(nb_fic_total + " fichiers a analyser")
@@ -168,15 +172,55 @@ def get_mapping_from_one_json_file(nom_fic_msg):
 
 @Boite_Outils.print_temps
 def Analyse_PID():
-    
-    get_mapping_from_json_files()           #pour récupérer les mappings OBD depuis les messages json
-    #get_mapping_from_MappingList_log()    #pour récupérer les mappings depuis l'extract "allMappings.log" à récupérer sur la VM
+    if userchoice == 1:
+        get_mapping_from_json_files()           #pour récupérer les mappings OBD depuis les messages json
+    if userchoice == 4:
+        get_mapping_from_MappingList_log()    #pour récupérer les mappings depuis l'extract "allMappings.log" à récupérer sur la VM
     
     set_IMEI_INFO()
     set_PID_Present()
     sauvegarde()
 
+
+def Menu():
+    retry = True
+    while retry:
+        print("Faites votre choix:")
+        print("1 Analyse des messages depuis IMEI_SORTED")
+        print("2 Analyse des messages depuis INPUT_Msg")
+        print("3 Analyse des messages depuis le précédent PID_list.json")
+        print("4 Analyse des messages depuis le précédent MappingList.log")
+        print("5 Analyse du MAPPING depuis un buffer")
+        txt_input = input()
+        try:
+            if (txt_input[0] == "1"):
+                userchoice = 1
+                retry = False
+                Analyse_PID()
+            elif (txt_input[0] == "2"):
+                userchoice = 2
+                #TODO
+                retry = False
+            elif (txt_input[0] == "3"):
+                userchoice = 3
+                #TODO
+                retry = False
+            elif (txt_input[0] == "4"):
+                userchoice = 4
+                Analyse_PID()
+                retry = False
+            elif (txt_input[0] == "5"):
+                userchoice = 5
+                #TODO
+                retry = False
+            else:
+                print("Try again !")
+        except:
+            print("Try again !")        
+    
+
+
 if __name__ == '__main__':
-    Analyse_PID()
+    Menu()
     print ("Fini")
     pass
