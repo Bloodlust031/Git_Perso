@@ -12,8 +12,9 @@ import Boite_Outils
 import os
 
 #------------Mettre la liste des PID � analyser ici:
-PID_list = [0x5E, 0x83]
+PID_list = [0x5E, 0x83,0xA1]
 
+liste_Mapping = ["983BA013801B8015CCDC804DFFC9814302040000000000000000000000000000","983BA017B019A015CCD200110000010129000000000000000000000000000000","9838A017B00BA001C8CF80CDFDE98B5FEF37F02C000000000000000000000000"]
 
 dicoMapping = dict()
 dico_result = dict()
@@ -53,7 +54,7 @@ def Fusion_Mapping_PID(st_Mapping_old, st_Mapping_new):
 def get_mapping_from_MappingList_log():
     global dicoMapping
     dicoMapping.clear
-    with open("D:\\Temp_JSON\\allMappings.log", "r") as filin:
+    with open(Configuration.path_sortie_PID + "allMappings.log", "r") as filin:
         ligne = filin.readline()
         while ligne != "":
             st_IMEI = ligne[0:15]
@@ -121,9 +122,9 @@ def Is_PID_present(st_Mapping, PID):
     
 
 def sauvegarde():
-    with open(Configuration.path_sortie_Stat + "PID_list.json", 'w') as json_file_result:
+    with open(Configuration.path_sortie_PID + "PID_list.json", 'w') as json_file_result:
         json.dump(dicoMapping, json_file_result, indent=4)
-    with open(Configuration.path_sortie_Stat + "PID_analysis.csv", 'w', newline='') as csvfile:
+    with open(Configuration.path_sortie_PID + "PID_analysis.csv", 'w', newline='') as csvfile:
         fieldnames = ['IMEI', 'Item_FW',"Service_Name","VEH_Mark","VEH_Model", "Mapping_PID"]
         fieldnames.extend(strPID_list)
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames,extrasaction='ignore',delimiter=";")
@@ -132,13 +133,21 @@ def sauvegarde():
             writer.writerow(dico_result[st_IMEI])
     pass
 
+def get_mapping_from_PID_list_json():
+    global dicoMapping
+    with open(Configuration.path_sortie_PID + "PID_list.json", 'r') as json_file_result:
+        dicoMapping = json.load(json_file_result)
+
 
 def get_mapping_from_json_files():
     global dicoMapping
     dicoMapping.clear()
     print("définition de la liste de fichiers a analyser")
-    #liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
-    liste_fichiers = listdirectory("D:\Temp_JSON\IMEI_SORTED")
+    if (userchoice == 1):
+        liste_fichiers = listdirectory("D:\Temp_JSON\IMEI_SORTED")
+    if (userchoice == 2):
+        liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    
     nb_fic = 0
     nb_fic_total = str(len(liste_fichiers))
     print(nb_fic_total + " fichiers a analyser")
@@ -172,46 +181,56 @@ def get_mapping_from_one_json_file(nom_fic_msg):
 
 @Boite_Outils.print_temps
 def Analyse_PID():
-    if userchoice == 1:
+    if (userchoice == 1)or(userchoice == 2):
         get_mapping_from_json_files()           #pour récupérer les mappings OBD depuis les messages json
-    if userchoice == 4:
+    elif (userchoice == 3):
+        get_mapping_from_PID_list_json()
+    elif (userchoice == 4):
         get_mapping_from_MappingList_log()    #pour récupérer les mappings depuis l'extract "allMappings.log" à récupérer sur la VM
+    
     
     set_IMEI_INFO()
     set_PID_Present()
     sauvegarde()
 
 
+def Analyse_Mapping():
+    liste_PID_Presents = list()
+    liste_PID_Presents.clear()
+    mapping_decomp = list()
+    
+    for unMapping in liste_Mapping:
+        mapping_decomp.clear()
+        mapping_decomp.append(unMapping)
+        for i in range(1,256):
+            if Is_PID_present(unMapping, i):
+                mapping_decomp.append(hex(i))
+        liste_PID_Presents.append(mapping_decomp)
+    print(liste_PID_Presents)
+    with open(Configuration.path_sortie_PID + "PID_mapping.json", 'w') as json_file_result:
+        json.dump(liste_PID_Presents, json_file_result, indent=4)
+    
+
+
 def Menu():
+    global userchoice
     retry = True
     while retry:
         print("Faites votre choix:")
         print("1 Analyse des messages depuis IMEI_SORTED")
         print("2 Analyse des messages depuis INPUT_Msg")
         print("3 Analyse des messages depuis le précédent PID_list.json")
-        print("4 Analyse des messages depuis le précédent MappingList.log")
+        print("4 Analyse des messages depuis le allMappings.log")
         print("5 Analyse du MAPPING depuis un buffer")
         txt_input = input()
         try:
-            if (txt_input[0] == "1"):
-                userchoice = 1
+            if ((txt_input[0] == "1") or (txt_input[0] == "2") or (txt_input[0] == "3") or (txt_input[0] == "4")):
+                userchoice = int(txt_input[0])
                 retry = False
                 Analyse_PID()
-            elif (txt_input[0] == "2"):
-                userchoice = 2
-                #TODO
-                retry = False
-            elif (txt_input[0] == "3"):
-                userchoice = 3
-                #TODO
-                retry = False
-            elif (txt_input[0] == "4"):
-                userchoice = 4
-                Analyse_PID()
-                retry = False
             elif (txt_input[0] == "5"):
                 userchoice = 5
-                #TODO
+                Analyse_Mapping()
                 retry = False
             else:
                 print("Try again !")

@@ -34,6 +34,7 @@ Chemin_json_Outil_iCAN = 'TempDownAWSS3'
 
 path_sortie = 'D:/Temp_JSON/OUTPUT/'
 path_sortie_Stat = 'D:/Temp_JSON/OUTPUT/Stat/'
+path_sortie_PID = 'D:/Temp_JSON/OUTPUT/PID_OBD_Analysis/'
 path_InputD2HUB = 'D:\Temp_JSON\INPUT_D2HUB/'
 path_json_D2Hub_info_total = path_InputD2HUB + 'Processed_Equipement_List.json' #dictionnaire des équipements declares sur D2Hub
 path_json_D2Hub_account = path_InputD2HUB + 'Processed_Account_List.json'       #dictionnaire des comptes declares sur D2Hub
@@ -98,6 +99,7 @@ def write_config_ini(Chemin):
                            'pass' : API_D2HUB_PASS}
     config['Path'] = {'path_sortie' : path_sortie,
                       'path_sortie_Stat' : path_sortie_Stat,
+                      'path_sortie_PID_OBD' : path_sortie_PID,
                       'path_InputD2HUB' : path_InputD2HUB,
                       'path_Input_msg': Chemin_json}
     config['Stat'] = {'Veh_list' : str_veh_list}
@@ -146,6 +148,8 @@ def read_config_ini(Chemin):
                 path_sortie = config['Path']['path_sortie']
             if 'path_sortie_Stat' in config['Path']:
                 path_sortie_Stat = config['Path']['path_sortie_Stat']
+            if 'path_sortie_PID_OBD' in config['Path']:
+                path_sortie_PID = config['Path']['path_sortie_PID_OBD']
             if 'path_InputD2HUB' in config['Path']:
                 path_InputD2HUB = config['Path']['path_InputD2HUB']
                 path_json_D2Hub_info_total = path_InputD2HUB + 'Processed_Equipement_List.json' 
