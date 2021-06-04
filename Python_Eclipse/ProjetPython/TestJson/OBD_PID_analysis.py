@@ -195,20 +195,21 @@ def Analyse_PID():
 
 
 def Analyse_Mapping():
-    liste_PID_Presents = list()
-    liste_PID_Presents.clear()
     mapping_decomp = list()
+    dico_PID_Presents = dict()
+    dico_PID_Presents.clear()
     
     for unMapping in liste_Mapping:
+        dico_PID_Presents[unMapping] = list()
         mapping_decomp.clear()
         mapping_decomp.append(unMapping)
         for i in range(1,256):
             if Is_PID_present(unMapping, i):
                 mapping_decomp.append(hex(i))
-        liste_PID_Presents.append(mapping_decomp)
-    print(liste_PID_Presents)
+                dico_PID_Presents[unMapping].append(hex(i))
+    print(dico_PID_Presents)
     with open(Configuration.path_sortie_PID + "PID_mapping.json", 'w') as json_file_result:
-        json.dump(liste_PID_Presents, json_file_result, indent=4)
+        json.dump(dico_PID_Presents, json_file_result)
     
 
 
