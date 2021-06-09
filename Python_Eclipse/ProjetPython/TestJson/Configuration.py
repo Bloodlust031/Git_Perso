@@ -14,12 +14,13 @@ import configparser
 import json
 import ast
 import Boite_Outils
+import distutils.util
 
 deja_init = False
 
 to_integrate_Msg_bin = False
 to_integrate_Msg_raw = False
-to_integrate_Msg_cnt = False
+to_integrate_Msg_cnt = True
 to_integrate_Msg_decompose = False
 to_integrate_Msg_non_decompose_D2Hub = True
 
@@ -134,15 +135,15 @@ def read_config_ini(Chemin):
                 API_D2HUB_PASS = config['API_D2HUB']['pass']
         if 'Extract_VCI_files_content' in config:
             if 'bin' in config['Extract_VCI_files_content']:
-                to_integrate_Msg_bin = config['Extract_VCI_files_content']['bin']
+                to_integrate_Msg_bin = bool(distutils.util.strtobool(config['Extract_VCI_files_content']['bin']))
             if 'raw' in config['Extract_VCI_files_content']:
-                to_integrate_Msg_raw = config['Extract_VCI_files_content']['raw']
+                to_integrate_Msg_raw = bool(distutils.util.strtobool(config['Extract_VCI_files_content']['raw']))
             if 'cnt' in config['Extract_VCI_files_content']:
-                to_integrate_Msg_cnt = config['Extract_VCI_files_content']['cnt']
+                to_integrate_Msg_cnt = bool(distutils.util.strtobool(config['Extract_VCI_files_content']['cnt']))
             if 'decompose' in config['Extract_VCI_files_content']:
-                to_integrate_Msg_decompose = config['Extract_VCI_files_content']['decompose']
+                to_integrate_Msg_decompose = bool(distutils.util.strtobool(config['Extract_VCI_files_content']['decompose']))
             if 'non_decompose_D2Hub' in config['Extract_VCI_files_content']:
-                to_integrate_Msg_non_decompose_D2Hub = config['Extract_VCI_files_content']['non_decompose_D2Hub']
+                to_integrate_Msg_non_decompose_D2Hub = bool(distutils.util.strtobool(config['Extract_VCI_files_content']['non_decompose_D2Hub']))
         if 'Path' in config:
             if 'path_sortie' in config['Path']:
                 path_sortie = config['Path']['path_sortie']
@@ -165,7 +166,7 @@ def read_config_ini(Chemin):
             if 'Veh_list' in config['Stat']:
                 str_veh_list = ast.literal_eval(config.get("Stat","Veh_list"))  #pour décomposer la liste
     #Ecriture de Config.ini"
-    write_config_ini(Chemin)
+    #write_config_ini(Chemin)
     
     
 #@Boite_Outils.print_temps    

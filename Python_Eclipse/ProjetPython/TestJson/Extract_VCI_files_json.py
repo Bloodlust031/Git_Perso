@@ -19,6 +19,8 @@ current_dict_messages = dict()
 global_log_dict = dict()
 start_time = 0
 end_time = 0
+last_liste_fichier = list()
+Mode_normal = True
 
 def listdirectory(path): 
     liste_fichier=[] 
@@ -26,7 +28,9 @@ def listdirectory(path):
     for root, dirs, files in os.walk(path): 
         for i in files: 
             if i.endswith(".json"):
-                liste_fichier.append(os.path.join(root, i))
+                if i not in last_liste_fichier:
+                    liste_fichier.append(os.path.join(root, i))
+                    last_liste_fichier.append(i)
     liste_fichier.sort()    #Les messages sont traités dans l'ordre chronologique.
     #liste_fichier.sort(reverse = True)    #Les messages sont traités dans l'ordre anti-chronologique.
     return liste_fichier
@@ -87,16 +91,17 @@ def traite_1_1fic(nom_fic_msg):
             if (str_temp != "0"): 
                 current_dict_messages["Account_Number"] = str_temp
         
-        if Configuration.to_integrate_Msg_bin:
+        if (Configuration.to_integrate_Msg_bin):
             current_msg['Msg_brut'] = str(data['bin'])
-        if Configuration.to_integrate_Msg_cnt:
+
+        if (Configuration.to_integrate_Msg_cnt):
             current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = dict()
             current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = data['cnt'].copy()
-        if Configuration.to_integrate_Msg_raw:
+        if (Configuration.to_integrate_Msg_raw):
             current_msg['Msg_traduit_D2Hub_raw'] = data['raw']
 
         #décomposition du message brut
-        if Configuration.to_integrate_Msg_decompose:
+        if (Configuration.to_integrate_Msg_decompose):
             current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
             current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
             if(len(current_msg_decompose)>0):
@@ -213,10 +218,20 @@ def ecrire_dictionnaire_messages(strIMEI):
             global_log_dict['List_IMEI'][current_IMEI]["Dist_delay_GSM"] = current_dict_messages["Dist_delay_GSM"].copy()
             
             with open(nom_fic, 'w') as json_file_result:
-                json.dump(current_dict_messages, json_file_result)
+                json.dump(current_dict_messages, json_file_result, indent=4)
             pass
             current_dict_messages.clear()
 
+def save_last_liste_fichier():
+    with open(Configuration.path_sortie + '__Liste_mag_traites.json', 'w') as json_file_result:
+        json.dump(last_liste_fichier, json_file_result, indent=4)
+    pass
+
+def get_last_liste_fichier():
+    global last_liste_fichier
+    with open(Configuration.path_sortie + '__Liste_mag_traites.json', 'r') as json_file_result:
+        last_liste_fichier  = json.load(json_file_result)
+    pass
 
 def efface_dictionnaire_messages():
     liste_fic = os.listdir(Configuration.path_sortie)
@@ -254,7 +269,7 @@ def close_global_log_dict():
 
     nom_fic = get_nom_fic_sortie()
     with open(nom_fic, 'w') as json_file_result:
-        json.dump(global_log_dict, json_file_result)
+        json.dump(global_log_dict, json_file_result, indent=4)
     pass
 
 
@@ -302,15 +317,16 @@ def telech_msg():
     
 if __name__ == "__main__":
     print("coucou")
+    last_liste_fichier.clear()
     
     Configuration.init_config()
     
-    telech_msg()
+    #telech_msg()
     
     liste_fichiers = list()
 
     init_global_log_dict()
-    
+    #get_last_liste_fichier()
     liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
     nb_fic = 0
     
@@ -326,6 +342,7 @@ if __name__ == "__main__":
    
     ecrire_dictionnaire_messages(current_IMEI)
     close_global_log_dict()
+    save_last_liste_fichier()
     
     print( end_time-start_time, "secondes d'executions")
     print(nb_fic, "fichiers analyses")
