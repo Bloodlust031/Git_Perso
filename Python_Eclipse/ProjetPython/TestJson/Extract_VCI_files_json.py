@@ -77,6 +77,9 @@ def traite_1_1fic(nom_fic_msg):
         set_Dstrib_delais_GSM(current_msg['Delai_GSM'])
         current_msg['VIN'] = str(data['vin'])
         
+        current_dict_messages['Raw_cumulated_size'] += int(len(data['bin'])/2)
+        global_log_dict['Raw_cumulated_size'] += int(len(data['bin'])/2)
+        
         if current_msg['VIN'] not in current_dict_messages["VIN_list"]:
             current_dict_messages["VIN_list"].append(current_msg['VIN'])
         
@@ -195,6 +198,7 @@ def lire_dictionnaire_messages(strIMEI):
         current_dict_messages["NB_Journey"] = 0
         current_dict_messages["NB_Msg"] = 0
         current_dict_messages["NB_Heartbeat"] = 0
+        current_dict_messages["Raw_cumulated_size"] = 0
         current_dict_messages["VIN_list"] = list()
         current_dict_messages["FW_list"] = list()
         current_dict_messages["Mapping_OBD_list"] = list()  #TODO
@@ -214,6 +218,7 @@ def ecrire_dictionnaire_messages(strIMEI):
             global_log_dict['List_IMEI'][current_IMEI]["NB_Journey"] = current_dict_messages["NB_Journey"]
             global_log_dict['List_IMEI'][current_IMEI]["NB_Msg"] = current_dict_messages["NB_Msg"]
             global_log_dict['List_IMEI'][current_IMEI]["NB_Heartbeat"] = current_dict_messages["NB_Heartbeat"]
+            global_log_dict['List_IMEI'][current_IMEI]["Raw_cumulated_size"] = current_dict_messages['Raw_cumulated_size']
             global_log_dict['List_IMEI'][current_IMEI]["FW_list"] = current_dict_messages["FW_list"].copy()
             global_log_dict['List_IMEI'][current_IMEI]["Dist_delay_GSM"] = current_dict_messages["Dist_delay_GSM"].copy()
             
@@ -249,6 +254,7 @@ def init_global_log_dict():
     global_log_dict['Process Duration'] = 0
     global_log_dict['NB_Msg'] = 0
     global_log_dict['NB_Journey'] = 0
+    global_log_dict['Raw_cumulated_size'] = 0
     taille = len(Configuration.distribution_delais_GSM) + 1
     global_log_dict['Dist_delay_GSM'] = list()
     global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub] = list()
