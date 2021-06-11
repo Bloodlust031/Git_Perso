@@ -140,7 +140,7 @@ def traite_1_1fic(nom_fic_msg):
             str_temp = data['cnt']['20250']
         else:
             if '20250' in current_msg_decompose:
-                str_temp = Boite_Outils.convert_Hex_decimal(current_msg_decompose['20250'], True)
+                str_temp = str(Boite_Outils.convert_Hex_decimal(current_msg_decompose['20250'], True))
         if (len(str_temp)>1):
             current_msg['CRC_List'] = list()
             current_msg['CRC_List'].append(str_temp)
@@ -149,11 +149,20 @@ def traite_1_1fic(nom_fic_msg):
                 str_temp = data['cnt']['20251']
             else:
                 if '20251' in current_msg_decompose:
-                    str_temp = Boite_Outils.convert_Hex_decimal(current_msg_decompose['20251'], True)
+                    str_temp = str(Boite_Outils.convert_Hex_decimal(current_msg_decompose['20251'], True))
             current_msg['CRC_List'].append(str_temp)
             #calcul du CRC
             str_temp = str(Boite_Outils.calc_CRC(data['bin'][:-32]))
             current_msg['CRC_List'].append(str_temp)
+
+        if 'CRC_List' in current_msg:
+            if ((current_msg['CRC_List'][0] == current_msg['CRC_List'][1]) and (current_msg['CRC_List'][0] == current_msg['CRC_List'][2])):
+                current_msg['CRC_State'] = "CRC_OK"
+                del current_msg['CRC_List']
+            else:
+                current_msg['CRC_State'] = "CRC_KO"
+        else: 
+            current_msg['CRC_State'] = "CRC_vide"
 
         #ajout du message courrant dans la liste de messages du boitier
         current_dict_messages["Msg_list"].append(dict(current_msg))
@@ -223,13 +232,13 @@ def ecrire_dictionnaire_messages(strIMEI):
             global_log_dict['List_IMEI'][current_IMEI]["Dist_delay_GSM"] = current_dict_messages["Dist_delay_GSM"].copy()
             
             with open(nom_fic, 'w') as json_file_result:
-                json.dump(current_dict_messages, json_file_result, indent=4)
+                json.dump(current_dict_messages, json_file_result, indent="\t")
             pass
             current_dict_messages.clear()
 
 def save_last_liste_fichier():
     with open(Configuration.path_sortie + '__Liste_mag_traites.json', 'w') as json_file_result:
-        json.dump(last_liste_fichier, json_file_result, indent=4)
+        json.dump(last_liste_fichier, json_file_result, indent="\t")
     pass
 
 def get_last_liste_fichier():
@@ -275,7 +284,7 @@ def close_global_log_dict():
 
     nom_fic = get_nom_fic_sortie()
     with open(nom_fic, 'w') as json_file_result:
-        json.dump(global_log_dict, json_file_result, indent=4)
+        json.dump(global_log_dict, json_file_result, indent="\t")
     pass
 
 

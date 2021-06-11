@@ -162,7 +162,7 @@ def gen_stat_by_account():
     
     #sauvegarde du résultat
     with open(Configuration.path_sortie_Stat + "Stat_By_Account.json", 'w') as json_file_result:
-        json.dump(stat_account_dict, json_file_result, indent=4)
+        json.dump(stat_account_dict, json_file_result, indent="\t")
 
 
 def gen_stat_globales():
@@ -206,7 +206,7 @@ def gen_stat_globales():
 
 
     with open(Configuration.path_sortie_Stat + "GlobalStat.json", 'w') as json_file_result:
-        json.dump(stat_dict, json_file_result, indent=4)
+        json.dump(stat_dict, json_file_result, indent="\t")
 
 
 def add_dict_stat_by_Veh(stat_dico, equipement_dico):
@@ -304,7 +304,7 @@ def gen_stat_by_Veh(st_Model):
                     add_dict_stat_by_Veh(stat_dict["Item_communicating"], equipment_dico[imei])
                         
     with open(nom_fic, 'w') as json_file_result:
-        json.dump(stat_dict, json_file_result, indent=4)
+        json.dump(stat_dict, json_file_result, indent="\t")
 
 def gen_stat_by_Service():
     stat_dict = dict()
@@ -378,7 +378,7 @@ def gen_stat_by_Service():
                         stat_dict["Item_communicating"][str_serv]["FW_list"][str_fw] += 1                        
 
     with open(nom_fic, 'w') as json_file_result:
-        json.dump(stat_dict, json_file_result, indent=4)
+        json.dump(stat_dict, json_file_result, indent="\t")
 
 
 def gen_List_VU():
@@ -449,7 +449,7 @@ def gen_List_VU():
                     #on ne regarde que les iCAN avec des FW récents et communicantes 
                     
     with open(nom_fic, 'w') as json_file_result:
-        json.dump(VU_list, json_file_result, indent=4)
+        json.dump(VU_list, json_file_result, indent="\t")
 
 @Boite_Outils.print_temps
 def gen_stat():

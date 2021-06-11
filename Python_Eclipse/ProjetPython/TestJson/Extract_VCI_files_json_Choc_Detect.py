@@ -245,7 +245,7 @@ def analyse_json_choc():
     reconstruction_propre_Distrib_Choc()
     nom_fic = Configuration.path_sortie_Stat + "Stat_Choc.json"
     with open(nom_fic, 'w') as json_file_result:
-        json.dump(global_log_dict, json_file_result, indent=4)
+        json.dump(global_log_dict, json_file_result, indent="\t")
 
 if __name__ == "__main__":
     print("coucou")

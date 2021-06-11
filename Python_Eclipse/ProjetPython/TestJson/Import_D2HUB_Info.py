@@ -84,7 +84,7 @@ def Get_Info_Directly_from_D2Hub(): #récupération de la liste des devices en p
         except:
             to_continue = False
     with open(Configuration.path_InputD2HUB + 'D2Hub_equipment_list_raw.json', 'w') as json_file_result:
-        json.dump(raw_list_item, json_file_result, indent=4)
+        json.dump(raw_list_item, json_file_result, indent="\t")
     pass   
 
 def set_item_activ_communicating():
@@ -417,7 +417,7 @@ def Extract_infos_from_D2Hub():
         
         #enregistrement des r�sultats
         with open(Configuration.path_json_D2Hub_info_total, 'w') as json_file_result:
-            json.dump(item_dico, json_file_result, indent=4)
+            json.dump(item_dico, json_file_result, indent="\t")
         pass   
     
         #traitement de la liste des comptes
@@ -469,7 +469,7 @@ def Get_D2Hub_Account_list():
     if (r.status_code == 200):
         account_dico.clear()
         with open(Configuration.path_InputD2HUB + 'Account_list_raw.json', 'w') as json_file_result:
-            json.dump(r.json(), json_file_result, indent=4)
+            json.dump(r.json(), json_file_result, indent="\t")
         pass
         account_uuid_list.clear()
         for compte in r.json():
@@ -497,7 +497,7 @@ def Get_D2Hub_Account_list():
                     else:
                         parent_uuid = account_dico[parent_uuid]["parentUuid"]
         with open(Configuration.path_json_D2Hub_account, 'w') as json_file_result:
-            json.dump(account_dico, json_file_result, indent=4)
+            json.dump(account_dico, json_file_result, indent="\t")
         pass
     else:
         print("probleme dans la requete API de recuperation des comptes clients")

@@ -108,7 +108,7 @@ def extract_failure():
             writer.writerow(item)
     pass
     with open(Configuration.Chemin_json_failure + "\Failure.json", 'w') as json_file_result:
-        json.dump(fail_stat_dict, json_file_result, indent=4)
+        json.dump(fail_stat_dict, json_file_result, indent="\t")
     pass
     
 

@@ -123,7 +123,7 @@ def Is_PID_present(st_Mapping, PID):
 
 def sauvegarde():
     with open(Configuration.path_sortie_PID + "PID_list.json", 'w') as json_file_result:
-        json.dump(dicoMapping, json_file_result, indent=4)
+        json.dump(dicoMapping, json_file_result, indent="\t")
     with open(Configuration.path_sortie_PID + "PID_analysis.csv", 'w', newline='') as csvfile:
         fieldnames = ['IMEI', 'Item_FW',"Service_Name","VEH_Mark","VEH_Model", "Mapping_PID"]
         fieldnames.extend(strPID_list)
