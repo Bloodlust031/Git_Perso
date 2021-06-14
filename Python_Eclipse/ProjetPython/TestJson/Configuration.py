@@ -26,6 +26,7 @@ to_integrate_Msg_non_decompose_D2Hub = True
 
 Chemin_json = 'D:\Temp_JSON\INPUT_Msg'
 Chemin_json_msg = 'D:\Temp_JSON\INPUT_Msg\TempDownAWSS3'
+Chemin_json_predigestmsg = 'D:/Temp_JSON/INPUT_Msg/Predigest_msg/'
 Chemin_json_failure = 'D:\Temp_JSON\INPUT_Msg\Failure'
 Chemin_json_reco = 'D:\Temp_JSON\INPUT_Msg\Reco'
 Chemin_json_rescue = 'D:\Temp_JSON\INPUT_Msg\Rescue'
@@ -162,6 +163,8 @@ def read_config_ini(Chemin):
                 Chemin_json_reco = Chemin_json + 'Reco'
                 Chemin_json_rescue = Chemin_json + 'TempDownAWSS3'
                 Chemin_json_BatTemp = Chemin_json + 'BatTemp'
+                Chemin_json_rescue = Chemin_json + 'TempDownAWSS3'
+                Chemin_json_predigestmsg = Chemin_json + 'Predigest_msg/'
         if 'Stat' in config:
             if 'Veh_list' in config['Stat']:
                 str_veh_list = ast.literal_eval(config.get("Stat","Veh_list"))  #pour décomposer la liste

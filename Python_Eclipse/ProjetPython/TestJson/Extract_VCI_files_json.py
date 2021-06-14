@@ -20,7 +20,8 @@ global_log_dict = dict()
 start_time = 0
 end_time = 0
 last_liste_fichier = list()
-Mode_normal = True
+Mode_ecrasement = False
+
 
 def listdirectory(path): 
     liste_fichier=[] 
@@ -189,9 +190,9 @@ def decomposition_fichier_brut(raw_data):
 
 def get_nom_fic_sortie(strIMEI = ''):
     if (len(strIMEI)> 2):
-        nom = Configuration.path_sortie + prefixe_nom_sortie + strIMEI + '.json'
+        nom = Configuration.Chemin_json_predigestmsg + prefixe_nom_sortie + strIMEI + '.json'
     else:
-        nom = Configuration.path_sortie + '__Global_log.json'
+        nom = Configuration.Chemin_json_predigestmsg + '__Global_log.json'
     return nom
 
 def lire_dictionnaire_messages(strIMEI):
@@ -237,22 +238,22 @@ def ecrire_dictionnaire_messages(strIMEI):
             current_dict_messages.clear()
 
 def save_last_liste_fichier():
-    with open(Configuration.path_sortie + '__Liste_mag_traites.json', 'w') as json_file_result:
+    with open(Configuration.Chemin_json_predigestmsg + '__Liste_mag_traites.json', 'w') as json_file_result:
         json.dump(last_liste_fichier, json_file_result, indent="\t")
     pass
 
 def get_last_liste_fichier():
     global last_liste_fichier
-    with open(Configuration.path_sortie + '__Liste_mag_traites.json', 'r') as json_file_result:
+    with open(Configuration.Chemin_json_predigestmsg + '__Liste_mag_traites.json', 'r') as json_file_result:
         last_liste_fichier  = json.load(json_file_result)
     pass
 
 def efface_dictionnaire_messages():
-    liste_fic = os.listdir(Configuration.path_sortie)
+    liste_fic = os.listdir(Configuration.Chemin_json_predigestmsg)
     
     for file1 in liste_fic:
         if fnmatch.fnmatch(file1, prefixe_nom_sortie + '*.json'):
-            os.remove(Configuration.path_sortie+file1)
+            os.remove(Configuration.Chemin_json_predigestmsg+file1)
 
 def init_global_log_dict():
     global global_log_dict
@@ -330,8 +331,10 @@ def telech_msg():
         Telech_AWS_Json.Supprim_Event_msg()
 
     
-if __name__ == "__main__":
-    print("coucou")
+def mode_normal():
+    global last_liste_fichier
+    global liste_fichiers
+    
     last_liste_fichier.clear()
     
     Configuration.init_config()
@@ -342,7 +345,8 @@ if __name__ == "__main__":
 
     init_global_log_dict()
     #get_last_liste_fichier()
-    liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    liste_fichiers = listdirectory(Configuration.Chemin_json)
+    #liste_fichiers = listdirectory('D:\Temp_JSON\IMEI_SORTED')
     nb_fic = 0
     
     efface_dictionnaire_messages()
@@ -363,5 +367,9 @@ if __name__ == "__main__":
     print(nb_fic, "fichiers analyses")
     print("fini")
     #print(global_log_dict)
-    
+
+
+if __name__ == "__main__":
+    print("coucou")
+    mode_normal()
     os.system("pause") # On met le programme en pause pour éviter qu'il ne se referme (Windows)
