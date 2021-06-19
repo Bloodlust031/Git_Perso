@@ -96,45 +96,22 @@ def traite_1_1fic(nom_fic_msg):
             if (str_temp != "0"): 
                 current_dict_messages["Account_Number"] = str_temp
         
-        if (Configuration.to_integrate_Msg_bin):
-            current_msg['Msg_brut'] = str(data['bin'])
-
-        if (Configuration.to_integrate_Msg_cnt):
-            current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = dict()
-            current_msg[Configuration.lbl_msg_Dic_Params_D2Hub_cnt] = data['cnt'].copy()
-        if (Configuration.to_integrate_Msg_raw):
-            current_msg['Msg_traduit_D2Hub_raw'] = data['raw']
+        current_msg["Params"] = dict()
+        current_msg["Params"] = data['cnt'].copy()
 
         #décomposition du message brut
-        if (Configuration.to_integrate_Msg_decompose):
-            current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
-            current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
-            if(len(current_msg_decompose)>0):
-                current_msg[Configuration.lbl_msg_Dic_Params_Python] = dict()
-                if Configuration.to_integrate_Msg_cnt: 
-                    #Si le paramètre est déjà présent dans le dictionnaire 'Msg_traduit_D2Hub_cnt', il est inutile de le remettre ici
-                    for cle,valeur in current_msg_decompose.items():
-                        if not cle in data['cnt']:
-                            current_msg[Configuration.lbl_msg_Dic_Params_Python][cle] = valeur
-                    if (len(current_msg[Configuration.lbl_msg_Dic_Params_Python])==0):
-                        del current_msg[Configuration.lbl_msg_Dic_Params_Python]
-                else:
-                    current_msg[Configuration.lbl_msg_Dic_Params_Python] = current_msg_decompose.copy()
-
-        #décomposition du message brut
-        if Configuration.to_integrate_Msg_non_decompose_D2Hub:
-            if not Configuration.to_integrate_Msg_decompose:
-                current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
-            if(len(current_msg_decompose)>0):
-                param_non_traduits = dict()
-                for cle,valeur in current_msg_decompose.items():
-                    if not cle in data['cnt']:
-                        param_non_traduits[cle] = valeur
-                        if not cle in global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub]:
-                            global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub].append(cle)
-                if (len(param_non_traduits)>0):
-                    current_msg[Configuration.lbl_msg_Dic_Params_NonD2Hub] = param_non_traduits.copy()
-                param_non_traduits.clear()
+        current_msg_decompose = decomposition_fichier_brut(str(data['bin']))
+        if(len(current_msg_decompose)>0):
+            param_non_traduits = list()
+            for cle,valeur in current_msg_decompose.items():
+                if not cle in data['cnt']:
+                    current_msg["Params"][cle] = valeur
+                    param_non_traduits.append(cle)
+                    if not cle in global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub]:
+                        global_log_dict[Configuration.lbl_msg_Dic_Params_NonD2Hub].append(cle)
+            if (len(param_non_traduits)>0):
+                current_msg[Configuration.lbl_msg_Dic_Params_NonD2Hub] = param_non_traduits.copy()
+            param_non_traduits.clear()
         
         #Comparaison des CRC
         str_temp = ''
