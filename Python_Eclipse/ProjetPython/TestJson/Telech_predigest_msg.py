@@ -216,14 +216,20 @@ def ecrire_dictionnaire_messages(strIMEI):
             current_dict_messages.clear()
 
 def save_last_liste_fichier():
-    with open(Configuration.Chemin_json_predigestmsg + '__Liste_mag_traites.json', 'w') as json_file_result:
+    with open(Configuration.Chemin_json_predigestmsg + '__Liste_msg_traites.json', 'w') as json_file_result:
         json.dump(last_liste_fichier, json_file_result, indent="\t")
     pass
 
 def get_last_liste_fichier():
     global last_liste_fichier
-    with open(Configuration.Chemin_json_predigestmsg + '__Liste_mag_traites.json', 'r') as json_file_result:
+    with open(Configuration.Chemin_json_predigestmsg + '__Liste_msg_traites.json', 'r') as json_file_result:
         last_liste_fichier  = json.load(json_file_result)
+    pass
+
+def get_last_global_log_dict():
+    global global_log_dict
+    with open(Configuration.Chemin_json_predigestmsg + '__Global_log.json', 'r') as json_file_result:
+        global_log_dict  = json.load(json_file_result)
     pass
 
 def efface_dictionnaire_messages():
@@ -231,7 +237,7 @@ def efface_dictionnaire_messages():
     
     for file1 in liste_fic:
         if fnmatch.fnmatch(file1, prefixe_nom_sortie + '*.json'):
-            os.remove(Configuration.Chemin_json_predigestmsg+file1)
+            os.remove(Configuration.Chemin_json_predigestmsg+file1)    
 
 def init_global_log_dict():
     global global_log_dict
@@ -321,13 +327,30 @@ def mode_normal():
     
     liste_fichiers = list()
 
-    init_global_log_dict()
-    #get_last_liste_fichier()
+
+    bretour = False
+    txt_input = input("Voulez vous conserver les pré-analyses précédentes (O pour oui) ?")
+    try:
+        if ((txt_input[0] == "O") or (txt_input[0] == "o")):
+            bretour = True
+    except:
+        bretour = False
+    if bretour:
+        get_last_liste_fichier()
+        get_last_global_log_dict()
+    else:
+        try:
+            efface_dictionnaire_messages()
+            os.remove(Configuration.Chemin_json_predigestmsg + '__Liste_msg_traites.json')
+            os.remove(Configuration.Chemin_json_predigestmsg + '__Global_log.json')
+        except:
+            pass
+        init_global_log_dict()
+
+
     liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
     #liste_fichiers = listdirectory('D:\Temp_JSON\IMEI_SORTED')
     nb_fic = 0
-    
-    efface_dictionnaire_messages()
     
     print(str(len(liste_fichiers)) + " fichiers a analyser")
     
