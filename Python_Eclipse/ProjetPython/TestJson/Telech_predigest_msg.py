@@ -298,10 +298,7 @@ def set_Dstrib_delais_GSM(delai):
         i+=1
         
 def telech_msg():
-    #Configuration.set_IMEI_List(['868996033815168'])  #test GSM - TrackingOnly
-    #Configuration.set_Date_list('2021-03-08', '2021-03-12')
     print("Lancement du Téléchargement")
-    
     Telech_AWS_Json.telech(Date_list = ['2021-03-08', '2021-03-12'], IMEI_list = ['868996033815168'])
     print("Attendre la fin des téléchargements")
     bretour = False
@@ -348,7 +345,8 @@ def mode_normal():
         init_global_log_dict()
 
 
-    liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    #liste_fichiers = listdirectory(Configuration.Chemin_json_msg)
+    liste_fichiers = listdirectory(Configuration.Chemin_json_msg_IMEI_SORTED)
     #liste_fichiers = listdirectory('D:\Temp_JSON\IMEI_SORTED')
     nb_fic = 0
     
